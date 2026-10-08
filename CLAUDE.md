@@ -13,10 +13,14 @@ right skill is picked automatically from the request:
 | "minimal reel", "metaphor reel", "tactile/paper short" | `/make-minimal-reel` | layered cut-outs + drawn shapes (+ optional 3D GLB) under a shared paper/halftone finish, 15fps | `minimal-reels/mr-N-<slug>/` |
 | "review this video", "is it good enough" | `/review-cut` | — (the fresh-critic Gauntlet loop) | `<proj>/output/critique-log.md` |
 
-All tracks share the same backbone: a `beats.json` contract, a voiceover with word-exact
-captions, frame-by-frame QA at phone scale, library-first SFX (`/suggest-sfx`), optional
+All tracks share the same backbone: **script-first intake** (a user-supplied script is
+adapted — never rewritten — with one confirmation round before voice/pixels), a
+`beats.json` contract, a voiceover with word-exact captions, the **MOTION.md motion
+grammar + quality bar** (six rules, composition density, pacing numbers, mechanism
+catalog), frame-by-frame QA at phone scale, measured QA (frozen-time, loudness,
+determinism) + the on-mute payoff test, library-first SFX (`/suggest-sfx`), optional
 music bed, seamless frame-0==last-frame loops, no CTA outros. TSX crash rules live in
-`/vidtsx-2d-generator`.
+`/vidtsx-2d-generator`; the fresh-critic Gauntlet lives in `/review-cut`.
 
 **Voice: Edge TTS by default** — free, no API key, the USER names the voice
 (`tools/gen_voice_edge.py`, e.g. `--voice en-US-ChristopherNeural`; `--list-voices`
@@ -38,8 +42,10 @@ ai-shorts/        generative shorts: + character.json (LOCKED reference), shot s
 vox-shorts/       collage shorts: + DESIGN.md (the visual language — read before any vox work)
 map-films/        animated-map documentaries (world-atlas/d3-geo — see /make-map)
 mg-reels/         documentary motion-graphics reels (film-look engine — see /make-motion-graphics)
-minimal-reels/    typographic minimal reels (see /make-minimal-reel)
+minimal-reels/    tactile metaphor minimal reels (15fps paper/halftone finish — see /make-minimal-reel)
 brand.md          the style contract every skill reads (palette, motion, safe areas, SFX taste)
+MOTION.md         the motion grammar + quality bar every TSX track follows (six rules,
+                  composition density, pacing numbers, mechanism catalog, audio discipline)
 IDEAS.md          the TSX-shorts idea bank + niche ranking
 .claude/skills/   make-short, make-ai-short, make-vox, make-map, make-motion-graphics,
                   make-minimal-reel, review-cut, vidtsx-2d-generator, suggest-sfx
@@ -72,6 +78,9 @@ IDEAS.md          the TSX-shorts idea bank + niche ranking
   canonical clip lives in `media/projects/<name>/`.
 - **Costs (ai-shorts only):** state the derived generation cost BEFORE spending it, and never
   regenerate a locked character from text (see /make-ai-short's iron rules).
-- **QA is not optional:** render frames at phone scale and READ them before any full render;
-  measure the final cut (`tools/qa_frozen_time.sh`, `tools/qa_loudness.sh`); flagships get a
-  fresh-critic round (`/review-cut`).
+- **QA is not optional:** render frames at phone scale and READ them before any full render
+  (including the **on-mute payoff test** — captions + visuals must carry the video with the
+  sound off); measure the final cut (`tools/qa_frozen_time.sh`, `tools/qa_loudness.sh`,
+  `tools/qa_determinism.sh`); flagships get a fresh-critic round (`/review-cut`).
+  "No bugs" is not "good" — clean, smooth, error-free versions still get rejected for
+  being basic, empty or slow; measure AND judge creatively.

@@ -21,7 +21,8 @@ the brief, and the references — and judges rendered pixels, never intentions.
    every 0.2–0.25s, dense 1/30s windows around every transition, crops into details.
    Never hand the critic frames you chose; choosing the frames IS the bias.
 4. **Measure, don't vibe.** `tools/qa_frozen_time.sh` (near-frozen time), 
-   `tools/qa_loudness.sh` (LUFS/LRA/peak) run on the artifact before or by the critic.
+   `tools/qa_loudness.sh` (LUFS/LRA/peak), `tools/qa_determinism.sh <CompId>` (same
+   frame twice = same pixels) run on the artifact before or by the critic.
 5. **Fix the largest meaningful gap first** — don't average away a weak opening.
 6. **Verify, don't assume.** The NEXT round is a new critic checking every prior item:
    FIXED / PARTLY / STILL PRESENT, plus NEW regressions (fixes create defects — z-order
@@ -30,6 +31,26 @@ the brief, and the references — and judges rendered pixels, never intentions.
    cosmetic), or when the user says stop — not after N rounds.
 
 ## The prompts (copy, fill <>, send to a fresh agent)
+
+### Component critic (before a scene/component joins the video)
+```
+You are an independent visual critic in a Gauntlet loop; you did not build this. Judge
+only rendered pixels.
+
+Artifact: <path to scene/component stills or short proof> (<duration>s, <WxH>, <fps>).
+A scene/component for a <genre> short (brand: <palette hex>, <typefaces>). It shows
+<one-sentence description of what it should communicate>. Bar: <MOTION.md's quality
+bar — composition density, no text collisions, readable landings, deterministic motion>.
+
+Method: extract frames with ffmpeg (a contact sheet every 0.1–0.25s, plus native frames
+at <key times>) and look at them. Crop into details: joins, label legibility, collisions,
+pops or holds.
+
+Report (under 450 words), also written to <path>:
+- Verdict: KEEP / REVISE / REJECT.
+- Defects ranked by severity, with timestamps and screen regions.
+- The 3 highest-value fixes, implementable in code.
+```
 
 ### Full-film critic
 ```
@@ -48,8 +69,11 @@ bash tools/qa_loudness.sh <path> from the repo root and read the numbers.
 Report (under 700 words, also written to <report-path>):
 1. Per scene: time range, what's on screen, % dead frame, seconds it could lose, ranked problems.
 2. Transition defects with timestamps.
-3. Audio problems: sync, balance, anything harsh.
-4. The top 6 changes ranked by impact, each implementable in one code edit.
+3. Audio problems: sync, balance, anything harsh (check the 2–8 kHz region on clicky
+   cues — MOTION.md's band rules).
+4. On mute: does a first-time viewer still get the payoff? (Sound-off is the default
+   viewing state.)
+5. The top 6 changes ranked by impact, each implementable in one code edit.
 Be blunt; no padding.
 ```
 
@@ -77,9 +101,10 @@ fix each.
 
 | Round | Artifact | Critic focus |
 |---|---|---|
-| Storyboard | the beats table | chronology, truth, filler beats, loop honesty |
+| Storyboard | the beats table | chronology, truth, filler beats, loop honesty, composition variety |
+| Component | isolated scene stills + motion proof | the component-critic prompt above |
 | Frame QA (each track's own stage) | PNG grids | the track's own checklist (this stays in the make-* skills) |
-| Full film | the rendered MP4 | holds, dead space, transitions, text, audio, pacing |
+| Full film | the rendered MP4 | holds, dead space, transitions, text, audio, pacing, on-mute payoff |
 | Verification | new render + prior report | item-by-item + regressions + SHIP/ONE MORE PASS |
 
 ## The ledger (proof of craft)

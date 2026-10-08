@@ -1,6 +1,6 @@
 ---
 name: make-short
-description: Build a fully-synthetic vertical short (1080×1920, ~40s) end-to-end from a topic — script + beats.json, linked TSX beats over a persistent canvas, phone-scale QA, render, Edge TTS voice (free, user-provided voice name; ElevenLabs optional) with exact word-synced captions, SFX audition, optional music bed. Use when the user wants to "make a short", "create a shorts video", build a TSX short for a niche (chess, math, algorithms, dev tips, Excel…), add voice/captions to a short, or continue the short-N series in this repo. This is the 100%-TSX track — for video-model pixels use make-ai-short, for the paper-collage documentary look use make-vox, for animated map films use make-map, for documentary motion-graphics reels use make-motion-graphics, for typography-only reels use make-minimal-reel. Defers raw TSX crash rules to vidtsx-2d-generator and SFX taste to suggest-sfx + brand §7.
+description: Build a fully-synthetic vertical short (1080×1920, ~40s) end-to-end from a topic OR a user-supplied SCRIPT — script intake + beats.json, linked TSX beats over a persistent canvas, motion grammar (MOTION.md), phone-scale QA, determinism check, render, Edge TTS voice (free, user-provided voice name; ElevenLabs optional) with exact word-synced captions, SFX audition, optional music bed. Use when the user wants to "make a short", "create a shorts video", brings a script/narration to turn into a short, builds a TSX short for a niche (chess, math, algorithms, dev tips, Excel…), adds voice/captions to a short, or continues the short-N series in this repo. This is the 100%-TSX track — for video-model pixels use make-ai-short, for the paper-collage documentary look use make-vox, for animated map films use make-map, for documentary motion-graphics reels use make-motion-graphics, for tactile metaphor reels use make-minimal-reel. Defers raw TSX crash rules to vidtsx-2d-generator, motion grammar to MOTION.md, and SFX taste to suggest-sfx + brand §7.
 ---
 
 # make-short — fully-TSX vertical shorts, end to end
@@ -13,6 +13,23 @@ picking a topic, and grow it when brainstorming.
 Run everything from the **repo root**. Tools are stdlib-only Python 3.10+ (voice needs
 `pip install edge-tts`); `ffmpeg`/`node` must be on PATH; API keys live in `.env` (see
 `.env.example`) and are only needed for optional ElevenLabs/music passes.
+
+## Script-first entry (when the user brings a script)
+
+The user's script IS the brief — never rewrite its meaning, only its shape:
+
+1. **Route check.** Read it once and confirm this track fits (100% code-animated niches
+   with a teachable payoff — chess/math/algorithms/tips). If the script is a narrated
+   story → make-motion-graphics; a metaphor piece → make-minimal-reel; a geography/
+   conflict explainer → make-map. Say so and route; don't force-fit.
+2. **Adapt to the beat grammar.** Map sentences onto HOOK → SETUP → (QUIZ) → REVEAL →
+   TWIST → LOOP. Cut words, not claims: every fact survives, filler phrases go. On-screen
+   text ≤ 8 words per beat, pulled from the script's own words. Time the VO at ~2.7 wps
+   and CUT or PAD to the 38–42s budget — if the script is 2× over, ask before gutting it.
+3. **One confirmation round.** Show the beat table + what you cut and why, and get a
+   thumbs-up BEFORE voice or pixels. Then run the normal pipeline from Stage 2 (script.md
+   and beats.json get built FROM the user's words, keeping their phrasing wherever it
+   already works as captions).
 
 ## Artifact contract
 
@@ -64,19 +81,33 @@ line's start**. Facts must be verified before scripting. Write `script.md` + `be
   already on at f0. Loop scene reverses the hook's punch-in (settle 1.06→1 vs grow 1→1.06).
 - Safe areas: captions block centered ~y1500; nothing critical in bottom 340px / right 160px.
 
-### Motion grammar (borrowed from 28 pro launch films — apply always)
+### Motion grammar (the six rules — MOTION.md is the full reference)
 
 1. **The foreground becomes the transition.** The payoff word/shape scales through the
    camera with directional blur while the next beat is already in place underneath — no
    empty gap between scenes.
 2. **One persistent actor.** The board/array/equation keeps its identity across beats;
    unrelated reveals in sequence feel like a slideshow however well each is animated.
-3. **Readable landing → fast exit.** Eases INTO a landing so the viewer can read, then
-   leaves quickly. Change speed; don't drift at a constant rate. No motionless stretch
-   over ~0.6s.
-4. **Scale pops stay ≤1.06; stagger list entrances 3–4 frames** (brand.md §5).
-5. **Layer the hero beats:** motion-blur burst (engine `blurBurst`) on the fastest point
-   of the 2–3 biggest moves.
+3. **Change speed; don't drift.** Eases INTO a landing so the viewer can read, then leaves
+   quickly. No motionless stretch over ~0.6s; reading holds still breathe (slow 3–5% push).
+4. **Layer the frame:** one primary move + supporting staggers + fine tertiary detail
+   (ticks, edge sweeps) overlapping — never start/stop the whole frame on every beat.
+5. **Hard cuts are allowed when matched** (subject, scale, direction, material) and
+   motion continues after the cut — otherwise carry an object through instead.
+6. **Cause → effect.** Every animated action visibly produces a result (a click produces
+   a state, a scan produces a finding). Motion that decorates without consequence is
+   filler.
+
+**Composition density (critics reject 'basic' before anything else):** the lead subject
+fills **60–85% of the usable frame** in feature beats · 10–15 distinct compositions per
+30s · vary the composition TYPE (macro close-up / wide / overhead / UI close-up / type
+impact) · 1–2 reading targets at a time · equal spacing + shared left edges in lists ·
+**scale pops stay ≤1.06; stagger list entrances 3–4 frames** (brand.md §5) · motion-blur
+burst (engine `blurBurst`) on the fastest point of the 2–3 biggest moves.
+
+**Name the 2–3 signature mechanisms** in script.md (from MOTION.md's catalog, in plain
+words: "the equation collapses into the answer", "the wasted-move path draws as a dashed
+trace") — that's what makes a short re-watchable.
 
 ### Optional: the film-look pass
 
@@ -93,12 +124,14 @@ node scripts/frames.mjs ShortNName 0,<beat-boundaries+hero-frames>,<last> --scal
 ```
 READ every PNG (phone scale). Checklist: frame 0 composed & thumbnail-grade · every reveal
 synced to its beat · nothing covering the payoff element · kickers swap with the narration ·
-captions clear of UI zones · loop frame ≈ frame 0.
+captions clear of UI zones · loop frame ≈ frame 0 · **on mute, a first-time viewer still
+gets the payoff** (captions + visuals carry it — sound off is the default viewing state).
 
 **Measured QA after the full render** (cheap, catches what the eye misses):
 ```
 bash tools/qa_frozen_time.sh remotion/out/ShortNName.mp4   # near-frozen time ≤ ~1s per 30s
 bash tools/qa_loudness.sh remotion/out/ShortNName-voiced.mp4  # ~-15.5 LUFS shorts calibration
+bash tools/qa_determinism.sh ShortNName 0,<mid>,<last>        # same frame twice = same pixels
 ```
 For a flagship video, run a fresh-critic round too: the `/review-cut` skill (builder ≠
 judge; the critic sees only the render + brief).
@@ -154,11 +187,15 @@ for the specific cue; record `source` + `license` in the catalog like any other 
 
 Library beds in `media/library/music/` (gen_music.py to grow). Audition over the SFX mix:
 `python tools/mix_music.py --all --base shorts/short-N-<niche>/output/short-N-sfx.mp4`
-(or `--bed <id>`). Hard-ducked under voice.
+(or `--bed <id>`). Hard-ducked under voice. **Audition 2–3 beds at identical integrated
+loudness** (the tool normalizes) so the user compares MUSIC, not volume — and structure
+the chosen bed to the picture (fill from the hook, resolve on the payoff; a bed that
+dies before the ending is a reject, check its loudness over time).
 
 ## Done =
 
 script.md + beats.json authored (facts verified) · composition QA'd frame-by-frame AND
-measured (frozen-time, loudness) · rendered at scale 1 · Edge TTS voice generated with
-word-exact captions and muxed (or ElevenLabs when asked) · SFX plan authored + audition
-mixed (~−15.5 LUFS, awaiting the user's ear) · library used_in updated · IDEAS.md queue updated.
+measured (frozen-time, loudness, determinism) · on-mute payoff confirmed · rendered at
+scale 1 · Edge TTS voice generated with word-exact captions and muxed (or ElevenLabs when
+asked) · SFX plan authored + audition mixed (~−15.5 LUFS, awaiting the user's ear) ·
+library used_in updated · IDEAS.md queue updated.

@@ -1,6 +1,6 @@
 ---
 name: make-map
-description: Build a news-documentary ANIMATED MAP film (16:9 or 9:16, 30-60s) end-to-end — geopolitics, history, supply chains, conflict timelines, trade routes. The map is drawn from REAL geographic data (world-atlas + TopoJSON + d3-geo, never hand-drawn), tilted like a table-top war map, with self-drawing glowing country outlines, smooth camera moves between places, cutout figures rising out of the map, missile/jet/ship tracks, screen-blend VFX, film grain, and a "one continuous shot" scene-continuity rule. Voice by Edge TTS (user names the voice). Use when the user asks for a "map video", "war map", "documentary map animation", "geopolitics explainer", "strait/blockade/invasion animation", or to continue the map-N series — not the paper-collage look (make-vox) and not typography reels (make-minimal-reel). Defers TSX crash rules to vidtsx-2d-generator, SFX taste to suggest-sfx, critic rounds to review-cut.
+description: Build a news-documentary ANIMATED MAP film (16:9 or 9:16, 30-60s) end-to-end from a topic OR a user-supplied SCRIPT — script intake + camera route, geopolitics, history, supply chains, conflict timelines, trade routes. The map is drawn from REAL geographic data (world-atlas + TopoJSON + d3-geo, never hand-drawn), tilted like a table-top war map, with self-drawing glowing country outlines, smooth camera moves between places, cutout figures rising out of the map, missile/jet/ship tracks, screen-blend VFX, film grain, and a "one continuous shot" scene-continuity rule, under the MOTION.md grammar. Voice by Edge TTS (user names the voice). Use when the user asks for a "map video", "war map", "documentary map animation", "geopolitics explainer", "strait/blockade/invasion animation", brings a script for that style, or to continue the map-N series — not the paper-collage look (make-vox) and not tactile metaphor reels (make-minimal-reel). Defers TSX crash rules to vidtsx-2d-generator, motion grammar to MOTION.md, SFX taste to suggest-sfx, critic rounds to review-cut.
 ---
 
 # make-map — data-driven animated map documentaries
@@ -13,6 +13,20 @@ the exact frame the previous scene ended, so the whole film plays as one continu
 The map is **generated per frame from real data** — world-atlas country shapes unpacked
 with TopoJSON, projected and drawn with d3-geo (`geoMercator`). Never hand-draw a map:
 real geometry is what makes zoom-ins land on real coastlines, and it costs zero assets.
+
+## Script-first entry (when the user brings a script)
+
+The script IS the story — adapt its shape, never its meaning:
+
+1. **Route check.** Map films fit scripts that are GEOGRAPHIC (places, chokepoints,
+   invasions, trade routes, migrations). A paper-collage explainer → make-vox; a character
+   story → make-motion-graphics. Route, don't force-fit.
+2. **Extract the camera route from the words.** Every place the script names becomes a
+   named anchor; the order of mentions IS the route. Sentences with no place in them get
+   merged into the previous scene's VO (the camera holds or drifts while it lands).
+3. **One confirmation round.** Show the route table (sentence → anchor → zoom level →
+   on-screen events) + cuts, get the thumbs-up, then run the normal pipeline from
+   Stage 1's beats.json step.
 
 ## Project setup (once per project, in `remotion/`)
 
@@ -61,6 +75,12 @@ invent new framing mid-film.
 - ONE `<WorldMap>` under everything; the camera is a set of keyframed
   {centerX, centerY, scale} values interpolated with EASE_INOUT between named anchors.
   Keep the named anchors in the shared module so Scene 2 can import Scene 1's END anchor.
+- **Vary the zoom like a composition type (MOTION.md):** alternate wide establishing →
+  regional → tight strait-level → back out for the aftermath; never two scenes at the
+  same scale in a row unless the story demands a hold. **Cause → effect on the map:**
+  every event visibly changes the map (a strike leaves a mark, a blockade leaves ships,
+  an outline drawn leaves the country highlighted) — motion without geographic
+  consequence is filler.
 - Country highlight: glowing colored outline that DRAWS ITSELF on (stroke-dashoffset over
   ~20 frames, brand accent) + optional fill pulse. Flag colors are a deliberate choice
   (Israel blue, Iran red) — keep the semantic consistent film-wide.
@@ -101,8 +121,11 @@ npx remotion render MapNName out/MapNName.mp4 --gl=angle
 
 `node scripts/frames.mjs MapNName <f0,scene-handoffs,event-cues,last> --scale=0.5` — READ
 every PNG: scene handoffs invisible (frame A-end == B-start) · camera framing at each
-anchor · outlines drew fully · tracks stay on believable paths · grain not on actors.
-Measured: `bash tools/qa_frozen_time.sh` on the render. Flagships: `/review-cut` critic round.
+anchor (the subject region fills the usable frame) · outlines drew fully · tracks stay on
+believable paths · grain not on actors · **on mute, the story still reads** (labels,
+markers and tracks carry the geography).
+Measured: `bash tools/qa_frozen_time.sh` on the render + `bash tools/qa_determinism.sh
+MapNName` (same frame twice = same pixels). Flagships: `/review-cut` critic round.
 
 ## Stage 6 — voice + sound
 

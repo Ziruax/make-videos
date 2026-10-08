@@ -1,6 +1,6 @@
 ---
 name: make-minimal-reel
-description: Build a TACTILE MINIMAL metaphor reel (1080×1920, 15fps, ~20-26s) end-to-end — one idea told as three physical metaphors (e.g. scanning eye → charging battery → iceberg) using layered cut-outs, drawn shapes, optional 3D GLB, and a shared paper/halftone finish. Voiceover-first: 4-6 short lines (Edge TTS, user names the voice) become the storyboard backbone. Three base colours, two lighting conditions, scene-per-composition with camera-continuity transitions (pupil portal, recede-and-blur), 15fps stepped cadence, Studio controls exposed, SFX that follow the animation controls. Use for "minimal reel", "metaphor reel", "paper reel", "tactile short", or the mr-N series — when the WORDS carry the meaning but OBJECTS carry the picture (pure typography is a fallback variant; collage/footage is /make-vox; MG-style UI demos are /make-motion-graphics). Defers TSX crash rules to vidtsx-2d-generator and SFX taste to suggest-sfx.
+description: Build a TACTILE MINIMAL metaphor reel (1080×1920, 15fps, ~20-26s) end-to-end from an idea OR a user-supplied SCRIPT — script intake + one idea told as three physical metaphors (e.g. scanning eye → charging battery → iceberg) using layered cut-outs, drawn shapes, optional 3D GLB, and a shared paper/halftone finish. Voiceover-first: 4-6 short lines (Edge TTS, user names the voice) become the storyboard backbone. Three base colours, two lighting conditions, scene-per-composition with camera-continuity transitions (pupil portal, recede-and-blur), 15fps stepped cadence, Studio controls exposed, SFX that follow the animation controls, under the MOTION.md grammar. Use for "minimal reel", "metaphor reel", "paper reel", "tactile short", when the user brings a script for that style, or the mr-N series — when the WORDS carry the meaning but OBJECTS carry the picture (pure typography is a fallback variant; collage/footage is /make-vox; MG-style UI demos are /make-motion-graphics). Defers TSX crash rules to vidtsx-2d-generator, motion grammar to MOTION.md, and SFX taste to suggest-sfx.
 ---
 
 # make-minimal-reel — tactile metaphor reels
@@ -66,6 +66,16 @@ Kit: `remotion/src/lib/tactile.tsx` — `MR` (palette), `Tactile` (finish stack)
 Motion engine: `lib/engine.tsx` (boil, posterizeFrame, focusHunt, decaySwing).
 
 ## Stage 1 — voiceover first (the backbone)
+
+**Script-first entry (when the user brings a script):** read it once, confirm the route
+(a single idea with an emotional arc fits here; a story with characters →
+make-motion-graphics; an explainer with subject layers → make-vox), then adapt: find the
+3-beat arc in the user's words (distraction → choice → hidden depth, or tension →
+practice → payoff), keep 4–6 of their best sentences VERBATIM (their phrasing IS the
+captions — only the VO's rhythm matters), cut the rest, show the line table + what you
+kept/cut for ONE confirmation round, and only then synthesize. If the script carries
+more than one idea, ask which one this reel is about — a metaphor reel with two ideas
+has none.
 
 Write 4-6 short lines WITH the user in a quick back-and-forth until the message feels
 right. 5 lines is the classic shape (~13s at natural speed): the claim, the choice, the
@@ -165,10 +175,14 @@ node scripts/frames.mjs MrNName 0,<scene-landings,transition-frames,tag-frames,l
 READ the PNGs at the transitions: cone crossing letters cleanly · battery fill and
 ticks aligned · water boundary splitting the iceberg at the waterline, buoy riding the
 wave · tag fold retained and fluttering · text readable and above edge blur · the two
-texture kinds not sliding. `bash tools/qa_frozen_time.sh` (one exemption: deliberate
-holds still breathe — slow 1.0→1.03 push), `bash tools/qa_loudness.sh` (voice ≥ -16
-LUFS, no clipping). Render `--scale=1`, re-check exported frames around the
-transitions, save the approved master beside the source assets.
+texture kinds not sliding · **the metaphor reads ON MUTE** (the visual arc carries the
+idea; a first-time viewer gets it with the sound off) · the scene subject fills 60–85%
+of the usable frame at each landing (MOTION.md). `bash tools/qa_frozen_time.sh` (one
+exemption: deliberate holds still breathe — slow 1.0→1.03 push), `bash tools/qa_loudness.sh`
+(voice ≥ −16 LUFS, no clipping), `bash tools/qa_determinism.sh MrNName` (same frame twice
+= same pixels — the 15fps snap + flutter must stay pure functions of the frame). Render
+`--scale=1`, re-check exported frames around the transitions, save the approved master
+beside the source assets.
 
 ## Stage 5 — sound carries the meaning
 

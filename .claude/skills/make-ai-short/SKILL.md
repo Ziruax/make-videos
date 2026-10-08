@@ -1,6 +1,6 @@
 ---
 name: make-ai-short
-description: Build a GENERATIVE-pixels vertical short (1080×1920, ~35-40s) end-to-end — a recurring locked character animated by a fal video model (Seedance 1.5 Pro default) under a philosophical/story VO, composited in Remotion with word-synced captions, SFX audition, seamless frame-0==last-frame loop. Use when the user wants to "make an AI video short", "make an ai short", "make a blue-man video", or any short where the pixels come from a VIDEO MODEL — not TSX animation (that is make-short) and not layered collage (that is make-vox). Defers model choice re-litigating to ai-shorts/IDEAS.md, TSX crash rules to vidtsx-2d-generator, SFX taste to suggest-sfx + brand §7.
+description: Build a GENERATIVE-pixels vertical short (1080×1920, ~35-40s) end-to-end from an idea OR a user-supplied SCRIPT — script intake + a recurring locked character animated by a fal video model (Seedance 1.5 Pro default) under a philosophical/story VO, composited in Remotion with word-synced captions, SFX audition, seamless frame-0==last-frame loop. Use when the user wants to "make an AI video short", "make an ai short", "make a blue-man video", brings a script for that style, or any short where the pixels come from a VIDEO MODEL — not TSX animation (that is make-short) and not layered collage (that is make-vox). Defers model choice re-litigating to ai-shorts/IDEAS.md, TSX crash rules to vidtsx-2d-generator, motion grammar to MOTION.md, SFX taste to suggest-sfx + brand §7.
 ---
 
 # make-ai-short — generative shorts, end to end
@@ -45,6 +45,13 @@ media/projects/<name>/        — THE clip copies for staticFile() (committed �
 ```
 
 ## Order of operations (voice before pixels)
+
+**Script-first entry (when the user brings a script):** route check (a philosophical/
+moody narration suits generative pixels; a teachable niche payoff → make-short; a factual
+explainer → make-vox), then adapt: keep the user's phrasing as the VO lines, cut to
+~80-100 words / 35-40s, shape the ending so the thesis WANTS the loop (the last image
+should rhyme with the first), show the line table + cuts for ONE confirmation round —
+before ANY voice or generation spend (this track costs money per clip).
 
 1. **Script** — script.md + beats.json. Hook composed at frame 0; thesis should WANT the loop
    (blue-man #1: "arrival is a myth" → ending = walking toward the same door). ~80-100 words,

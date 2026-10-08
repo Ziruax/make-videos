@@ -89,6 +89,17 @@ Sound taste is a brand contract — read **`brand.md` §7** every time. The hous
      speech even at −4 dB; lowering them just makes quiet noise. If the user says "noisy", swap the
      sound's CHARACTER (clean mechanical snap) or use silence — see brand §7 "no static/glitch
      textures under narration".
+   - **Band-aware levels (MOTION.md audio discipline).** Full-band RMS hides what the ear
+     hears: judge story-critical cues at **~+3–4 dB in their own frequency band** over the
+     bed, and cap the ear-sensitive **2–8 kHz region at ~+4 dB** (clicks/ticks spiking
+     10+ dB there read as annoying even when the mix measures fine). Check a clicky cue
+     with a band-passed measurement:
+     `ffmpeg -i mix.mp4 -af 'highpass=f=2000,lowpass=f=8000,astats=metadata=1' -f null -`
+     before shipping a plan full of ticks.
+   - **Clusters and repeats.** Cues landing within ~0.15s of each other soften ×0.6 so
+     they don't stack into a thud; the same sound used twice keeps the SAME gain both
+     times (a momentary quiet bed must not collapse a recurring cue's level — override
+     to match its siblings).
 8. **Save back.** New clips stay in the library + catalog (they carry to the next video). Update
    `used_in`.
 
@@ -130,6 +141,11 @@ Sound taste is a brand contract — read **`brand.md` §7** every time. The hous
 
 - **Under the voice, always.** SFX are seasoning; the voice is the show. Duck them, keep them
   quiet, never let one peak above the narration. Silence is part of the mix.
+- **Isolate complaints before fixing.** When the user says "that whoosh", check whether it's
+  actually the music (brushed snares/risers sound like whooshes) — play the plan's
+  `preview` (the pre-SFX render) at that timestamp vs the SFX-mixed output, and you'll
+  know which layer owns it. **Change ONE thing per round and name it by timestamp** —
+  the audible window is a few dB wide.
 - **Key transitions & reveals only** — plus the diegetic action sounds that ARE a synthetic short's
   content (piece thocks, digit pops). Everything past that is `optional`.
 - **Sync to the visual beat AND the word.** A click exactly on the toggle flip; a pop exactly on

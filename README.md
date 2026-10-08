@@ -1,11 +1,12 @@
 # claude-faceless-shorts-creator
 
 **A faceless video factory you drive with [Claude Code](https://claude.com/claude-code).**
-Six production tracks in one repo — you describe the video, and the right pipeline runs:
+Six production tracks in one repo — you describe the video (or paste a full script —
+every track adapts your words, never rewrites them), and the right pipeline runs:
 
 | You say… | Track | The pixels |
 |---|---|---|
-| *"make a short about the ×11 trick"* | **TSX** (`/make-short`) | 100% code — a [Remotion](https://remotion.dev) composition, no footage, no stock |
+| *"make a short about the ×11 trick"* · *"here's my script, make it a short"* | **TSX** (`/make-short`) | 100% code — a [Remotion](https://remotion.dev) composition, no footage, no stock |
 | *"make an AI video short with blue-man"* | **Generative** (`/make-ai-short`) | a fal video model animating a **locked recurring character** |
 | *"make a vox-style short about coffee"* | **Collage** (`/make-vox`) | Vox-documentary paper collage — AI-image layers, die-cuts, a traveling camera |
 | *"make a map film about the Strait of Hormuz"* | **Map** (`/make-map`) | a **data-driven animated map** (world-atlas + TopoJSON + d3-geo) — war-room documentaries with one continuous camera shot |
@@ -13,11 +14,14 @@ Six production tracks in one repo — you describe the video, and the right pipe
 | *"make a minimal metaphor reel"* | **Minimal** (`/make-minimal-reel`) | three physical metaphors — layered cut-outs, drawn shapes, optional 3D eye — under one paper/halftone finish at 15fps |
 | *"review this cut"* | **Critic** (`/review-cut`) | the Gauntlet: fresh critics, real frames, measured audio, SHIP / ONE MORE PASS |
 
-Every track shares the same backbone: a voiceover with **word-exact synced captions**
-(Edge TTS by default — free, you pick the voice name; ElevenLabs optional), a `beats.json`
-machine contract, frame-by-frame QA at phone scale, **measured QA** (frozen-time and
-loudness scripts), a reusable self-growing SFX/music library, seamless frame-0==last-frame
-loops, and no dated engagement-CTA outros.
+Every track shares the same backbone: **script-first intake** (bring your own script — it
+gets adapted, never rewritten, with one confirmation round before anything is built), a
+voiceover with **word-exact synced captions** (Edge TTS by default — free, you pick the
+voice name; ElevenLabs optional), a `beats.json` machine contract, the **MOTION.md motion
+grammar + quality bar** (six rules, composition density, pacing numbers, a reusable
+mechanism catalog), frame-by-frame QA at phone scale, **measured QA** (frozen-time,
+loudness and determinism scripts) plus the on-mute payoff test, a reusable self-growing
+SFX/music library, seamless frame-0==last-frame loops, and no dated engagement-CTA outros.
 
 ## 📖 Read the guide
 

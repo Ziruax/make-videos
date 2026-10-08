@@ -1,6 +1,6 @@
 ---
 name: make-motion-graphics
-description: Build a premium DOCUMENTARY MOTION-GRAPHICS reel (1080×1920 or 1920×1080, ~30s) end-to-end — the "Netflix vs Blockbuster" style: a locked 4-8 line voiceover IS the source code, one scene per line, photo cutouts composited on textured backdrops with a 12fps stop-motion engine, an aged-film treatment (scan lines, grain sandwich, gate weave, vignette, per-scene grade), signature moves (zoom-through-frame with weld/detach, screen-blend smoke, slot-machine text, parallax punch anchored to the feet, drawn lamp light, focus-hunt, decaying wag), Edge TTS voice (user names the voice), whoosh/shutter/cha-ching SFX, and a words-always-win mix. Use for "story reel", "documentary reel", "narrated brand story", "company history video", "vs video" (Netflix vs Blockbuster style), or to continue the mg-N series — not data-driven maps (make-map), not paper collage (make-vox), not typography-minimal (make-minimal-reel). Defers TSX crash rules to vidtsx-2d-generator, critic rounds to review-cut.
+description: Build a premium DOCUMENTARY MOTION-GRAPHICS reel (1080×1920 or 1920×1080, ~30s) end-to-end — the "Netflix vs Blockbuster" style: a user-supplied or co-written locked 4-8 line voiceover IS the source code (script-first by design), one scene per line, photo cutouts composited on textured backdrops with a 12fps stop-motion engine, an aged-film treatment (scan lines, grain sandwich, gate weave, vignette, per-scene grade), signature moves (zoom-through-frame with weld/detach, screen-blend smoke, slot-machine text, parallax punch anchored to the feet, drawn lamp light, focus-hunt, decaying wag) under the MOTION.md grammar, Edge TTS voice (user names the voice), whoosh/shutter/cha-ching SFX, and a words-always-win mix. Use for "story reel", "documentary reel", "narrated brand story", "company history video", "vs video" (Netflix vs Blockbuster style), when the user brings a narration script for that style, or to continue the mg-N series — not data-driven maps (make-map), not paper collage (make-vox), not tactile metaphor (make-minimal-reel). Defers TSX crash rules to vidtsx-2d-generator, motion grammar to MOTION.md, critic rounds to review-cut.
 ---
 
 # make-motion-graphics — documentary story reels, end to end
@@ -15,6 +15,14 @@ continuity, not from per-image complexity.
 Write and lock the script FIRST — one VO line per scene, 6 lines for ~30s. Every scene's
 timing is cut from the gaps between those lines. Never build a scene before its line
 exists; never re-time the VO to fit visuals. (Voice = Edge TTS; the user names the voice.)
+
+**Script-first entry (when the user brings a script):** this track is BUILT for it — the
+user's narration is already the source code. Route check (a story with characters/arcs →
+here; a geography explainer → make-map; a single-idea metaphor → make-minimal-reel), then
+adapt: split into 4–8 lines at natural sentence boundaries, cut filler words (never
+facts), keep their phrasing as the captions, show the line table + cuts for ONE
+confirmation round, and only then synthesize the voice. If the script is over ~120 words
+for 30s, propose cuts before recording — never time-stretch the voice to fit.
 
 ## Artifact contract
 
@@ -45,6 +53,13 @@ From each VO line derive: what we're looking at · the words that go ON SCREEN (
 straight from the line) · the emotional beat (opener / offer / opposite / fall / payoff /
 finale) · ONE signature animation · the exact assets needed. Type the storyboard as a
 table in `script.md`, then `beats.json`.
+
+**Composition density (MOTION.md — the anti-'basic' rules):** the scene's subject fills
+**60–85% of the usable frame** · vary composition TYPE across scenes (macro cutout → wide
+street → overhead → typographic impact) · 1–2 reading targets at a time · equal spacing +
+shared left edges on stacked headline props · reading holds breathe (slow 3–5% push) ·
+name the 2–3 signature mechanisms in plain words in the storyboard table ("the museum
+photo welds into the scene", "the fall's parallax punch gets cloned for the finale").
 
 ## Stage 2 — assets (cutouts + textures)
 
@@ -116,8 +131,12 @@ fast exit.
 Per scene while building: scrub in Remotion Studio (sliders on everything: timings,
 colors, sizes, positions — default props must be INLINE object literals so Save-to-code
 works). After each scene: `node scripts/frames.mjs MgN<Scene> <cues> --scale=0.5`, READ the
-PNGs. Master: `npm run gen` + render at scale 1. Measured QA: `tools/qa_frozen_time.sh`
-(≤ ~1s per 30s), `tools/qa_loudness.sh`. Flagships: `/review-cut` fresh-critic round.
+PNGs (subject fills the frame · words readable over their actual background · nothing
+colliding mid-transition · **on mute, the story still lands** — the on-screen words +
+scene arc carry it). Master: `npm run gen` + render at scale 1. Measured QA:
+`tools/qa_frozen_time.sh` (≤ ~1s per 30s), `tools/qa_loudness.sh`, `tools/qa_determinism.sh
+MgN<Name>` (same frame twice = same pixels — catches unseeded randomness in the boil).
+Flagships: `/review-cut` fresh-critic round.
 
 ## Stage 6 — voice + sound
 

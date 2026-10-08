@@ -262,6 +262,7 @@ A shot is not done until you have **looked at it**. After writing the `.tsx`, re
 - For time-based reveals (elements entering on a cue, scrolls, staged phases), a single 60%-of-duration still is not enough — render the full clip and pull frames at each key moment (`ffmpeg -ss <t> -i out/<id>.mp4 -frames:v 1 f.jpg`), or render stills at several offsets. Verify the state at each cue, not just one frame.
 - Check specifically: images fit their slot (no important content cropped; prefer `objectFit: contain` on a matching background for heterogeneous real images), text is not clipped or overflowing, nothing is off the safe area, and each animated element is actually visible when it should be.
 - If it is composited over other footage, also spot-check a frame from the final baked output, not just the isolated shot.
+- **Determinism self-check (once per shot):** `bash tools/qa_determinism.sh <ShotId> 0,<mid>,<last>` — the same frame rendered twice must give identical pixels. This is the measured enforcement of the frame-based rules above: unseeded `Math.random()`, `Date.now()` reads or render state produce different pixels across renders and FAIL the check.
 
 Fix what the screenshot reveals, then re-render and look again. Treat "I rendered it and it looks correct" — with the frame shown — as the bar for done.
 
