@@ -10,7 +10,7 @@ right skill is picked automatically from the request:
 | "vox style / documentary / explainer short" | `/make-vox` | layered paper-collage (AI images + cutouts) | `vox-shorts/vox-N-<topic>/` |
 | "map video", "war map", "geopolitics explainer" | `/make-map` | data-driven animated map (world-atlas + d3-geo) | `map-films/map-N-<slug>/` |
 | "story reel", "documentary reel", "vs video" | `/make-motion-graphics` | photo cutouts + 12fps film-look engine | `mg-reels/mg-N-<slug>/` |
-| "minimal reel", "quote/manifesto/facts reel" | `/make-minimal-reel` | typography only (words are the visual) | `minimal-reels/mr-N-<slug>/` |
+| "minimal reel", "metaphor reel", "tactile/paper short" | `/make-minimal-reel` | layered cut-outs + drawn shapes (+ optional 3D GLB) under a shared paper/halftone finish, 15fps | `minimal-reels/mr-N-<slug>/` |
 | "review this video", "is it good enough" | `/review-cut` | — (the fresh-critic Gauntlet loop) | `<proj>/output/critique-log.md` |
 
 All tracks share the same backbone: a `beats.json` contract, a voiceover with word-exact

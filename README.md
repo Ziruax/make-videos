@@ -10,7 +10,7 @@ Six production tracks in one repo — you describe the video, and the right pipe
 | *"make a vox-style short about coffee"* | **Collage** (`/make-vox`) | Vox-documentary paper collage — AI-image layers, die-cuts, a traveling camera |
 | *"make a map film about the Strait of Hormuz"* | **Map** (`/make-map`) | a **data-driven animated map** (world-atlas + TopoJSON + d3-geo) — war-room documentaries with one continuous camera shot |
 | *"make a Netflix-vs-Blockbuster style reel"* | **Motion graphics** (`/make-motion-graphics`) | photo cutouts + a 12fps stop-motion engine + an aged-film treatment — the voiceover IS the source code |
-| *"make a minimal quote reel"* | **Minimal** (`/make-minimal-reel`) | typography only — the words are the visual, one accent color, sparse geometry |
+| *"make a minimal metaphor reel"* | **Minimal** (`/make-minimal-reel`) | three physical metaphors — layered cut-outs, drawn shapes, optional 3D eye — under one paper/halftone finish at 15fps |
 | *"review this cut"* | **Critic** (`/review-cut`) | the Gauntlet: fresh critics, real frames, measured audio, SHIP / ONE MORE PASS |
 
 Every track shares the same backbone: a voiceover with **word-exact synced captions**
@@ -96,8 +96,10 @@ Nine Claude Code **skills** encode the craft:
 - **`/make-motion-graphics`** — documentary story reels: the VO-as-source-code rule, the
   12fps stop-motion engine, the film-look treatment, signature moves (zoom-through-frame,
   screen-blend smoke, slot-machine text, parallax punch, drawn lamp light, decaying wag).
-- **`/make-minimal-reel`** — typographic reels: ≤8-word statements, one accent color,
-  one geometry motif, accent-word wipes synced to speech.
+- **`/make-minimal-reel`** — tactile metaphor reels: VO-first 5-line arc, one metaphor
+  per scene (scanning eye → charging battery → iceberg), 3-colour palette with two
+  lighting conditions, camera-continuity transitions, the shared halftone/paper/grain
+  finish, SFX that follow the animation controls.
 - **`/review-cut`** — the Gauntlet: fresh critics, real frames, measured audio, item-by-item
   verification, SHIP / ONE MORE PASS.
 - **`/vidtsx-2d-generator`** — the TSX authoring rules that keep Remotion renders from crashing.
@@ -149,7 +151,7 @@ ai-shorts/        the generative track: blue-man/ (locked character) + IDEAS.md 
 vox-shorts/       the collage track: vox-1-coffee/ + DESIGN.md (the visual language)
 map-films/        animated-map documentaries
 mg-reels/         documentary motion-graphics reels
-minimal-reels/    typographic minimal reels
+minimal-reels/    tactile metaphor minimal reels
 brand.md          the style contract — make it yours
 IDEAS.md          the TSX-shorts niche/idea bank
 ```
