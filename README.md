@@ -1,17 +1,23 @@
 # claude-faceless-shorts-creator
 
-**A faceless YouTube-Shorts factory you drive with [Claude Code](https://claude.com/claude-code).**
-Three production tracks in one repo — you just describe the video, and the right pipeline runs:
+**A faceless video factory you drive with [Claude Code](https://claude.com/claude-code).**
+Six production tracks in one repo — you describe the video, and the right pipeline runs:
 
 | You say… | Track | The pixels |
 |---|---|---|
 | *"make a short about the ×11 trick"* | **TSX** (`/make-short`) | 100% code — a [Remotion](https://remotion.dev) composition, no footage, no stock |
 | *"make an AI video short with blue-man"* | **Generative** (`/make-ai-short`) | a fal video model animating a **locked recurring character** |
 | *"make a vox-style short about coffee"* | **Collage** (`/make-vox`) | Vox-documentary paper collage — AI-image layers, die-cuts, a traveling camera |
+| *"make a map film about the Strait of Hormuz"* | **Map** (`/make-map`) | a **data-driven animated map** (world-atlas + TopoJSON + d3-geo) — war-room documentaries with one continuous camera shot |
+| *"make a Netflix-vs-Blockbuster style reel"* | **Motion graphics** (`/make-motion-graphics`) | photo cutouts + a 12fps stop-motion engine + an aged-film treatment — the voiceover IS the source code |
+| *"make a minimal quote reel"* | **Minimal** (`/make-minimal-reel`) | typography only — the words are the visual, one accent color, sparse geometry |
+| *"review this cut"* | **Critic** (`/review-cut`) | the Gauntlet: fresh critics, real frames, measured audio, SHIP / ONE MORE PASS |
 
-Every track shares the same backbone: ElevenLabs voice with **word-exact synced captions**,
-frame-by-frame QA at phone scale, a reusable self-growing SFX/music library, seamless
-frame-0==last-frame loops, and no dated engagement-CTA outros.
+Every track shares the same backbone: a voiceover with **word-exact synced captions**
+(Edge TTS by default — free, you pick the voice name; ElevenLabs optional), a `beats.json`
+machine contract, frame-by-frame QA at phone scale, **measured QA** (frozen-time and
+loudness scripts), a reusable self-growing SFX/music library, seamless frame-0==last-frame
+loops, and no dated engagement-CTA outros.
 
 ## 📖 Read the guide
 
@@ -61,82 +67,107 @@ versions will be added here as they go live.
 topic ──▶ script.md + beats.json      the beat grammar: HOOK (frame 0 = the thumbnail)
                 │                      → SETUP → QUIZ → REVEAL → TWIST → seamless LOOP
                 ▼
-        the visuals                    TSX composition / video-model clips / collage layers
-                │                      (per track — but always ONE Remotion timeline)
+        the visuals                    TSX composition / video-model clips / collage layers /
+                │                      map data / film-look cutouts / typography
+                ▼                      (per track — but always ONE Remotion timeline)
+        frame-by-frame QA              Claude renders PNGs at phone scale and READS them,
+                │                      then MEASURES the cut (frozen-time, loudness)
                 ▼
-        frame-by-frame QA              Claude renders PNGs at phone scale and READS them
-                │
-                ▼
-        gen_voice.py                   ElevenLabs TTS per line → REAL per-word timestamps
-                │                      → captions highlight on the exact spoken word
-                ▼
+        gen_voice_edge.py              Edge TTS per line (free, user-picked voice) → REAL
+                │                      per-word timestamps → captions highlight on the
+                ▼                      exact spoken word (ElevenLabs optional)
         sfx-plan.json + mix_sfx.py     library-first sound design, audition mix, your ear
                 │                      is the final gate (optional music bed: mix_music.py)
                 ▼
-        <track>/<project>/output/*-sfx.mp4
+        <track>/<project>/output/*-sfx.mp4      (+ /review-cut critic rounds on flagships)
 ```
 
-Five Claude Code **skills** encode the craft:
+Nine Claude Code **skills** encode the craft:
 
 - **`/make-short`** — the TSX pipeline: hook grammar, no-CTA outros, caption safe areas,
-  Sequence-local frame math, loop-into-intro endings.
+  Sequence-local frame math, loop-into-intro endings, motion grammar from 28 pro launch films.
 - **`/make-ai-short`** — the generative pipeline and its three iron rules: never regenerate a
   locked character from text, state the cost before spending it, loop by end-frame constraint.
 - **`/make-vox`** — scene dissection into layers, cheapest-source layer production
   (gen_image + rembg cutouts, HTML→PNG, SVG-in-TSX), CollageBoard camera choreography.
+- **`/make-map`** — data-driven map documentaries: world-atlas/TopoJSON/d3-geo, glowing
+  self-drawing outlines, cutout figures rising out of the map, screen-blend VFX, the
+  one-continuous-shot continuity rule, `--gl=angle` grain rendering.
+- **`/make-motion-graphics`** — documentary story reels: the VO-as-source-code rule, the
+  12fps stop-motion engine, the film-look treatment, signature moves (zoom-through-frame,
+  screen-blend smoke, slot-machine text, parallax punch, drawn lamp light, decaying wag).
+- **`/make-minimal-reel`** — typographic reels: ≤8-word statements, one accent color,
+  one geometry motif, accent-word wipes synced to speech.
+- **`/review-cut`** — the Gauntlet: fresh critics, real frames, measured audio, item-by-item
+  verification, SHIP / ONE MORE PASS.
 - **`/vidtsx-2d-generator`** — the TSX authoring rules that keep Remotion renders from crashing.
 - **`/suggest-sfx`** — taste-encoded sound design: function-first cues, layered hero moments,
   measured audibility (RMS-diff, not hope), a library that compounds across videos.
 
 `brand.md` is the style contract (palette, type, motion, SFX taste) — swap it for your own
-brand and every future short follows it.
+brand and every future video follows it.
 
 ## Quickstart
 
 Requirements: [Claude Code](https://claude.com/claude-code) · Node 18+ · Python 3.10+ ·
-`ffmpeg` on PATH · an [ElevenLabs](https://elevenlabs.io) key (voice/SFX/music). For the
-generative track add a [fal.ai](https://fal.ai) key; for collage layer production:
-`pip install pillow rembg playwright && playwright install chromium` (the only pip installs
-in the repo — everything else is stdlib).
+`ffmpeg` on PATH · `pip install edge-tts` (voice — free, no key). Optional extras: an
+[ElevenLabs](https://elevenlabs.io) key (emotion-tagged voice/SFX/music); a [fal.ai](https://fal.ai)
+key for the generative track; for collage layer production and map films:
+`pip install pillow rembg playwright && playwright install chromium`; maps also need
+`npm install world-atlas topojson-client d3-geo d3-scale zod@4.3.6` in `remotion/`.
 
 ```bash
 git clone https://github.com/hassancs91/claude-faceless-shorts-creator
 cd claude-faceless-shorts-creator
-cp .env.example .env          # add your keys
+cp .env.example .env          # add keys only if you use them (Edge TTS needs none)
 cd remotion && npm install && npm run gen && cd ..
 
 claude                        # open the repo in Claude Code, then:
 ```
 
 > **make a short about &lt;your topic&gt;** · **make an AI video short about &lt;idea&gt;** ·
-> **make a vox-style short about &lt;story&gt;**
+> **make a vox-style short about &lt;story&gt;** · **make a map film about &lt;conflict&gt;** ·
+> **make a documentary reel about &lt;company story&gt;** · **make a minimal reel about &lt;idea&gt;**
 
-…or rebuild an example: *"re-render short-5 and regenerate its voice"*.
+…or rebuild an example: *"re-render short-5, regenerate its voice with en-GB-RyanNeural"*.
 
 To just explore the compositions visually: `cd remotion && npm run studio`.
 
 ## Repo layout
 
 ```
-.claude/skills/   the five skills (this is where the "editor" lives)
-tools/            Python: gen_voice, gen_sfx, gen_music, mix_sfx, mix_music, gen_image,
-                  gen_clip, bakeoff_clip, cutout, capture_web, gen_chords
-remotion/         the Remotion project — shared kits in src/lib/ (incl. collage.tsx),
-                  one folder per video in src/shots/
+.claude/skills/   the nine skills (this is where the "editor" lives)
+tools/            Python: gen_voice_edge, gen_voice, gen_sfx, gen_music, mix_sfx, mix_music,
+                  gen_image, gen_clip, bakeoff_clip, cutout, capture_web, gen_chords +
+                  qa_frozen_time.sh, qa_loudness.sh
+remotion/         the Remotion project — shared kits in src/lib/ (shorts, engine, filmlook,
+                  collage + niche kits), one folder per video in src/shots/
 media/library/    reusable assets: SFX clips + music beds (catalogued, loudness-normalized)
 media/projects/   media for one specific video — incl. committed AI clips & collage layers
 shorts/           the 12 TSX example productions
 ai-shorts/        the generative track: blue-man/ (locked character) + IDEAS.md (cost tables)
 vox-shorts/       the collage track: vox-1-coffee/ + DESIGN.md (the visual language)
+map-films/        animated-map documentaries
+mg-reels/         documentary motion-graphics reels
+minimal-reels/    typographic minimal reels
 brand.md          the style contract — make it yours
 IDEAS.md          the TSX-shorts niche/idea bank
 ```
 
+## Credits
+
+Original factory by **[Hasan Aboul Hasan](https://learnwithhasan.com/)** (MIT). This fork
+enriches the workflow with techniques studied from the MoSidd practice kits (map
+documentaries; documentary motion-graphics reels — the *techniques* only, their example
+media is not redistributed) and from
+[echris6/motion-video-kit](https://github.com/echris6/motion-video-kit) (the Gauntlet
+critic loop, motion grammar, quality bar, audio rules — MIT). Bundled SFX/music clips were
+generated by the repo author and are redistributed here; per-clip provenance is recorded
+in `media/library/*/catalog.json`.
+
 ## License
 
-MIT — see [LICENSE](LICENSE). Bundled SFX/music clips and example AI media were generated by
-the repo author (ElevenLabs / fal / Gemini) and are redistributed here; per-clip provenance is
-recorded in `media/library/*/catalog.json` and the per-shot `.json` sidecars.
+MIT — see [LICENSE](LICENSE).
 
 <!-- lwh-footer -->
 
@@ -154,4 +185,4 @@ Built by **[Hasan Aboul Hasan](https://learnwithhasan.com/?utm_source=github&utm
 write down exactly how.
 [Guides](https://learnwithhasan.com/guides/?utm_source=github&utm_medium=readme&utm_campaign=claude-faceless-shorts-creator&utm_content=footer) &nbsp;·&nbsp;
 [YouTube](https://www.youtube.com/@HasanAboulHasan) &nbsp;·&nbsp;
-[Community](https://learnwithhasan.com/community/?utm_source=github&utm_medium=readme&utm_campaign=claude-faceless-shorts-creator&utm_content=footer)
+[Community](https://learnwithhasan.com/community/)

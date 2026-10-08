@@ -25,3 +25,9 @@ ai-shorts/*/bakeoff/*.mp4
 
 # local editor config
 .vscode/
+map-films/*/voice/
+map-films/*/output/
+mg-reels/*/voice/
+mg-reels/*/output/
+minimal-reels/*/voice/
+minimal-reels/*/output/

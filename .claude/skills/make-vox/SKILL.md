@@ -1,6 +1,6 @@
 ---
 name: make-vox
-description: Build a Vox-style LAYERED-COLLAGE vertical short end-to-end — script + scene dissection into image layers, layer production (AI images via gen_image.py + cutout.py, HTML→PNG, SVG-in-TSX), choreographed TSX assembly on the collage kit (CollageBoard camera, parallax, cutouts, chips, routes), frame QA, render, then voice/SFX via the shared machinery. Use when the user wants a "vox style", documentary, or explainer-collage short, a map-travel or archival-history sequence, or to continue the vox-N series — the paper-collage look, not plain TSX animation (that is make-short) and not video-model pixels (that is make-ai-short). Defers raw TSX crash rules to vidtsx-2d-generator and SFX taste to suggest-sfx.
+description: Build a Vox-style LAYERED-COLLAGE vertical short end-to-end — script + scene dissection into image layers, layer production (AI images via gen_image.py or the image-generation skill + cutout.py, HTML→PNG, SVG-in-TSX), choreographed TSX assembly on the collage kit (CollageBoard camera, parallax, cutouts, chips, routes), frame QA, render, then voice/SFX via the shared machinery (Edge TTS voice by default). Use when the user wants a "vox style", documentary, or explainer-collage short, a map-travel or archival-history sequence, or to continue the vox-N series — the paper-collage look, not plain TSX animation (that is make-short), not video-model pixels (that is make-ai-short), not a data-driven animated map film (that is make-map). Defers raw TSX crash rules to vidtsx-2d-generator and SFX taste to suggest-sfx.
 ---
 
 # make-vox — layered-collage documentary shorts, end to end
@@ -14,7 +14,8 @@ vox-1 (coffee).
 
 Run everything from the repo root. Layer production needs extra Python deps (the only tools
 in this repo that do): `pip install pillow rembg` (die-cuts) and `pip install playwright &&
-playwright install chromium` (HTML→PNG captures).
+playwright install chromium` (HTML→PNG captures). Voice is Edge TTS (free —
+`pip install edge-tts`); the user names the voice.
 
 ## Artifact contract
 
@@ -29,7 +30,8 @@ media/projects/vox-N-<topic>/layers/      — every generated layer + gen_image 
 
 Kit: `remotion/src/lib/collage.tsx` — `CollageBoard` (camera keyframes + parallax context),
 `Cutout`, `ArchivalPhoto`, `PaperBG`, `LabelChip`, `SerifStatement`, `SketchArrow`, `Grain`,
-`VOX` palette. Grow the kit generically; project-specific hacks stay in the shot.
+`VOX` palette. Motion engine: `remotion/src/lib/engine.tsx`. Grow the kit generically;
+project-specific hacks stay in the shot.
 
 ## Format
 
@@ -45,11 +47,15 @@ scene isn't designed yet.
 
 ## Stage 2 — layer production (cheapest source that works, reuse first)
 
-- Photographic subjects / textures / maps / archival prints → `python tools/gen_image.py`, then
-  `python tools/cutout.py` for die-cuts (rembg auto; white-key is the no-deps fallback and
-  FAILS on contact shadows — don't fight it, install rembg).
+- Photographic subjects / textures / maps / archival prints → `python tools/gen_image.py`
+  OR the agent's own **image-generation skill** (no key juggling; save PNG + a `.json`
+  sidecar with the prompt either way), then `python tools/cutout.py` for die-cuts
+  (rembg auto; white-key is the no-deps fallback and FAILS on contact shadows —
+  don't fight it, install rembg).
   - Maps/archival: prompt "NO text, no labels" — AI text is gibberish; chips annotate instead.
   - Cutout subjects: "isolated on plain white background" still helps rembg edge quality.
+  - Real archival photos/photos of specific things: the **image-search skill** (web) beats
+    generation when authenticity matters — record source + license in the sidecar.
 - Charts / UI / documents / styled text blocks → HTML file + Playwright screenshot
   (`python tools/capture_web.py`, `omitBackground` for alpha).
 - Arrows, routes, shapes → SVG **directly in TSX** (SketchArrow etc.) — never rasterize.
@@ -61,6 +67,13 @@ scene isn't designed yet.
 - ONE `CollageBoard cam={CAM}` at the root; scenes are `<Sequence layout="none">`s INSIDE it
   so the camera travels ACROSS scene boundaries. Cam keys are GLOBAL frames; entrance `at`s
   are LOCAL to their Sequence (the classic local-frame bug — check every cue).
+- **Hand objects across scenes at exact pixel coordinates.** When a cutout/annotation
+  survives a scene change, pre-position the destination so the carried layer lands on it:
+  last frame of scene A == first frame of scene B for the carried object. This continuity
+  rule is what makes the collage read as one filmed world instead of a slideshow.
+- **Motion grammar:** readable landing → accelerating exit (ease IN to rest, OUT fast);
+  no layer fully frozen (idle drift, brand §5); the camera is the narrator — every move
+  needs a destination and a settle; motionless stretches ≤ ~0.6s.
 - Persistent scenery (a map under two scenes) gets its own long Sequence; annotations get a
   shorter one wrapped in a fade-out so they leave before the next scene composes over them.
 - Geometry pattern: place big layers via constants (`MAP = {cx,cy,w}`) and derive annotation
@@ -84,11 +97,18 @@ READ every PNG: every entrance landed · camera framing at each arrival (nothing
 cropped) · text contrast over its actual background · cutout edges clean (re-cutout, don't
 mask in TSX) · scene handoffs (fading annotations gone before the next scene needs the space).
 Then `node scripts/render-all.mjs VoxNName --scale=1` and spot-check frames FROM THE MP4.
+Measured QA on the final cut: `bash tools/qa_frozen_time.sh` (near-frozen ≤ ~1s per 30s);
+flagship videos get a fresh-critic round via the `/review-cut` skill.
 
 ## Stage 5 — voice
 
-`python tools/gen_voice.py --beats … --emit-ts` exactly as make-short Stage 4 (word-exact
-captions if the format wants captions; documentary style often runs caption-free).
+Edge TTS by default (the user names the voice):
+```
+python tools/gen_voice_edge.py --beats vox-shorts/vox-N-<topic>/scenes.json \
+    --voice en-GB-SoniaNeural --emit-ts remotion/src/shots/vox-N/vo.gen.ts
+```
+word-exact captions if the format wants captions; documentary style often runs caption-free.
+(ElevenLabs `tools/gen_voice.py` remains available for emotion-tagged narration.)
 
 ## Stage 6 — SFX/music (suggest-sfx machinery)
 
@@ -99,5 +119,5 @@ The user's ear is the audit gate.
 ## Done =
 
 script.md scenes each name their layers · all layers generated + sidecars in media/projects ·
-composition QA'd at cues and from the final mp4 · contrast rule honored · voice + SFX when
-requested · kit additions generic.
+composition QA'd at cues and from the final mp4 · continuity handoffs verified · contrast rule
+honored · voice + SFX when requested · kit additions generic.

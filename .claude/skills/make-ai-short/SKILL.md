@@ -49,9 +49,12 @@ media/projects/<name>/        — THE clip copies for staticFile() (committed �
 1. **Script** — script.md + beats.json. Hook composed at frame 0; thesis should WANT the loop
    (blue-man #1: "arrival is a myth" → ending = walking toward the same door). ~80-100 words,
    2.5-2.7 wps windows. **No engagement-CTA outro, ever** — end on the payoff, loop is the ending.
-2. **Voice FIRST** — `python tools/gen_voice.py --beats ... --emit-ts remotion/src/shots/ai-N/vo.gen.ts`
-   (George JBFqnCBsd6RMkjVDRZzb + eleven_v3 tags for narrators). Real word times decide the
-   shot windows; Seedance takes integer 4-12s durations, so round shot lengths UP from windows.
+2. **Voice FIRST** — Edge TTS default (free, the user names the voice):
+   `python tools/gen_voice_edge.py --beats ... --emit-ts remotion/src/shots/ai-N/vo.gen.ts`
+   (voice e.g. `en-US-ChristopherNeural`; ElevenLabs `tools/gen_voice.py` with
+   George JBFqnCBsd6RMkjVDRZzb + eleven_v3 emotion tags remains available for narrators
+   needing delivery tags). Real word times decide the shot windows; Seedance takes integer
+   4-12s durations, so round shot lengths UP from windows.
 3. **Start frames** — one per shot, `python tools/gen_image.py --model pro --aspect 9:16 --ref character.png`
    (+ the shot-1 scene still as a 2nd ref when a location/prop must match across shots).
    **QA every PNG before any video call** — this is where drift is cheap to fix.
