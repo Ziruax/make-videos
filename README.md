@@ -23,6 +23,25 @@ mechanism catalog), frame-by-frame QA at phone scale, **measured QA** (frozen-ti
 loudness and determinism scripts) plus the on-mute payoff test, a reusable self-growing
 SFX/music library, seamless frame-0==last-frame loops, and no dated engagement-CTA outros.
 
+## 🎬 Example films
+
+Every production track ships at least one complete example film — built by running the
+track's own `SKILL.md` end to end (script → voice → composition → SFX → measured QA →
+render), then published here via [GitHub Releases](https://github.com/Ziruax/make-videos/releases).
+
+### `/make-short` — the TSX track
+
+**The Traffic Jam With No Cause** · 1080×1920 · 41s — a ring road of 22 simulated cars with
+no accident and no closed lane… and a phantom traffic wave that emerges anyway and travels
+*backwards*. The simulation was measured first (the wave really moves at −17.9 km/h), then
+the script was written around the measurement — captions hit the exact spoken word.
+
+![short-13: The Traffic Jam With No Cause](https://github.com/Ziruax/make-videos/releases/download/example-short-13/short-13-emergence.mp4)
+
+Project: [`shorts/short-13-emergence/`](shorts/short-13-emergence/) · composition:
+[`Short13Traffic.tsx`](remotion/src/shots/short-13/Short13Traffic.tsx) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-short-13)
+
 ## 📖 Read the guide
 
 I wrote up the whole system on my site, including the six-beat grammar that decides whether a
