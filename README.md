@@ -70,6 +70,21 @@ Project: [`mg-reels/mg-1-kodak/`](mg-reels/mg-1-kodak/) · composition:
 [`Mg1Kodak.tsx`](remotion/src/shots/mg-1/Mg1Kodak.tsx) + scenes S1–S6 ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-mg-1)
 
+### `/make-minimal-reel` — tactile metaphor reels
+
+**What Attention Costs** · 1080×1920 · 15fps · 22s — a five-line arc about attention as a
+spent resource: a scanning eye, a battery that flickers under doubt, an iceberg whose 90%
+was always underwater. Camera-continuity transitions (pupil portal, recede-and-blur,
+scale+blur settle), two kinds of texture, stepped ignition flicker — everything under one
+paper/halftone finish at 15fps, where every frame is a *felt* frame.
+
+![mr-1: What Attention Costs](https://github.com/Ziruax/make-videos/releases/download/example-mr-1/mr-1-attention.mp4)
+
+Project: [`minimal-reels/mr-1-attention/`](minimal-reels/mr-1-attention/) · composition:
+[`Mr1Attention.tsx`](remotion/src/shots/mr-1/Mr1Attention.tsx) + scenes S1–S3 · shared kit:
+[`tactile.tsx`](remotion/src/lib/tactile.tsx) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-mr-1)
+
 ## 📖 Read the guide
 
 I wrote up the whole system on my site, including the six-beat grammar that decides whether a
