@@ -1,0 +1,21 @@
+{
+ "note": "Procedurally generated textures (deterministic, numpy seed 11) \u2014 public-domain equivalents of the practice-kit film plates. They ride EVERY scene via FilmLook.",
+ "clips": [
+  {
+   "id": "grain.jpg",
+   "source": "procedural (numpy, seed 11)",
+   "license": "generated for this repo",
+   "used_in": [
+    "mg-1"
+   ]
+  },
+  {
+   "id": "grunge.jpg",
+   "source": "procedural (numpy, seed 11)",
+   "license": "generated for this repo",
+   "used_in": [
+    "mg-1"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "note": "Generated via image-generation skill for mr-1-attention. Cutouts keyed from white (PIL fuzz 238) and graded IN-object per the kit. paper-tile is the shared Tactile paper texture.",
+ "assets": {
+  "paper-tile.png": {
+   "prompt": "seamless tileable ivory paper",
+   "role": "Tactile paperFile"
+  },
+  "iceberg.png": {
+   "prompt": "low-poly teal iceberg cutout on white",
+   "role": "S3 the iceberg"
+  },
+  "lamp.png": {
+   "prompt": "teal pendant lamp cutout on white",
+   "role": "S2 the pendant"
+  }
+ }
+}

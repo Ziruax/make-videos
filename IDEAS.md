@@ -103,6 +103,14 @@ Goal: multiple niches, one per short, proving the FLOW (script → beats → lin
    - One new SFX recipe: `launch-thump` (a muffled mortar/rocket push, deliberately NOT a war-film cannon crack — brand §10's calm register). Audition at −15.6 LUFS.
    - Seeds the **physics series** (all reuse `lib/orbit.tsx`, which already exports `vEsc`/`period`/`gAt`): escape velocity · why the Moon doesn't fall · why rockets go sideways, not up · geostationary orbit · tides.
 
+13. **short-13 · Emergence** — "The Traffic Jam With No Cause" ✅ (`Short13Traffic`; new niche lib `lib/agents.tsx` — the OVM ring road). Opens the emergence engine (next-slate #13). One persistent ring road, 22 simulated drivers, one brake tap — and the wave that crystallises from it, travelling BACKWARD at a measured -17.9 km/h (experiment: ~20, Sugiyama 2008).
+   - **The jam is COMPUTED, not keyframed.** `lib/agents.tsx` integrates the optimal-velocity model (the car-following family Sugiyama's group analysed the experiment with) plus a collision-avoidance term. IDM was tried first and simply gridlocks at this density — the model was chosen because it reproduces the phenomenon, and the lib's header says so. The wave-speed chip prints the number `measureJam()` measures from the same sim the composition draws.
+   - **THE RING-BUG, and the rule it buys.** The gap-to-leader must wrap for ANY car whose leader crossed the 0/230 boundary — not just `i === n-1`. A queue parked on the wrap point otherwise reads a -180 m gap, clamps to V=0, and dead-locks: the sim "works" but the wave never moves. On a ring, every pairwise distance is modular.
+   - **Brake lights ARE the wave.** Each car's lights are driven by its own simulated deceleration — cause -> effect is automatic, and the ripple reads from across the room with the sound off (the on-mute test).
+   - **The camera tracks the tapper** (a following shot: the world flows past the stationary-on-screen car), then pulls 2.4 -> 1.0 exactly as the wave outruns the frame — short-11/12's camera-lesson, third outing. The rewind-earns-the-hook trick transfers to a sim: frame 0 is the mature jam, the setup rewinds 28x, the reveal replays it.
+   - **An agent sim cannot close a pixel-exact loop** (car identities differ) — the loop tail is a RHYME (jam + marker + title + punch), and that is the honest version of the rule for simulated actors.
+   - Seeds the **emergence series** (all reuse `lib/agents.tsx`): bird murmurations, applause synchronising, stadium waves, panic crowding.
+
 Each short adds at most ONE new niche lib; the shorts kit (captions, hook, pause card,
 progress bar) is shared by all.
 

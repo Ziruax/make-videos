@@ -1,0 +1,32 @@
+{
+  "master": "remotion/out/Mg1Kodak-voiced.mp4",
+  "master_fps": 30,
+  "render": {
+    "preview": "remotion/out/Mg1Kodak-voiced.mp4",
+    "out": "mg-reels/mg-1-kodak/output/mg-1-sfx.mp4",
+    "end_s": 32,
+    "duck": true
+  },
+  "catalog": "media/library/sfx/catalog.json",
+  "note": "Short + punchy, trimmed to the attack (the words always win). The reference film's sheet: one long whoosh for the zoom-through, a shutter for the museum opener, quick whooshes on the paper drops and the parallax punch, a low boom + flicker-stutter for the B&W punctuation beat and the bankruptcy reveal, cha-ching on the billion. All at_s are REAL word/camera times from the voiced take.",
+  "events": [
+    { "at_s": 1.7, "sfx_id": "ui-click-soft", "gain_db": -2, "shot": "s1", "cue": "vintage shutter as the zoom-through begins" },
+    { "at_s": 1.7, "sfx_id": "whoosh-wind", "gain_db": -2, "shot": "s1", "cue": "THE zoom-through: one long whoosh under the accelerating wall" },
+    { "at_s": 3.3, "sfx_id": "pop-reveal", "gain_db": 0, "shot": "s1", "cue": "DETACH: the photo settles full-frame in colour (on 'camera' ~3.7)" },
+    { "at_s": 5.7, "sfx_id": "riser-soft", "gain_db": 0, "shot": "s2", "cue": "the boss rises with the smoke (softSpring)" },
+    { "at_s": 8.6, "sfx_id": "stamp-hit", "gain_db": 3, "shot": "s2", "cue": "SLOT-MACHINE SLAM on 'shelved it' (word at ~8.6-9.5)" },
+    { "at_s": 9.9, "sfx_id": "glitch-zap", "gain_db": -6, "shot": "s2", "cue": "the punctuation beat: B&W + flicker (voice is silent between lines here)" },
+    { "at_s": 11.0, "sfx_id": "whoosh-soft", "gain_db": -3, "shot": "s3", "cue": "first paper drops (focus-hunt clears)" },
+    { "at_s": 11.9, "sfx_id": "page-flip", "gain_db": 2, "shot": "s3", "cue": "paper 2 drops" },
+    { "at_s": 12.8, "sfx_id": "page-flip", "gain_db": 2, "shot": "s3", "cue": "paper 3 drops" },
+    { "at_s": 16.2, "sfx_id": "whoosh-wind", "gain_db": -3, "shot": "s4", "cue": "THE PARALLAX PUNCH: the phone outgrows the street" },
+    { "at_s": 17.2, "sfx_id": "impact-soft", "gain_db": 0, "shot": "s4", "cue": "'a camera' — the words finish stacking" },
+    { "at_s": 21.4, "sfx_id": "riser-soft", "gain_db": 0, "shot": "s5", "cue": "the lamp light draws in / focus-hunt snaps" },
+    { "at_s": 22.6, "sfx_id": "impact-deep-soft", "gain_db": 2, "shot": "s5", "cue": "LAYERED HERO: 'bankruptcy' lands in the light pool (word ~23.2-24.6)" },
+    { "at_s": 24.0, "sfx_id": "pencil-scribble", "gain_db": -2, "shot": "s5", "cue": "the pencil oval scribbles on around the word" },
+    { "at_s": 26.6, "sfx_id": "whoosh-wind", "gain_db": -4, "shot": "s6", "cue": "the finale clone punches in" },
+    { "at_s": 29.9, "sfx_id": "chime-reward", "gain_db": 2, "shot": "s6", "cue": "LAYERED HERO: cha-ching on 'billion dollars' (word ~30.3-31.2)" },
+    { "at_s": 30.0, "sfx_id": "pop-reveal", "gain_db": 1, "shot": "s6", "cue": "layered with the chime — the payoff word" },
+    { "at_s": 30.4, "sfx_id": "trap-snap", "gain_db": 1, "shot": "s6", "cue": "the foam finger snaps up on its wrist (the wag)" }
+  ]
+}

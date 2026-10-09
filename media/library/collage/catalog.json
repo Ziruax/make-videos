@@ -1,0 +1,14 @@
+{
+ "note": "Reusable collage textures graduated from project layers (DESIGN.md rule).",
+ "clips": [
+  {
+   "id": "paper.png",
+   "source": "generated for vox-1-coffee (gen_image sidecar there)",
+   "license": "generated for this repo",
+   "used_in": [
+    "vox-1",
+    "vox-2"
+   ]
+  }
+ ]
+}

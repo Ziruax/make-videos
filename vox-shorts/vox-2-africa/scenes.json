@@ -1,0 +1,33 @@
+{
+  "id": "vox-2",
+  "title": "The Lines That Never Left",
+  "composition": "Vox2Africa",
+  "format": { "width": 1080, "height": 1920, "fps": 30, "durationSec": 40.5 },
+  "voiceStatus": "estimated",
+  "voicePlan": { "engine": "edge-tts", "voice": "en-GB-SoniaNeural", "rate": "-4%" },
+  "vo": [
+    { "beat": "s1", "text": "In 1880, almost all of Africa was ruled by Africans.", "start": 0.5, "end": 4.0 },
+    { "beat": "s2", "text": "Then fourteen European powers sat down in Berlin — and divided the continent.", "start": 5.0, "end": 9.4 },
+    { "beat": "s3", "text": "No African was in the room.", "start": 10.4, "end": 13.2 },
+    { "beat": "s4", "text": "Drawn with rulers, thousands of kilometres from the people who lived there.", "start": 14.2, "end": 19.4 },
+    { "beat": "s4", "text": "Forty-four percent of the borders are straight lines.", "start": 20.2, "end": 23.2 },
+    { "beat": "s5", "text": "By 1914, ninety percent of Africa was European.", "start": 24.2, "end": 27.2 },
+    { "beat": "s5", "text": "Only Ethiopia and Liberia remained free.", "start": 27.8, "end": 30.6 },
+    { "beat": "s6", "text": "A hundred and thirty years on, the lines are still here.", "start": 31.6, "end": 35.6 }
+  ],
+  "scenes": [
+    { "id": "s1", "startF": 0, "endF": 156, "layers": ["PaperBG (library)", "africa1880", "title SerifStatement", "chip 1880"], "cam": "wide, slow push" },
+    { "id": "s2", "startF": 156, "endF": 306, "layers": ["africa1880 (stays)", "ArchivalPhoto berlin", "chip BERLIN 1884"], "cam": "push down to the table" },
+    { "id": "s3", "startF": 306, "endF": 420, "layers": ["macro into the photo", "SketchArrow to chairs", "SerifStatement backing", "stamp NOT INVITED"], "cam": "macro z2.2" },
+    { "id": "s4", "startF": 420, "endF": 600, "layers": ["back to the map", "ruler + pen cutouts", "3 straight red lines (TSX)", "chip 44%"], "cam": "return to map z1.35" },
+    { "id": "s5", "startF": 600, "endF": 918, "layers": ["africa1914 wipes in over africa1880", "chips 90% + ETHIOPIA/LIBERIA"], "cam": "pull wide z1.12" },
+    { "id": "s6", "startF": 918, "endF": 1215, "layers": ["1914 map stays", "SerifStatement still here", "stamp STILL HERE", "title back"], "cam": "settle home z1" }
+  ],
+  "facts": {
+    "conference": "Berlin, Nov 1884 - Feb 1885",
+    "attendees": "14 European powers + USA",
+    "representation": "no African leaders invited",
+    "straightBorders": "44% of African boundaries",
+    "by1914": "90% European; Ethiopia + Liberia independent"
+  }
+}

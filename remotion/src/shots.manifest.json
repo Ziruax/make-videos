@@ -8,6 +8,110 @@
   "transparent": false
  },
  {
+  "id": "Map1Suez",
+  "durationInSeconds": 42,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "transparent": false
+ },
+ {
+  "id": "Mg1Kodak",
+  "durationInSeconds": 32,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mg1S1",
+  "durationInSeconds": 5.6,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mg1S2",
+  "durationInSeconds": 5.2,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mg1S3",
+  "durationInSeconds": 5.2,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mg1S4",
+  "durationInSeconds": 5.2,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mg1S5",
+  "durationInSeconds": 5.2,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mg1S6",
+  "durationInSeconds": 5.6,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mr1Attention",
+  "durationInSeconds": 22.1333,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mr1S1",
+  "durationInSeconds": 6.9333,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mr1S2",
+  "durationInSeconds": 8.2667,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Mr1S3",
+  "durationInSeconds": 6.9333,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Short1Chess",
+  "durationInSeconds": 42,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
   "id": "Short10Fees",
   "durationInSeconds": 42,
   "fps": 30,
@@ -32,7 +136,7 @@
   "transparent": false
  },
  {
-  "id": "Short1Chess",
+  "id": "Short13Traffic",
   "durationInSeconds": 42,
   "fps": 30,
   "width": 1080,
@@ -105,6 +209,14 @@
  },
  {
   "id": "Vox1Coffee",
+  "durationInSeconds": 40.5,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Vox2Africa",
   "durationInSeconds": 40.5,
   "fps": 30,
   "width": 1080,

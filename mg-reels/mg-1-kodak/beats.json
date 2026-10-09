@@ -1,0 +1,372 @@
+{
+  "id": "mg-1",
+  "title": "Kodak vs the Future",
+  "composition": "Mg1Kodak",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationSec": 32
+  },
+  "voiceStatus": "voiced (Edge TTS en-US-AndrewNeural, real word times)",
+  "voicePlan": {
+    "engine": "edge-tts",
+    "voice": "en-US-AndrewNeural",
+    "rate": "-4%"
+  },
+  "vo": [
+    {
+      "beat": "s1",
+      "text": "In 1975, a Kodak engineer built the first digital camera.",
+      "start": 0.5,
+      "end": 4.93,
+      "words": [
+        {
+          "w": "In 1975",
+          "start": 0.593,
+          "end": 1.818
+        },
+        {
+          "w": "a",
+          "start": 2.028,
+          "end": 2.075
+        },
+        {
+          "w": "Kodak",
+          "start": 2.086,
+          "end": 2.506
+        },
+        {
+          "w": "engineer",
+          "start": 2.518,
+          "end": 2.949
+        },
+        {
+          "w": "built",
+          "start": 2.961,
+          "end": 3.206
+        },
+        {
+          "w": "the",
+          "start": 3.218,
+          "end": 3.288
+        },
+        {
+          "w": "first",
+          "start": 3.299,
+          "end": 3.789
+        },
+        {
+          "w": "digital",
+          "start": 3.801,
+          "end": 4.139
+        },
+        {
+          "w": "camera",
+          "start": 4.151,
+          "end": 4.605
+        }
+      ]
+    },
+    {
+      "beat": "s2",
+      "text": "Eight pounds. Black and white. Twenty-three seconds a shot. Kodak shelved it.",
+      "start": 5.0,
+      "end": 10.38,
+      "words": [
+        {
+          "w": "Eight",
+          "start": 5.104,
+          "end": 5.247
+        },
+        {
+          "w": "pounds",
+          "start": 5.26,
+          "end": 5.794
+        },
+        {
+          "w": "Black",
+          "start": 6.237,
+          "end": 6.471
+        },
+        {
+          "w": "and",
+          "start": 6.484,
+          "end": 6.589
+        },
+        {
+          "w": "white",
+          "start": 6.602,
+          "end": 6.914
+        },
+        {
+          "w": "Twenty-three",
+          "start": 7.344,
+          "end": 7.878
+        },
+        {
+          "w": "seconds",
+          "start": 7.891,
+          "end": 8.281
+        },
+        {
+          "w": "a",
+          "start": 8.294,
+          "end": 8.32
+        },
+        {
+          "w": "shot",
+          "start": 8.333,
+          "end": 8.763
+        },
+        {
+          "w": "Kodak",
+          "start": 9.193,
+          "end": 9.505
+        },
+        {
+          "w": "shelved",
+          "start": 9.518,
+          "end": 9.857
+        },
+        {
+          "w": "it",
+          "start": 9.87,
+          "end": 10.013
+        }
+      ]
+    },
+    {
+      "beat": "s3",
+      "text": "Film printed money. Why kill the machine that prints it?",
+      "start": 11.2,
+      "end": 14.47,
+      "words": [
+        {
+          "w": "Film",
+          "start": 11.343,
+          "end": 11.513
+        },
+        {
+          "w": "printed",
+          "start": 11.526,
+          "end": 11.851
+        },
+        {
+          "w": "money",
+          "start": 11.864,
+          "end": 12.164
+        },
+        {
+          "w": "Why",
+          "start": 12.606,
+          "end": 12.776
+        },
+        {
+          "w": "kill",
+          "start": 12.789,
+          "end": 12.971
+        },
+        {
+          "w": "the",
+          "start": 12.984,
+          "end": 13.062
+        },
+        {
+          "w": "machine",
+          "start": 13.075,
+          "end": 13.492
+        },
+        {
+          "w": "that",
+          "start": 13.505,
+          "end": 13.635
+        },
+        {
+          "w": "prints",
+          "start": 13.648,
+          "end": 13.921
+        },
+        {
+          "w": "it",
+          "start": 13.934,
+          "end": 14.104
+        }
+      ]
+    },
+    {
+      "beat": "s4",
+      "text": "Then every phone became a camera.",
+      "start": 16.6,
+      "end": 18.93,
+      "words": [
+        {
+          "w": "Then",
+          "start": 16.704,
+          "end": 16.899
+        },
+        {
+          "w": "every",
+          "start": 17.043,
+          "end": 17.303
+        },
+        {
+          "w": "phone",
+          "start": 17.316,
+          "end": 17.655
+        },
+        {
+          "w": "became",
+          "start": 17.668,
+          "end": 17.993
+        },
+        {
+          "w": "a",
+          "start": 18.006,
+          "end": 18.045
+        },
+        {
+          "w": "camera",
+          "start": 18.058,
+          "end": 18.566
+        }
+      ]
+    },
+    {
+      "beat": "s5",
+      "text": "In 2012, Kodak filed for bankruptcy.",
+      "start": 21.6,
+      "end": 25.2,
+      "words": [
+        {
+          "w": "In 2012",
+          "start": 21.717,
+          "end": 22.915
+        },
+        {
+          "w": "Kodak",
+          "start": 23.136,
+          "end": 23.566
+        },
+        {
+          "w": "filed",
+          "start": 23.579,
+          "end": 23.931
+        },
+        {
+          "w": "for",
+          "start": 23.944,
+          "end": 24.087
+        },
+        {
+          "w": "bankruptcy",
+          "start": 24.1,
+          "end": 24.829
+        }
+      ]
+    },
+    {
+      "beat": "s6",
+      "text": "That same year: Instagram. Thirteen people. One billion dollars.",
+      "start": 26.8,
+      "end": 31.55,
+      "words": [
+        {
+          "w": "That",
+          "start": 26.917,
+          "end": 27.034
+        },
+        {
+          "w": "same",
+          "start": 27.047,
+          "end": 27.308
+        },
+        {
+          "w": "year",
+          "start": 27.321,
+          "end": 27.633
+        },
+        {
+          "w": "Instagram",
+          "start": 27.92,
+          "end": 28.48
+        },
+        {
+          "w": "Thirteen",
+          "start": 28.935,
+          "end": 29.261
+        },
+        {
+          "w": "people",
+          "start": 29.274,
+          "end": 29.652
+        },
+        {
+          "w": "One",
+          "start": 30.094,
+          "end": 30.29
+        },
+        {
+          "w": "billion",
+          "start": 30.303,
+          "end": 30.615
+        },
+        {
+          "w": "dollars",
+          "start": 30.628,
+          "end": 31.188
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s1",
+      "start": 0.0,
+      "end": 5.6,
+      "component": "Mg1S1",
+      "signature": "zoom-through weld/detach"
+    },
+    {
+      "id": "s2",
+      "start": 5.6,
+      "end": 10.8,
+      "component": "Mg1S2",
+      "signature": "screen-blend smoke + slot machine + punctuation beat"
+    },
+    {
+      "id": "s3",
+      "start": 10.8,
+      "end": 16.0,
+      "component": "Mg1S3",
+      "signature": "papers drop + focus hunt"
+    },
+    {
+      "id": "s4",
+      "start": 16.0,
+      "end": 21.2,
+      "component": "Mg1S4",
+      "signature": "parallax punch anchored at the base"
+    },
+    {
+      "id": "s5",
+      "start": 21.2,
+      "end": 26.4,
+      "component": "Mg1S5",
+      "signature": "drawn lamp light + pencil scribble"
+    },
+    {
+      "id": "s6",
+      "start": 26.4,
+      "end": 32.0,
+      "component": "Mg1S6",
+      "signature": "clone + reskin + foam-finger wag"
+    }
+  ],
+  "facts": {
+    "invention": "Steven Sasson, 1975, first self-contained digital camera",
+    "prototype": "~8 lb, 0.01 MP B&W, cassette tape, 23 s per image",
+    "bankruptcy": "Chapter 11, January 19, 2012",
+    "instagram": "Facebook acquisition April 2012, $1B, 13 employees"
+  }
+}

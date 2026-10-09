@@ -1,0 +1,722 @@
+{
+  "id": "map-1",
+  "title": "One Ship vs the World \u2014 the Ever Given, Suez 2021",
+  "composition": "Map1Suez",
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSec": 42
+  },
+  "voiceStatus": "voiced (Edge TTS en-US-ChristopherNeural, real word times)",
+  "voicePlan": {
+    "engine": "edge-tts",
+    "voice": "en-US-ChristopherNeural",
+    "rate": "-4%"
+  },
+  "vo": [
+    {
+      "text": "In March 2021, one ship stopped the world.",
+      "beat": "hook",
+      "start": 0.5,
+      "end": 3.87,
+      "words": [
+        {
+          "w": "In",
+          "start": 0.578,
+          "end": 0.698
+        },
+        {
+          "w": "March 2021",
+          "start": 0.708,
+          "end": 1.741
+        },
+        {
+          "w": "one",
+          "start": 1.951,
+          "end": 2.121
+        },
+        {
+          "w": "ship",
+          "start": 2.131,
+          "end": 2.372
+        },
+        {
+          "w": "stopped",
+          "start": 2.382,
+          "end": 2.692
+        },
+        {
+          "w": "the",
+          "start": 2.702,
+          "end": 2.772
+        },
+        {
+          "w": "world",
+          "start": 2.782,
+          "end": 3.172
+        }
+      ]
+    },
+    {
+      "text": "Suez: one hundred ninety-three kilometres of water.",
+      "beat": "setup",
+      "start": 3.6,
+      "end": 7.18,
+      "words": [
+        {
+          "w": "Suez",
+          "start": 3.678,
+          "end": 4.289
+        },
+        {
+          "w": "one",
+          "start": 4.55,
+          "end": 4.73
+        },
+        {
+          "w": "hundred",
+          "start": 4.74,
+          "end": 5.011
+        },
+        {
+          "w": "ninety-three",
+          "start": 5.021,
+          "end": 5.512
+        },
+        {
+          "w": "kilometres",
+          "start": 5.522,
+          "end": 6.022
+        },
+        {
+          "w": "of",
+          "start": 6.032,
+          "end": 6.112
+        },
+        {
+          "w": "water",
+          "start": 6.122,
+          "end": 6.503
+        }
+      ]
+    },
+    {
+      "text": "Roughly twelve percent of all world trade sails through it.",
+      "beat": "setup",
+      "start": 6.8,
+      "end": 10.05,
+      "words": [
+        {
+          "w": "Roughly",
+          "start": 6.88,
+          "end": 7.24
+        },
+        {
+          "w": "twelve",
+          "start": 7.25,
+          "end": 7.527
+        },
+        {
+          "w": "percent",
+          "start": 7.537,
+          "end": 7.866
+        },
+        {
+          "w": "of",
+          "start": 7.876,
+          "end": 7.969
+        },
+        {
+          "w": "all",
+          "start": 7.979,
+          "end": 8.175
+        },
+        {
+          "w": "world",
+          "start": 8.185,
+          "end": 8.421
+        },
+        {
+          "w": "trade",
+          "start": 8.431,
+          "end": 8.698
+        },
+        {
+          "w": "sails",
+          "start": 8.708,
+          "end": 9.068
+        },
+        {
+          "w": "through",
+          "start": 9.078,
+          "end": 9.253
+        },
+        {
+          "w": "it",
+          "start": 9.263,
+          "end": 9.437
+        }
+      ]
+    },
+    {
+      "text": "March 23rd. The Ever Given: four hundred metres long.",
+      "beat": "ground",
+      "start": 10.2,
+      "end": 14.56,
+      "words": [
+        {
+          "w": "March 23rd",
+          "start": 10.278,
+          "end": 11.22
+        },
+        {
+          "w": "The",
+          "start": 11.913,
+          "end": 12.023
+        },
+        {
+          "w": "Ever",
+          "start": 12.033,
+          "end": 12.273
+        },
+        {
+          "w": "Given",
+          "start": 12.283,
+          "end": 12.574
+        },
+        {
+          "w": "four",
+          "start": 12.764,
+          "end": 12.965
+        },
+        {
+          "w": "hundred",
+          "start": 12.975,
+          "end": 13.225
+        },
+        {
+          "w": "metres",
+          "start": 13.235,
+          "end": 13.525
+        },
+        {
+          "w": "long",
+          "start": 13.535,
+          "end": 13.876
+        }
+      ]
+    },
+    {
+      "text": "A sandstorm slammed her with forty-knot winds.",
+      "beat": "ground",
+      "start": 13.8,
+      "end": 16.79,
+      "words": [
+        {
+          "w": "A",
+          "start": 13.878,
+          "end": 13.978
+        },
+        {
+          "w": "sandstorm",
+          "start": 13.988,
+          "end": 14.57
+        },
+        {
+          "w": "slammed",
+          "start": 14.58,
+          "end": 14.92
+        },
+        {
+          "w": "her",
+          "start": 14.93,
+          "end": 15.061
+        },
+        {
+          "w": "with",
+          "start": 15.071,
+          "end": 15.181
+        },
+        {
+          "w": "forty-knot",
+          "start": 15.191,
+          "end": 15.652
+        },
+        {
+          "w": "winds",
+          "start": 15.662,
+          "end": 16.112
+        }
+      ]
+    },
+    {
+      "text": "She swung sideways, and stuck.",
+      "beat": "ground",
+      "start": 16.4,
+      "end": 19.04,
+      "words": [
+        {
+          "w": "She",
+          "start": 16.478,
+          "end": 16.678
+        },
+        {
+          "w": "swung",
+          "start": 16.689,
+          "end": 16.989
+        },
+        {
+          "w": "sideways",
+          "start": 16.999,
+          "end": 17.61
+        },
+        {
+          "w": "and",
+          "start": 17.771,
+          "end": 17.921
+        },
+        {
+          "w": "stuck",
+          "start": 17.931,
+          "end": 18.352
+        }
+      ]
+    },
+    {
+      "text": "Behind her, the queue grew. And grew.",
+      "beat": "queue",
+      "start": 18.5,
+      "end": 21.9,
+      "words": [
+        {
+          "w": "Behind",
+          "start": 18.578,
+          "end": 18.919
+        },
+        {
+          "w": "her",
+          "start": 18.929,
+          "end": 19.079
+        },
+        {
+          "w": "the",
+          "start": 19.239,
+          "end": 19.34
+        },
+        {
+          "w": "queue",
+          "start": 19.35,
+          "end": 19.58
+        },
+        {
+          "w": "grew",
+          "start": 19.59,
+          "end": 19.961
+        },
+        {
+          "w": "And",
+          "start": 20.654,
+          "end": 20.814
+        },
+        {
+          "w": "grew",
+          "start": 20.824,
+          "end": 21.225
+        }
+      ]
+    },
+    {
+      "text": "Three hundred and sixty-nine ships, waiting.",
+      "beat": "queue",
+      "start": 21.3,
+      "end": 24.09,
+      "words": [
+        {
+          "w": "Three",
+          "start": 21.378,
+          "end": 21.619
+        },
+        {
+          "w": "hundred",
+          "start": 21.629,
+          "end": 21.879
+        },
+        {
+          "w": "and",
+          "start": 21.889,
+          "end": 21.959
+        },
+        {
+          "w": "sixty-nine",
+          "start": 21.969,
+          "end": 22.47
+        },
+        {
+          "w": "ships",
+          "start": 22.48,
+          "end": 22.871
+        },
+        {
+          "w": "waiting",
+          "start": 23.042,
+          "end": 23.412
+        }
+      ]
+    },
+    {
+      "text": "Nine point six billion dollars a day, parked.",
+      "beat": "queue",
+      "start": 23.2,
+      "end": 26.33,
+      "words": [
+        {
+          "w": "Nine",
+          "start": 23.28,
+          "end": 23.577
+        },
+        {
+          "w": "point",
+          "start": 23.587,
+          "end": 23.802
+        },
+        {
+          "w": "six",
+          "start": 23.812,
+          "end": 24.068
+        },
+        {
+          "w": "billion",
+          "start": 24.079,
+          "end": 24.395
+        },
+        {
+          "w": "dollars",
+          "start": 24.406,
+          "end": 24.713
+        },
+        {
+          "w": "a",
+          "start": 24.723,
+          "end": 24.784
+        },
+        {
+          "w": "day",
+          "start": 24.795,
+          "end": 25.041
+        },
+        {
+          "w": "parked",
+          "start": 25.204,
+          "end": 25.634
+        }
+      ]
+    },
+    {
+      "text": "Six days. Dredgers. Tugboats. And a full-moon tide.",
+      "beat": "salvage",
+      "start": 26.4,
+      "end": 32.31,
+      "words": [
+        {
+          "w": "Six",
+          "start": 26.478,
+          "end": 26.819
+        },
+        {
+          "w": "days",
+          "start": 26.829,
+          "end": 27.29
+        },
+        {
+          "w": "Dredgers",
+          "start": 27.982,
+          "end": 28.563
+        },
+        {
+          "w": "Tugboats",
+          "start": 29.245,
+          "end": 29.915
+        },
+        {
+          "w": "And",
+          "start": 30.597,
+          "end": 30.737
+        },
+        {
+          "w": "a",
+          "start": 30.747,
+          "end": 30.797
+        },
+        {
+          "w": "full-moon",
+          "start": 30.807,
+          "end": 31.208
+        },
+        {
+          "w": "tide",
+          "start": 31.218,
+          "end": 31.628
+        }
+      ]
+    },
+    {
+      "text": "On day six, she floated free.",
+      "beat": "salvage",
+      "start": 31.6,
+      "end": 34.22,
+      "words": [
+        {
+          "w": "On",
+          "start": 31.678,
+          "end": 31.858
+        },
+        {
+          "w": "day",
+          "start": 31.868,
+          "end": 32.059
+        },
+        {
+          "w": "six",
+          "start": 32.069,
+          "end": 32.48
+        },
+        {
+          "w": "she",
+          "start": 32.66,
+          "end": 32.82
+        },
+        {
+          "w": "floated",
+          "start": 32.83,
+          "end": 33.171
+        },
+        {
+          "w": "free",
+          "start": 33.181,
+          "end": 33.542
+        }
+      ]
+    },
+    {
+      "text": "But some captains hadn't waited.",
+      "beat": "reroute",
+      "start": 33.6,
+      "end": 35.78,
+      "words": [
+        {
+          "w": "But",
+          "start": 33.678,
+          "end": 33.818
+        },
+        {
+          "w": "some",
+          "start": 33.828,
+          "end": 34.059
+        },
+        {
+          "w": "captains",
+          "start": 34.069,
+          "end": 34.46
+        },
+        {
+          "w": "hadn't",
+          "start": 34.47,
+          "end": 34.72
+        },
+        {
+          "w": "waited",
+          "start": 34.73,
+          "end": 35.091
+        }
+      ]
+    },
+    {
+      "text": "They'd already sailed the long way around Africa.",
+      "beat": "reroute",
+      "start": 35.5,
+      "end": 38.64,
+      "words": [
+        {
+          "w": "They'd",
+          "start": 35.578,
+          "end": 35.789
+        },
+        {
+          "w": "already",
+          "start": 35.799,
+          "end": 36.119
+        },
+        {
+          "w": "sailed",
+          "start": 36.129,
+          "end": 36.41
+        },
+        {
+          "w": "the",
+          "start": 36.42,
+          "end": 36.49
+        },
+        {
+          "w": "long",
+          "start": 36.5,
+          "end": 36.761
+        },
+        {
+          "w": "way",
+          "start": 36.771,
+          "end": 36.921
+        },
+        {
+          "w": "around",
+          "start": 36.931,
+          "end": 37.222
+        },
+        {
+          "w": "Africa",
+          "start": 37.232,
+          "end": 37.702
+        }
+      ]
+    },
+    {
+      "text": "One canal. One ship. Six days.",
+      "beat": "end",
+      "start": 38.4,
+      "end": 42.68,
+      "words": [
+        {
+          "w": "One",
+          "start": 38.478,
+          "end": 38.729
+        },
+        {
+          "w": "canal",
+          "start": 38.739,
+          "end": 39.19
+        },
+        {
+          "w": "One",
+          "start": 39.882,
+          "end": 40.123
+        },
+        {
+          "w": "ship",
+          "start": 40.133,
+          "end": 40.503
+        },
+        {
+          "w": "Six",
+          "start": 41.195,
+          "end": 41.535
+        },
+        {
+          "w": "days",
+          "start": 41.545,
+          "end": 42.005
+        }
+      ]
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "end": 3.4,
+      "visual": "canal anchor (z=34). Frame 0 fully composed: Ever Given already wedged diagonally across the canal + red aground mark + title. The wedge IS the thumbnail."
+    },
+    {
+      "id": "to-wide",
+      "start": 3.4,
+      "end": 7.2,
+      "visual": "camera pulls canal -> wide (reveal of scale). whoosh."
+    },
+    {
+      "id": "setup",
+      "start": 7.2,
+      "end": 12.6,
+      "visual": "wide. Egypt outline self-draws; three trade arcs Asia->Europe draw with flowing dots; chip 193 km."
+    },
+    {
+      "id": "to-canal",
+      "start": 12.6,
+      "end": 16.2,
+      "visual": "push wide -> canal. The Ever Given enters from the north."
+    },
+    {
+      "id": "ground",
+      "start": 16.2,
+      "end": 19.4,
+      "visual": "canal. Ship sails south; VfxStreaks gust at ~16.8; she rotates and WEDGES at ~18.3 (impact mark + red glow); queue dots begin."
+    },
+    {
+      "id": "punch",
+      "start": 19.4,
+      "end": 22.0,
+      "visual": "canal -> ship (z=90) at 19.4-20.6 (on the wreck), then back out ship -> canal by 22.0 (both anchorages needed)."
+    },
+    {
+      "id": "queue",
+      "start": 22.0,
+      "end": 26.6,
+      "visual": "canal. Queue dots accumulate N and S; counter -> 369; chip $9.6bn/day."
+    },
+    {
+      "id": "salvage",
+      "start": 26.6,
+      "end": 31.4,
+      "visual": "ship (z=90). Dredger FIGURE-RISES from the bank at ~27.5; two tugs; tide wash pulses; at 30.8 she rotates free + glow clears."
+    },
+    {
+      "id": "to-wide-2",
+      "start": 31.4,
+      "end": 33.4,
+      "visual": "ship -> wide pull-out for the aftermath."
+    },
+    {
+      "id": "reroute",
+      "start": 33.4,
+      "end": 39.0,
+      "visual": "wide. Cape of Good Hope arc self-draws; dots sail the long way; canal route dims to gold."
+    },
+    {
+      "id": "end",
+      "start": 39.0,
+      "end": 42.0,
+      "visual": "wide hold, slow drift. End title ONE CANAL / ONE SHIP / SIX DAYS at 39.6. No CTA."
+    }
+  ],
+  "route": {
+    "anchors": {
+      "canal": {
+        "lon": 32.42,
+        "lat": 30.55,
+        "z": 34
+      },
+      "wide": {
+        "lon": 32,
+        "lat": 27,
+        "z": 1
+      },
+      "ship": {
+        "lon": 32.57,
+        "lat": 30.0,
+        "z": 90
+      },
+      "redsea": {
+        "lon": 33.4,
+        "lat": 27.5,
+        "z": 6
+      }
+    },
+    "facts": {
+      "blocked": "23-29 March 2021",
+      "ship": "Ever Given, 400 m, wedged bow-in eastern bank",
+      "queue": 369,
+      "costPerDayUsdBn": 9.6,
+      "tradeSharePct": 12,
+      "windsKnots": 40,
+      "canalKm": 193
+    }
+  }
+}

@@ -1,0 +1,766 @@
+{
+  "id": "short-13",
+  "title": "The Traffic Jam With No Cause",
+  "composition": "Short13Traffic",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationSec": 42
+  },
+  "voiceStatus": "voiced (Edge TTS en-US-ChristopherNeural, real word times)",
+  "voicePlan": {
+    "engine": "edge-tts",
+    "voice": "en-US-ChristopherNeural",
+    "rate": "-4%"
+  },
+  "vo": [
+    {
+      "beat": "hook",
+      "text": "This jam is moving.",
+      "start": 0.4,
+      "end": 2.19,
+      "words": [
+        {
+          "w": "This",
+          "start": 0.478,
+          "end": 0.699
+        },
+        {
+          "w": "jam",
+          "start": 0.709,
+          "end": 0.989
+        },
+        {
+          "w": "is",
+          "start": 0.999,
+          "end": 1.109
+        },
+        {
+          "w": "moving",
+          "start": 1.119,
+          "end": 1.51
+        }
+      ]
+    },
+    {
+      "beat": "hook",
+      "text": "It has no cause.",
+      "start": 2.0,
+      "end": 3.76,
+      "words": [
+        {
+          "w": "It",
+          "start": 2.078,
+          "end": 2.188
+        },
+        {
+          "w": "has",
+          "start": 2.198,
+          "end": 2.389
+        },
+        {
+          "w": "no",
+          "start": 2.399,
+          "end": 2.579
+        },
+        {
+          "w": "cause",
+          "start": 2.589,
+          "end": 3.07
+        }
+      ]
+    },
+    {
+      "beat": "hook",
+      "text": "No accident. No blockage.",
+      "start": 3.5,
+      "end": 6.55,
+      "words": [
+        {
+          "w": "No",
+          "start": 3.578,
+          "end": 3.829
+        },
+        {
+          "w": "accident",
+          "start": 3.839,
+          "end": 4.38
+        },
+        {
+          "w": "No",
+          "start": 5.072,
+          "end": 5.303
+        },
+        {
+          "w": "blockage",
+          "start": 5.313,
+          "end": 5.874
+        }
+      ]
+    },
+    {
+      "beat": "setup",
+      "text": "Researchers put twenty-two drivers on a circle.",
+      "start": 5.6,
+      "end": 8.54,
+      "words": [
+        {
+          "w": "Researchers",
+          "start": 5.678,
+          "end": 6.209
+        },
+        {
+          "w": "put",
+          "start": 6.219,
+          "end": 6.41
+        },
+        {
+          "w": "twenty-two",
+          "start": 6.42,
+          "end": 6.851
+        },
+        {
+          "w": "drivers",
+          "start": 6.861,
+          "end": 7.251
+        },
+        {
+          "w": "on",
+          "start": 7.261,
+          "end": 7.362
+        },
+        {
+          "w": "a",
+          "start": 7.372,
+          "end": 7.412
+        },
+        {
+          "w": "circle",
+          "start": 7.422,
+          "end": 7.852
+        }
+      ]
+    },
+    {
+      "beat": "setup",
+      "text": "Drive about thirty. Keep your distance.",
+      "start": 8.4,
+      "end": 11.59,
+      "words": [
+        {
+          "w": "Drive",
+          "start": 8.478,
+          "end": 8.749
+        },
+        {
+          "w": "about",
+          "start": 8.759,
+          "end": 8.999
+        },
+        {
+          "w": "thirty",
+          "start": 9.009,
+          "end": 9.4
+        },
+        {
+          "w": "Keep",
+          "start": 10.093,
+          "end": 10.293
+        },
+        {
+          "w": "your",
+          "start": 10.303,
+          "end": 10.383
+        },
+        {
+          "w": "distance",
+          "start": 10.393,
+          "end": 10.914
+        }
+      ]
+    },
+    {
+      "beat": "tap",
+      "text": "Then one driver taps the brakes.",
+      "start": 11.0,
+      "end": 13.73,
+      "words": [
+        {
+          "w": "Then",
+          "start": 11.091,
+          "end": 11.372
+        },
+        {
+          "w": "one",
+          "start": 11.383,
+          "end": 11.558
+        },
+        {
+          "w": "driver",
+          "start": 11.569,
+          "end": 11.943
+        },
+        {
+          "w": "taps",
+          "start": 11.954,
+          "end": 12.28
+        },
+        {
+          "w": "the",
+          "start": 12.292,
+          "end": 12.373
+        },
+        {
+          "w": "brakes",
+          "start": 12.385,
+          "end": 12.933
+        }
+      ]
+    },
+    {
+      "beat": "quiz",
+      "text": "Pause. Which way does the jam travel?",
+      "start": 13.8,
+      "end": 17.07,
+      "words": [
+        {
+          "w": "Pause",
+          "start": 13.878,
+          "end": 14.419
+        },
+        {
+          "w": "Which",
+          "start": 15.102,
+          "end": 15.292
+        },
+        {
+          "w": "way",
+          "start": 15.302,
+          "end": 15.462
+        },
+        {
+          "w": "does",
+          "start": 15.473,
+          "end": 15.623
+        },
+        {
+          "w": "the",
+          "start": 15.633,
+          "end": 15.713
+        },
+        {
+          "w": "jam",
+          "start": 15.723,
+          "end": 15.974
+        },
+        {
+          "w": "travel",
+          "start": 15.984,
+          "end": 16.394
+        }
+      ]
+    },
+    {
+      "beat": "reveal",
+      "text": "The tap hits the car behind. Harder.",
+      "start": 16.8,
+      "end": 20.09,
+      "words": [
+        {
+          "w": "The",
+          "start": 16.878,
+          "end": 16.998
+        },
+        {
+          "w": "tap",
+          "start": 17.008,
+          "end": 17.259
+        },
+        {
+          "w": "hits",
+          "start": 17.269,
+          "end": 17.459
+        },
+        {
+          "w": "the",
+          "start": 17.469,
+          "end": 17.56
+        },
+        {
+          "w": "car",
+          "start": 17.57,
+          "end": 17.82
+        },
+        {
+          "w": "behind",
+          "start": 17.83,
+          "end": 18.291
+        },
+        {
+          "w": "Harder",
+          "start": 18.984,
+          "end": 19.424
+        }
+      ]
+    },
+    {
+      "beat": "reveal",
+      "text": "Every driver brakes a little too late.",
+      "start": 19.8,
+      "end": 22.43,
+      "words": [
+        {
+          "w": "Every",
+          "start": 19.886,
+          "end": 20.161
+        },
+        {
+          "w": "driver",
+          "start": 20.172,
+          "end": 20.555
+        },
+        {
+          "w": "brakes",
+          "start": 20.566,
+          "end": 20.83
+        },
+        {
+          "w": "a",
+          "start": 20.841,
+          "end": 20.896
+        },
+        {
+          "w": "little",
+          "start": 20.907,
+          "end": 21.115
+        },
+        {
+          "w": "too",
+          "start": 21.126,
+          "end": 21.313
+        },
+        {
+          "w": "late",
+          "start": 21.324,
+          "end": 21.675
+        }
+      ]
+    },
+    {
+      "beat": "reveal",
+      "text": "That overshoot becomes a wave.",
+      "start": 22.5,
+      "end": 24.73,
+      "words": [
+        {
+          "w": "That",
+          "start": 22.578,
+          "end": 22.809
+        },
+        {
+          "w": "overshoot",
+          "start": 22.819,
+          "end": 23.28
+        },
+        {
+          "w": "becomes",
+          "start": 23.29,
+          "end": 23.6
+        },
+        {
+          "w": "a",
+          "start": 23.61,
+          "end": 23.66
+        },
+        {
+          "w": "wave",
+          "start": 23.67,
+          "end": 24.061
+        }
+      ]
+    },
+    {
+      "beat": "reveal",
+      "text": "And the wave crawls backwards, while every car drives forwards.",
+      "start": 24.6,
+      "end": 28.53,
+      "words": [
+        {
+          "w": "And",
+          "start": 24.684,
+          "end": 24.822
+        },
+        {
+          "w": "the",
+          "start": 24.833,
+          "end": 24.908
+        },
+        {
+          "w": "wave",
+          "start": 24.919,
+          "end": 25.174
+        },
+        {
+          "w": "crawls",
+          "start": 25.185,
+          "end": 25.505
+        },
+        {
+          "w": "backwards",
+          "start": 25.515,
+          "end": 26.048
+        },
+        {
+          "w": "while",
+          "start": 26.219,
+          "end": 26.41
+        },
+        {
+          "w": "every",
+          "start": 26.421,
+          "end": 26.645
+        },
+        {
+          "w": "car",
+          "start": 26.656,
+          "end": 26.901
+        },
+        {
+          "w": "drives",
+          "start": 26.912,
+          "end": 27.242
+        },
+        {
+          "w": "forwards",
+          "start": 27.253,
+          "end": 27.807
+        }
+      ]
+    },
+    {
+      "beat": "twist",
+      "text": "Watch one car.",
+      "start": 28.6,
+      "end": 30.26,
+      "words": [
+        {
+          "w": "Watch",
+          "start": 28.678,
+          "end": 28.959
+        },
+        {
+          "w": "one",
+          "start": 28.969,
+          "end": 29.189
+        },
+        {
+          "w": "car",
+          "start": 29.199,
+          "end": 29.58
+        }
+      ]
+    },
+    {
+      "beat": "twist",
+      "text": "It slows, it stops, and the wave slides backwards past it.",
+      "start": 29.9,
+      "end": 34.04,
+      "words": [
+        {
+          "w": "It",
+          "start": 29.982,
+          "end": 30.119
+        },
+        {
+          "w": "slows",
+          "start": 30.129,
+          "end": 30.613
+        },
+        {
+          "w": "it",
+          "start": 30.835,
+          "end": 30.94
+        },
+        {
+          "w": "stops",
+          "start": 30.95,
+          "end": 31.382
+        },
+        {
+          "w": "and",
+          "start": 31.529,
+          "end": 31.634
+        },
+        {
+          "w": "the",
+          "start": 31.645,
+          "end": 31.719
+        },
+        {
+          "w": "wave",
+          "start": 31.729,
+          "end": 31.992
+        },
+        {
+          "w": "slides",
+          "start": 32.002,
+          "end": 32.381
+        },
+        {
+          "w": "backwards",
+          "start": 32.392,
+          "end": 32.792
+        },
+        {
+          "w": "past",
+          "start": 32.802,
+          "end": 33.139
+        },
+        {
+          "w": "it",
+          "start": 33.149,
+          "end": 33.307
+        }
+      ]
+    },
+    {
+      "beat": "twist",
+      "text": "It escapes out the front, and the wave carries on.",
+      "start": 34.1,
+      "end": 37.53,
+      "words": [
+        {
+          "w": "It",
+          "start": 34.189,
+          "end": 34.313
+        },
+        {
+          "w": "escapes",
+          "start": 34.325,
+          "end": 34.767
+        },
+        {
+          "w": "out",
+          "start": 34.779,
+          "end": 34.926
+        },
+        {
+          "w": "the",
+          "start": 34.937,
+          "end": 35.006
+        },
+        {
+          "w": "front",
+          "start": 35.017,
+          "end": 35.38
+        },
+        {
+          "w": "and",
+          "start": 35.585,
+          "end": 35.664
+        },
+        {
+          "w": "the",
+          "start": 35.675,
+          "end": 35.754
+        },
+        {
+          "w": "wave",
+          "start": 35.766,
+          "end": 36.05
+        },
+        {
+          "w": "carries",
+          "start": 36.061,
+          "end": 36.412
+        },
+        {
+          "w": "on",
+          "start": 36.424,
+          "end": 36.764
+        }
+      ]
+    },
+    {
+      "beat": "twist",
+      "text": "Backwards, at about eighteen kilometres an hour.",
+      "start": 37.6,
+      "end": 41.63,
+      "words": [
+        {
+          "w": "Backwards",
+          "start": 37.701,
+          "end": 38.394
+        },
+        {
+          "w": "at",
+          "start": 38.548,
+          "end": 38.678
+        },
+        {
+          "w": "about",
+          "start": 38.69,
+          "end": 38.998
+        },
+        {
+          "w": "eighteen",
+          "start": 39.011,
+          "end": 39.538
+        },
+        {
+          "w": "kilometres",
+          "start": 39.551,
+          "end": 40.168
+        },
+        {
+          "w": "an",
+          "start": 40.181,
+          "end": 40.296
+        },
+        {
+          "w": "hour",
+          "start": 40.309,
+          "end": 40.759
+        }
+      ]
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "end": 5.2,
+      "visual": "frame-0 composed: the mature jam on the ring (12 stopped cars, red glow, brake lights live), the gold wave chevron riding the crest with dashed trail, title THIS JAM / HAS NO CAUSE + subtitle. Punch settles 1.05 -> 1. Sim t=85 at 1:1."
+    },
+    {
+      "id": "setup-rewind",
+      "start": 5.2,
+      "end": 8.1,
+      "visual": "THE REWIND: sim time runs backward ~28x \u2014 the jam un-forms, cars spread to uniform 30 km/h flow; camera pushes 1.0 -> 2.4 toward car #0."
+    },
+    {
+      "id": "setup-flow",
+      "start": 8.1,
+      "end": 11.0,
+      "visual": "Uniform flow at 2.4x zoom on car #0 (indigo). Experiment chip: 22 drivers / 230 m / no exits."
+    },
+    {
+      "id": "tap",
+      "start": 11.0,
+      "end": 13.8,
+      "visual": "THE TAP at video 11.0 (sim t=4.0): car #0 brake lights slam on from its own simulated decel. Stamp: ONE TAP."
+    },
+    {
+      "id": "quiz",
+      "start": 13.8,
+      "end": 16.8,
+      "visual": "Slow-motion ripple (sim 0.4x): the tap mid-ripple spreading car by car under the PauseCard. Brake lights glowing."
+    },
+    {
+      "id": "reveal-ripple",
+      "start": 16.8,
+      "end": 22.5,
+      "visual": "Real time: car #21 (behind #0) brakes harder \u2014 its lights flare brighter. The brake-light chain propagates backward car by car. First full stop ~22.3 (2.2x)."
+    },
+    {
+      "id": "reveal-wave",
+      "start": 22.5,
+      "end": 28.4,
+      "visual": "The wave marker returns: gold chevron on the crest + trail. The jam rotates BACKWARD as every car drives forward. Camera pulls 2.4 -> 1.0 to keep up. Stamp: BACKWARDS at ~25.4."
+    },
+    {
+      "id": "twist",
+      "start": 28.4,
+      "end": 40.6,
+      "visual": "Spotlight car #7 (sim 2.6x): slows, stops (speed-tag 30 -> 0), the wave slides backwards past it, it escapes out the front (speed-tag back to 30). Wave-speed chip lands on 'eighteen' (~38.9): -17.9 km/h measured."
+    },
+    {
+      "id": "loop",
+      "start": 40.6,
+      "end": 42.0,
+      "visual": "Title fades back over the still-sweeping wave; punch 1.0 -> 1.05; last frame rhymes with frame 0 (jam + marker + title). No CTA."
+    }
+  ],
+  "sim": {
+    "lib": "remotion/src/lib/agents.tsx",
+    "model": "optimal-velocity model + collision avoidance (see script.md)",
+    "n": 22,
+    "length": 230,
+    "vmax": 8.33,
+    "tTap": 4.0,
+    "tEnd": 130,
+    "measured": {
+      "waveSpeedKmh": -17.9,
+      "window": [
+        20,
+        126
+      ],
+      "jamFraction": 0.56,
+      "experiment": "~20 km/h backward (Sugiyama 2008)"
+    },
+    "knots": [
+      [
+        0.0,
+        85
+      ],
+      [
+        4.9,
+        95.8
+      ],
+      [
+        5.2,
+        95.8
+      ],
+      [
+        8.1,
+        0
+      ],
+      [
+        11.9,
+        4.0
+      ],
+      [
+        16.4,
+        6.2
+      ],
+      [
+        19.7,
+        7.6
+      ],
+      [
+        22.3,
+        12.0
+      ],
+      [
+        24.3,
+        16.0
+      ],
+      [
+        28.0,
+        34.0
+      ],
+      [
+        28.4,
+        38.0
+      ],
+      [
+        38.2,
+        64.5
+      ],
+      [
+        40.6,
+        74.0
+      ],
+      [
+        42.0,
+        79.0
+      ]
+    ],
+    "hero": 0,
+    "followCar": 7
+  },
+  "cues": {
+    "notes": "SFX cues authored in sfx-plan.json after the voiced render; hero beats: rewind whoosh (5.2), tap impact (11.0), riser->impact on first full stop (22.3-24.3), impact on BACKWARDS stamp (~25.4), pop on the measured-speed chip (~38.9), soft whoosh on the loop title (40.9)."
+  }
+}

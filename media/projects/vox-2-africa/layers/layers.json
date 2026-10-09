@@ -1,0 +1,25 @@
+{
+ "note": "Generated via image-generation skill for vox-2-africa (make-vox Stage 2). Maps prompted NO text (chips annotate instead, per the skill). Cutouts keyed from white with PIL.",
+ "assets": {
+  "africa1880.png": {
+   "prompt": "1880s parchment Africa map, no internal borders, no text",
+   "role": "S1/S2 the pre-colonial map"
+  },
+  "africa1914.png": {
+   "prompt": "1914 political partition map, colored colonial regions, no text",
+   "role": "S5 the partition overlay"
+  },
+  "berlin.png": {
+   "prompt": "Berlin Conference engraving, diplomats around long table, no text",
+   "role": "S2/S3 the archival photo"
+  },
+  "ruler.png": {
+   "prompt": "antique folding ruler cutout on white",
+   "role": "S4 the ruler prop"
+  },
+  "pen.png": {
+   "prompt": "vintage dip pen cutout on white",
+   "role": "S4 the pen prop"
+  }
+ }
+}
