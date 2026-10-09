@@ -42,6 +42,20 @@ Project: [`shorts/short-13-emergence/`](shorts/short-13-emergence/) · compositi
 [`Short13Traffic.tsx`](remotion/src/shots/short-13/Short13Traffic.tsx) ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-short-13)
 
+### `/make-map` — animated-map documentaries
+
+**Six Days, One Ship, $9.6 Billion** · 1920×1080 · 34s — the 2021 Suez blockage as a
+war-room map documentary: 369 ships queued behind one wedge of steel, tugs and dredgers
+arriving on the full-moon tide. The whole film is **one continuous camera shot** across a
+data-driven d3-geo map — outlines draw themselves, figures rise out of the map.
+
+![map-1: Six Days, One Ship, $9.6 Billion](https://github.com/Ziruax/make-videos/releases/download/example-map-1/map-1-suez.mp4)
+
+Project: [`map-films/map-1-suez/`](map-films/map-1-suez/) · composition:
+[`Map1Suez.tsx`](remotion/src/shots/map-1/Map1Suez.tsx) · shared kit:
+[`mapkit.tsx`](remotion/src/lib/mapkit.tsx) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-map-1)
+
 ## 📖 Read the guide
 
 I wrote up the whole system on my site, including the six-beat grammar that decides whether a
