@@ -18,10 +18,20 @@
 // The tabletop tilt is applied by the SHOT (wrap the map svg in a perspective div);
 // everything drawn by these components lives in map coordinates and tilts with it.
 import React from 'react';
+import { Easing } from 'remotion';
 import { geoMercator, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Topology, GeometryCollection } from 'topojson-specification';
 import topo from 'world-atlas/countries-50m.json';
+
+// Multi-resolution base layers (Natural Earth). Detail level must MATCH the zoom:
+// 110m for whole-world shots, 50m for continent/regional, 10m for country/strait
+// close-ups. Blobby coastlines at tight zoom is the #1 amateur map-video tell.
+// Each resolution is parsed lazily, ONCE, and cached; scenes PIN their detail
+// level (switch only at scene boundaries, never mid-move, so coastlines never pop
+// during a camera leg).
+import topo110 from 'world-atlas/countries-110m.json';
+import topo10 from 'world-atlas/countries-10m.json';
 
 // =============================================================================
 // THE KIT — projection + precomputed paths
@@ -29,14 +39,36 @@ import topo from 'world-atlas/countries-50m.json';
 export type MapKit = {
   w: number;
   h: number;
+  res: MapRes;
   project: (lon: number, lat: number) => [number, number];
   countries: { name: string; d: string; box: [number, number, number, number] }[];
 };
 
-export const createKit = (w: number, h: number, center: [number, number], baseScale: number): MapKit => {
+/** Detail levels: '110m' whole-world · '50m' continent/regional · '10m' country/
+ *  strait close-ups. Pin per scene; switch only at scene boundaries. */
+export type MapRes = '110m' | '50m' | '10m';
+
+// resolution cache: parse each TopoJSON once per process, keyed by res
+const RES_TOPO: Record<MapRes, unknown> = {
+  '110m': topo110,
+  '50m': topo,
+  '10m': topo10,
+};
+const kitCache = new Map<string, MapKit>();
+
+export const createKit = (
+  w: number,
+  h: number,
+  center: [number, number],
+  baseScale: number,
+  res: MapRes = '50m',
+): MapKit => {
+  const cacheKey = `${w}x${h}|${center[0]},${center[1]}|${baseScale}|${res}`;
+  const cached = kitCache.get(cacheKey);
+  if (cached) return cached;
   const projection = geoMercator().center(center).scale(baseScale).translate([w / 2, h / 2]);
   const path = geoPath(projection);
-  const topoJson = topo as unknown as Topology;
+  const topoJson = RES_TOPO[res] as unknown as Topology;
   const world = feature(topoJson, topoJson.objects.countries as GeometryCollection) as unknown as {
     features: { properties: { name: string }; geometry: { coordinates: unknown } }[];
   };
@@ -58,7 +90,15 @@ export const createKit = (w: number, h: number, center: [number, number], baseSc
     walk(f.geometry.coordinates);
     return { name: f.properties.name, d, box };
   });
-  return { w, h, project: (lon, lat) => (projection([lon, lat]) as [number, number]) ?? [0, 0], countries };
+  const kit: MapKit = {
+    w,
+    h,
+    res,
+    project: (lon, lat) => (projection([lon, lat]) as [number, number]) ?? [0, 0],
+    countries,
+  };
+  kitCache.set(cacheKey, kit);
+  return kit;
 };
 
 // =============================================================================
@@ -81,8 +121,11 @@ export const WorldMap: React.FC<{
   land?: string;
   ocean?: string;
   highlight?: { names: string[]; draw: number; color?: string; fill?: number };
+  /** border hierarchy: focus countries 2-3px screen, rest 0.5-1px (cartographic rank) */
+  focus?: string[];
+  focusColor?: string;
   cam: Camera;
-}> = ({ kit, land = '#c9ccd4', ocean = '#0d1c2e', highlight, cam }) => {
+}> = ({ kit, land = '#c9ccd4', ocean = '#0d1c2e', highlight, focus, focusColor = '#0d1c2e', cam }) => {
   // cull countries outside the visible rect (critical at z>30)
   const visW = kit.w / cam.z;
   const visH = kit.h / cam.z;
@@ -93,6 +136,7 @@ export const WorldMap: React.FC<{
   const vx1 = cx + visW / 2 + 40;
   const vy1 = cy + visH / 2 + 40;
   const hiSet = new Set(highlight?.names ?? []);
+  const focusSet = new Set(focus ?? []);
   return (
     <g>
       <rect x={-kit.w} y={-kit.h} width={kit.w * 3} height={kit.h * 3} fill={ocean} />
@@ -100,9 +144,13 @@ export const WorldMap: React.FC<{
         const [x0, y0, x1, y1] = c.box;
         if (x1 < vx0 || x0 > vx1 || y1 < vy0 || y0 > vy1) return null;
         const hi = hiSet.has(c.name);
+        const focused = focusSet.has(c.name);
         return (
           <g key={c.name}>
-            <path d={c.d} fill={hi ? highlight?.fill ? mix(land, highlight.color ?? '#f5d76e', highlight.fill) : land : land} stroke="rgba(13,28,46,0.55)" strokeWidth={0.6 / cam.z} />
+            <path d={c.d} fill={hi ? highlight?.fill ? mix(land, highlight.color ?? '#f5d76e', highlight.fill) : land : land} stroke="rgba(13,28,46,0.55)" strokeWidth={(focused ? 2.4 : focused === undefined && focus ? 1.0 : 0.6) / cam.z} />
+            {focused && (
+              <path d={c.d} fill="none" stroke={focusColor} strokeWidth={1.2 / cam.z} opacity={0.85} />
+            )}
             {hi && highlight && (
               <path
                 d={c.d}
@@ -351,3 +399,467 @@ export const GrainRect: React.FC<{ w: number; h: number; frame: number }> = ({ w
     style={{ mixBlendMode: 'overlay' }}
   />
 );
+
+// =============================================================================
+// CAMERA GRAMMAR (v2) — legs, log-zoom, flyTo arcs, slow arrival.
+// Rules encoded (from map-camera research):
+//   - zoom interpolates in LOG space (zoom steps are multiplicative, a linear
+//     z feels like an "invisible wall" mid-move)
+//   - default easing is Smooth (in-out); LINEAR only under montage/VO
+//   - slowArrival (long stretched deceleration, "aircraft on approach") is
+//     RESERVED for the final leg — or nothing lands
+//   - one zoom change per leg; a big jump between distant anchors is a FLY-TO:
+//     zoom OUT so both endpoints stay visible, arc across, descend in
+//   - camera speed ≤ ~1.5 screenfulls/s for tracked action (skill enforces)
+// =============================================================================
+export type CamEase = 'smooth' | 'slowArrival' | 'linear';
+const EASES: Record<CamEase, (t: number) => number> = {
+  smooth: Easing.bezier(0.65, 0, 0.35, 1),
+  slowArrival: Easing.bezier(0.05, 0.7, 0.1, 1),
+  linear: (t) => t,
+};
+
+export type CamLeg = { from: Camera; to: Camera; dur: number; ease?: CamEase };
+
+/** zoom in log space so multiplicative zoom steps feel even */
+export const zLerp = (a: number, b: number, t: number) => a * Math.pow(b / a, t);
+
+/** camera at frame f along a leg track (frames are LOCAL to the track). */
+export const camAt = (legs: CamLeg[], f: number): Camera => {
+  let t0 = 0;
+  for (const leg of legs) {
+    if (f < t0 + leg.dur) {
+      const u = EASES[leg.ease ?? 'smooth'](Math.max(0, (f - t0) / leg.dur));
+      return {
+        lon: leg.from.lon + (leg.to.lon - leg.from.lon) * u,
+        lat: leg.from.lat + (leg.to.lat - leg.from.lat) * u,
+        z: zLerp(leg.from.z, leg.to.z, u),
+      };
+    }
+    t0 += leg.dur;
+  }
+  const last = legs[legs.length - 1];
+  return last ? last.to : { lon: 0, lat: 0, z: 1 };
+};
+
+/** total track duration (frames) */
+export const camDur = (legs: CamLeg[]) => legs.reduce((a, l) => a + l.dur, 0);
+
+/** FLY-TO: a guided zoom between distant anchors (MapLibre flyTo, curve ≈ 1.4):
+ *  zoom out until both endpoints are on screen, arc across, descend to target
+ *  with the slow-arrival ease. Returns leg frames; feed to camAt. */
+export const flyToLegs = (from: Camera, to: Camera, dur: number, minZ = 1): CamLeg[] => {
+  // both visible => the angular distance fits in ~1 screen at zBoth
+  const dLon = Math.abs(to.lon - from.lon);
+  const dLat = Math.abs(to.lat - from.lat);
+  const spanDeg = Math.max(dLon, dLat * 1.35, 6);
+  const zBoth = Math.max(minZ, Math.min(from.z, to.z, 30 / spanDeg));
+  const outZ = Math.min(from.z, zBoth);
+  const thirds = Math.max(4, Math.round(dur / 3));
+  return [
+    { from, to: { lon: from.lon, lat: from.lat, z: outZ }, dur: thirds, ease: 'smooth' },
+    {
+      from: { lon: from.lon, lat: from.lat, z: outZ },
+      to: { lon: to.lon, lat: to.lat, z: zBoth },
+      dur: thirds,
+      ease: 'smooth',
+    },
+    {
+      from: { lon: to.lon, lat: to.lat, z: zBoth },
+      to,
+      dur: dur - 2 * thirds,
+      ease: 'slowArrival',
+    },
+  ];
+};
+
+// =============================================================================
+// ZOOM-BAND LABEL SYSTEM — labels arrive when the CAMERA crosses their zoom
+// band (not on a timer), rank-sized, deterministic placement, screen-constant.
+// Placement priority (cartographic convention): above-right → below-right →
+// above-left → below-left, greedy collision-avoided against already-placed.
+// Once shown, a label never jumps; sizes differ ≥ 2pt across ranks; country
+// names letterspaced uppercase, cities regular; nothing under 26px @1080.
+// =============================================================================
+export type MapLabel = {
+  name: string;
+  lon: number;
+  lat: number;
+  rank: 0 | 1 | 2; // 0 country · 1 major city/feature · 2 detail
+  minZ: number; // band floor: appears when cam.z ≥ minZ
+  maxZ?: number; // band ceiling: hides above (street level can drop countries)
+  align?: 'aboveRight' | 'belowRight' | 'aboveLeft' | 'belowLeft';
+};
+
+const LABEL_STYLE: Record<0 | 1 | 2, { size: number; weight: number; spacing: number; caps: boolean; op: number }> = {
+  0: { size: 34, weight: 600, spacing: 3.2, caps: true, op: 0.9 },
+  1: { size: 28, weight: 500, spacing: 0.6, caps: false, op: 0.85 },
+  2: { size: 26, weight: 400, spacing: 0.3, caps: false, op: 0.75 },
+};
+
+/** <MapLabels> renders in a SCREEN-SPACE svg layer (counter-projected: constant
+ *  size at any zoom). Place it AFTER the map+grain layers, BEFORE actors. */
+export const MapLabels: React.FC<{
+  kit: MapKit;
+  cam: Camera;
+  labels: MapLabel[];
+  color?: string;
+  halo?: string;
+}> = ({ kit, cam, labels, color = '#eef2f7', halo = 'rgba(8,16,28,0.85)' }) => {
+  const [px, py] = kit.project(cam.lon, cam.lat);
+  // map point -> screen px (counter the camera transform)
+  const toScreen = (lon: number, lat: number): [number, number] => {
+    const [x, y] = kit.project(lon, lat);
+    return [kit.w / 2 + (x - px) * cam.z, kit.h / 2 + (y - py) * cam.z];
+  };
+  // deterministic arrival state per label: track band crossing frame-free by
+  // comparing cam.z to the band — we render whichever are in band; the 8-frame
+  // slide-in uses each label's own key on a seen-set keyed by band entry ORDER,
+  // approximated by ordering: labels whose band floor is far below cam.z (well
+  // established) render settled; those near their floor render arriving.
+  const placed: [number, number, number, number][] = [];
+  const els: React.ReactNode[] = [];
+  const sorted = [...labels].sort((a, b) => a.rank - b.rank || a.minZ - b.minZ);
+  for (const L of sorted) {
+    const inBand = cam.z >= L.minZ && (L.maxZ === undefined || cam.z <= L.maxZ);
+    if (!inBand) continue;
+    const [sx, sy] = toScreen(L.lon, L.lat);
+    const st = LABEL_STYLE[L.rank];
+    const text = st.caps ? L.name.toUpperCase() : L.name;
+    // width estimate ~0.62em per char
+    const w = text.length * st.size * 0.62 + st.spacing * text.length;
+    const h = st.size * 1.15;
+    const off = st.size * 0.55;
+    const cands: [number, number, number, number, number, number][] = [
+      [sx + off, sy - h * 0.75, sx + off + w, sy + h * 0.25, sx + off, sy - h * 0.28], // above-right
+      [sx + off, sy + h * 0.15, sx + off + w, sy + h * 1.15, sx + off, sy + h * 0.62], // below-right
+      [sx - off - w, sy - h * 0.75, sx - off, sy + h * 0.25, sx - off, sy - h * 0.28], // above-left
+      [sx - off - w, sy + h * 0.15, sx - off, sy + h * 1.15, sx - off, sy + h * 0.62], // below-left
+    ];
+    const order = L.align ? cands.findIndex((_, i) => i === ['aboveRight', 'belowRight', 'aboveLeft', 'belowLeft'].indexOf(L.align as string)) : 0;
+    let chosen = cands[Math.max(0, order)];
+    for (const c of cands) {
+      const hit = placed.some((p) => !(c[2] < p[0] || c[0] > p[2] || c[3] < p[1] || c[1] > p[3]));
+      if (!hit) {
+        chosen = c;
+        break;
+      }
+    }
+    placed.push([chosen[0], chosen[1], chosen[2], chosen[3]]);
+    // settle amount: labels well inside their band (cam.z ≥ 1.25×minZ) are settled;
+    // near the floor they slide in 8 frames (arrival approximation, deterministic
+    // in cam.z — the same camera state always renders the same label state)
+    const near = Math.max(0, Math.min(1, (cam.z - L.minZ) / (L.minZ * 0.25)));
+    const dy = (1 - near) * 14;
+    const op = st.op * near;
+    if (op <= 0.02) continue;
+    // cull off-screen
+    if (chosen[2] < -50 || chosen[0] > kit.w + 50 || chosen[3] < -50 || chosen[1] > kit.h + 50) continue;
+    els.push(
+      <g key={`${L.name}-${L.rank}`} opacity={op} transform={`translate(0 ${dy})`}>
+        <text
+          x={chosen[4]}
+          y={chosen[5]}
+          style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: st.size,
+            fontWeight: st.weight,
+            letterSpacing: st.spacing,
+            fill: color,
+            stroke: halo,
+            strokeWidth: 5,
+            paintOrder: 'stroke',
+          }}
+        >
+          {text}
+        </text>
+      </g>,
+    );
+  }
+  return <g>{els}</g>;
+};
+
+// =============================================================================
+// ANNOTATION GRAMMAR — the MapStory taxonomy: area / line / point highlights,
+// path-followers, region changes WITH onset transients, measurement devices.
+// =============================================================================
+
+/** RegionGrow: a territory change (empire/front/blockade zone). Fill ramps in
+ *  fast (6f), border self-draws, and a ONE-TIME onset flash transient fires at
+ *  u crossing ~0.1 — viewers miss changes < 10-15% of visible area unless a
+ *  transient flags them (perceptual research). Sequence multiple regions with
+ *  staggered `at` for time-lapses; EVERY region change needs its transient. */
+export const RegionGrow: React.FC<{
+  kit: MapKit;
+  cam: Camera;
+  country: string; // kit country name
+  u: number; // 0..1 appearance progress
+  color?: string;
+  fill?: number; // 0..1 fill strength
+  at: number; // frame the region starts (for the transient timing)
+  frame: number;
+}> = ({ kit, cam, country, u, color = '#f5d76e', fill = 0.4, at, frame }) => {
+  const c = kit.countries.find((x) => x.name === country);
+  if (!c || u <= 0) return null;
+  const fillU = Math.min(1, u / 0.25); // fill lands fast
+  // onset transient: bright pulse in the 10 frames after arrival
+  const since = frame - (at + 4);
+  const flash = since >= 0 && since < 10 ? Math.sin((since / 10) * Math.PI) : 0;
+  return (
+    <g>
+      <path d={c.d} fill={color} opacity={fill * fillU} />
+      <path
+        d={c.d}
+        fill="none"
+        stroke={color}
+        strokeWidth={(3 + 3 * flash) / cam.z}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1 - u}
+        strokeLinecap="round"
+        style={flash > 0 ? { filter: `drop-shadow(0 0 ${(10 * flash) / cam.z}px ${color})` } : undefined}
+      />
+    </g>
+  );
+};
+
+/** LeaderLabel: off-map callout with a leader line to a point (for dense
+ *  regions where an in-place label would collide). Elbow: 45° then horizontal. */
+export const LeaderLabel: React.FC<{
+  kit: MapKit;
+  cam: Camera;
+  lon: number;
+  lat: number;
+  text: string;
+  side?: 1 | -1; // 1 = elbow to the right
+  color?: string;
+  size?: number;
+  y?: number; // screen-space y for the label end (default: auto)
+  draw?: number; // 0..1 leader draw-in
+  opacity?: number;
+}> = ({ kit, cam, lon, lat, text, side = 1, color = '#eef2f7', size = 30, y, draw = 1, opacity = 1 }) => {
+  const [px, py] = kit.project(cam.lon, cam.lat);
+  const [x, y0] = kit.project(lon, lat);
+  const sx = kit.w / 2 + (x - px) * cam.z;
+  const sy = kit.h / 2 + (y0 - py) * cam.z;
+  const lift = 90;
+  const ey = y ?? Math.max(120, Math.min(kit.h - 120, sy - lift));
+  const ex = sx + side * (Math.abs(ey - sy) * 0.7 + 40);
+  const diag = `M ${sx} ${sy} L ${sx + side * 30} ${ey + (sy - ey) * 0.28} L ${ex} ${ey}`;
+  const el = 6 + Math.round(draw * 10);
+  return (
+    <g opacity={opacity}>
+      <path d={diag} fill="none" stroke={color} strokeWidth={2.2} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - draw} />
+      <circle cx={sx} cy={sy} r={5} fill={color} />
+      <text
+        x={side === 1 ? ex + 10 : ex - 10}
+        y={ey + el * 0.35}
+        textAnchor={side === 1 ? 'start' : 'end'}
+        style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: size,
+          fontWeight: 500,
+          fill: color,
+          letterSpacing: 0.8,
+          opacity: draw,
+          stroke: 'rgba(8,16,28,0.85)',
+          strokeWidth: 5,
+          paintOrder: 'stroke',
+        }}
+      >
+        {text}
+      </text>
+    </g>
+  );
+};
+
+/** DistRing: measurement rings around a focal point (the scale-making device —
+ *  "how far is far"). draw 0..1; label on the topmost drawn ring. */
+export const DistRing: React.FC<{
+  kit: MapKit;
+  cam: Camera;
+  lon: number;
+  lat: number;
+  radiusMapPx: number;
+  label: string;
+  draw: number;
+  color?: string;
+}> = ({ kit, cam, lon, lat, radiusMapPx, label, draw, color = '#9cc4d6' }) => {
+  const [x, y] = kit.project(lon, lat);
+  return (
+    <g>
+      <circle
+        cx={x}
+        cy={y}
+        r={radiusMapPx}
+        fill="none"
+        stroke={color}
+        strokeWidth={2 / cam.z}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1 - draw}
+        opacity={0.9}
+      />
+      {draw > 0.95 && (
+        <text
+          x={x}
+          y={y - radiusMapPx - 10 / cam.z}
+          textAnchor="middle"
+          style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 24 / cam.z,
+            fill: color,
+            letterSpacing: 1.4,
+          }}
+        >
+          {label}
+        </text>
+      )}
+    </g>
+  );
+};
+
+// =============================================================================
+// SWARM — grouped movers. Viewers track only 3-4 independent movers; a fleet is
+// ONE group with members at seeded offsets sharing one label/identity.
+// =============================================================================
+export const Swarm: React.FC<{
+  count: number;
+  spread: number; // map px scatter around the anchor
+  seed?: number;
+  member: React.FC<{ x: number; y: number; i: number }>; // draws ONE member at map coords
+}> = ({ count, spread, seed = 5, member: Member }) => {
+  const els: React.ReactNode[] = [];
+  for (let i = 0; i < count; i++) {
+    const rx = rand(seed * 131 + i * 17) - 0.5;
+    const ry = rand(seed * 57 + i * 29) - 0.5;
+    els.push(<Member key={i} x={rx * spread * 2} y={ry * spread * 2} i={i} />);
+  }
+  return <g>{els}</g>;
+};
+
+// =============================================================================
+// FURNITURE — date stamp, legend box, timeline scrubber (time-series films).
+// These three are DOM overlays (NOT svg): mount them in the shot's top-level
+// AbsoluteFill, BESIDE the map svg — never inside it. Constant screen size.
+// =============================================================================
+export const DateStamp: React.FC<{
+  date: string;
+  changedAt: number; // frame this date became current (pops on change)
+  frame: number;
+  x?: number;
+  y?: number;
+  color?: string;
+}> = ({ date, changedAt, frame, x = 70, y = 1840, color = '#eef2f7' }) => {
+  const since = frame - changedAt;
+  const pop = since >= 0 && since < 8 ? 1 + Math.sin((since / 8) * Math.PI) * 0.18 : 1;
+  const op = Math.min(1, Math.max(0, since / 4));
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y - 40,
+        transform: `scale(${pop})`,
+        opacity: op,
+        fontFamily: 'JetBrains Mono, monospace',
+        fontSize: 34,
+        fontWeight: 700,
+        letterSpacing: 2.5,
+        color,
+        textShadow: '0 2px 8px rgba(8,16,28,0.9)',
+        transformOrigin: 'left center',
+      }}
+    >
+      {date}
+    </div>
+  );
+};
+
+export type LegendEntry = { color: string; label: string };
+
+/** LegendBox: the EmperorTigerstar convention — a persistent legend makes
+ *  territory/fill semantics legible film-wide. Top-right, arrives at f8, stays. */
+export const LegendBox: React.FC<{
+  entries: LegendEntry[];
+  frame: number;
+  x?: number;
+  y?: number;
+}> = ({ entries, frame, x, y }) => {
+  const op = Math.min(1, Math.max(0, (frame - 8) / 6));
+  if (op <= 0) return null;
+  const boxW = 60 + Math.max(...entries.map((e) => e.label.length)) * 15;
+  const boxH = 34 + entries.length * 40;
+  const bx = x ?? 1080 - boxW - 50;
+  const by = y ?? 240;
+  return (
+    <div style={{ position: 'absolute', left: bx, top: by, opacity: op }}>
+      <div
+        style={{
+          background: 'rgba(10,18,30,0.72)',
+          border: '1px solid rgba(238,242,247,0.25)',
+          borderRadius: 10,
+          padding: '16px 20px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+        }}
+      >
+        {entries.map((e) => (
+          <div key={e.label} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 26, height: 14, borderRadius: 3, background: e.color }} />
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 24, color: '#eef2f7', letterSpacing: 0.8 }}>{e.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/** TimelineBar: bottom scrubber for multi-period films — progress fill, a tick
+ *  per period, period labels. The audience's clock for territory time-lapses. */
+export const TimelineBar: React.FC<{
+  periods: { label: string; at: number }[]; // at = frame the period starts
+  frame: number;
+  totalFrames: number;
+  color?: string;
+}> = ({ periods, frame, totalFrames, color = '#f5d76e' }) => {
+  const u = Math.min(1, Math.max(0, frame / totalFrames));
+  const active = periods.reduce((a, p, i) => (frame >= p.at ? i : a), 0);
+  return (
+    <div style={{ position: 'absolute', left: 90, right: 90, top: 1760 }}>
+      <div style={{ height: 6, background: 'rgba(238,242,247,0.18)', borderRadius: 3, overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${u * 100}%`, background: color, borderRadius: 3 }} />
+      </div>
+      <div style={{ position: 'relative', height: 44, marginTop: 8 }}>
+        {periods.map((p, i) => (
+          <div
+            key={p.label}
+            style={{
+              position: 'absolute',
+              left: `${(p.at / totalFrames) * 100}%`,
+              transform: 'translateX(0)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: 4,
+            }}
+          >
+            <div style={{ width: 2, height: 10, background: i <= active ? color : 'rgba(238,242,247,0.35)' }} />
+            <div
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: 22,
+                letterSpacing: 1,
+                color: i <= active ? '#eef2f7' : 'rgba(238,242,247,0.45)',
+                fontWeight: i === active ? 700 : 400,
+              }}
+            >
+              {p.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

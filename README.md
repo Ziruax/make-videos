@@ -1,7 +1,7 @@
 # claude-faceless-shorts-creator
 
 **A faceless video factory you drive with [Claude Code](https://claude.com/claude-code).**
-Six production tracks in one repo — you describe the video (or paste a full script —
+Thirteen production tracks in one repo — you describe the video (or paste a full script —
 every track adapts your words, never rewrites them), and the right pipeline runs:
 
 | You say… | Track | The pixels |
@@ -9,9 +9,10 @@ every track adapts your words, never rewrites them), and the right pipeline runs
 | *"make a short about the ×11 trick"* · *"here's my script, make it a short"* | **TSX** (`/make-short`) | 100% code — a [Remotion](https://remotion.dev) composition, no footage, no stock |
 | *"make an AI video short with blue-man"* | **Generative** (`/make-ai-short`) | a fal video model animating a **locked recurring character** |
 | *"make a vox-style short about coffee"* | **Collage** (`/make-vox`) | Vox-documentary paper collage — AI-image layers, die-cuts, a traveling camera |
-| *"make a map film about the Strait of Hormuz"* | **Map** (`/make-map`) | a **data-driven animated map** (world-atlas + TopoJSON + d3-geo) — war-room documentaries with one continuous camera shot |
-| *"make a Netflix-vs-Blockbuster style reel"* | **Motion graphics** (`/make-motion-graphics`) | photo cutouts + a 12fps stop-motion engine + an aged-film treatment — the voiceover IS the source code |
+| *"make a map film about the Strait of Hormuz"* | **Map** (`/make-map`) | a **data-driven animated map** at 3 detail levels (110m/50m/10m) — fly-to camera grammar, zoom-band labels, region-change transients, war-room documentaries in one continuous shot |
+| *"make a motion-graphics reel"* | **Motion design** (`/make-motion-graphics`) | a **real motion-design system** — kinetic-typography atoms, shape grammar, grid cascades, counters, Material-style transitions; type + shapes + limited palette only, no photos |
 | *"make a minimal metaphor reel"* | **Minimal** (`/make-minimal-reel`) | three physical metaphors — layered cut-outs, drawn shapes, optional 3D eye — under one paper/halftone finish at 15fps |
+| *"animate the history of the bicycle in cut paper"* (or crosshatch, riso, sketchbook, math, pixel, isometric) | **Animate styles** (7 tracks) | procedural canvas animation — one file, drawn + scored in code, MP4 via headless Chromium + ffmpeg. The [cth9191/animate](https://github.com/cth9191/animate) engine with the style pinned: `/make-cut-paper` `/make-crosshatch` `/make-riso` `/make-sketchbook` `/make-math` `/make-pixel` `/make-isometric` |
 | *"review this cut"* | **Critic** (`/review-cut`) | the Gauntlet: fresh critics, real frames, measured audio, SHIP / ONE MORE PASS |
 
 Every track shares the same backbone: **script-first intake** (bring your own script — it
@@ -58,9 +59,11 @@ Project: [`map-films/map-1-suez/`](map-films/map-1-suez/) · composition:
 [`mapkit.tsx`](remotion/src/lib/mapkit.tsx) ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-map-1)
 
-### `/make-motion-graphics` — documentary story reels
+### `/make-motion-graphics` — motion-design reels
 
-**Kodak vs The Future** · 1080×1920 · 40s — Kodak invented the digital camera in 1975,
+**Kodak vs The Future** · 1080×1920 · 40s — *the track's first-generation example (photo-cutout
+documentary collage; the track has since been rebuilt end-to-end as a true motion-design system:
+kinetic type, shapes, grids, data motion, no photos)* — Kodak invented the digital camera in 1975,
 and the company that owned photography still went bankrupt in 2012. The voiceover was
 locked **first** (the VO *is* the source code), then six scenes were built around it on a
 12fps stop-motion engine: zoom-through-frame, screen-blend smoke, slot-machine text,
@@ -106,6 +109,26 @@ Project: [`vox-shorts/vox-2-africa/`](vox-shorts/vox-2-africa/) · composition:
 > The `/make-ai-short` track needs a `FAL_KEY` and a locked character to generate video-model
 > clips, so it has no example film here yet — everything above is 100% reproducible from the
 > committed compositions.
+
+### The animate-style tracks — procedural canvas animation (7 styles)
+
+Seven new tracks pin the [animate](https://github.com/cth9191/animate) engine to one style
+each: **`/make-cut-paper`** (torn-paper collage worlds joined by shape-morphs) ·
+**`/make-crosshatch`** (boiling ink line, hatched shading, navy "inside the machine"
+worlds) · **`/make-riso`** (a three-ink risograph print — halftone screens, overprints,
+misregistration) · **`/make-sketchbook`** (graphite + one accent on a real sketchbook
+page, everything drawn on) · **`/make-math`** (manim-style explainer — written formulas,
+swept axes, transforms, honest readouts) · **`/make-pixel`** (true low-resolution pixel
+art that sharpens as eras advance) · **`/make-isometric`** (hairline isometric product
+line art, spring settles). Same story grammar, timing, synthesized score and measured
+review for all; the style supplies the drawing kit. Voice via Edge TTS with real word
+times (`tools/gen_takes_edge.py` → `voice.mjs`), so the picture cues on the words.
+
+A worked example lives at [`pieces/tri-180/`](pieces/tri-180/) — a 10.5s math-style
+piece ("the angles of a triangle sum to 180°") built through `/make-math` end-to-end:
+voice-cued morphs, a counting readout that lands on the spoken word, review.mjs
+PASS (story arc, text, loudness −14 LUFS), determinism true. Style routing index:
+[`.claude/skills/animate-styles-README.md`](.claude/skills/animate-styles-README.md).
 
 ## 📖 Read the guide
 

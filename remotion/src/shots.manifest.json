@@ -16,6 +16,14 @@
   "transparent": false
  },
  {
+  "id": "MapTestKit",
+  "durationInSeconds": 6,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
   "id": "Mg1Kodak",
   "durationInSeconds": 32,
   "fps": 30,
@@ -66,6 +74,14 @@
  {
   "id": "Mg1S6",
   "durationInSeconds": 5.6,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "MgTestKit",
+  "durationInSeconds": 6,
   "fps": 30,
   "width": 1080,
   "height": 1920,

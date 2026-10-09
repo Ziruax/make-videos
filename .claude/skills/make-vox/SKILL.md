@@ -147,3 +147,7 @@ The user's ear is the audit gate.
 script.md scenes each name their layers · all layers generated + sidecars in media/projects ·
 composition QA'd at cues and from the final mp4 · continuity handoffs verified · contrast rule
 honored · voice + SFX when requested · kit additions generic.
+
+## Shared craft floor
+
+[STUDIO-CRAFT.md](../STUDIO-CRAFT.md) — universal film-craft rules for every Remotion track (silence before payoff, one constant, colour means one thing, voice is the clock, perceptual limits, determinism discipline). Read it once per film; it is the floor each genre builds on.

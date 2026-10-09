@@ -1,148 +1,211 @@
 ---
 name: make-map
-description: Build a news-documentary ANIMATED MAP film (16:9 or 9:16, 30-60s) end-to-end from a topic OR a user-supplied SCRIPT — script intake + camera route, geopolitics, history, supply chains, conflict timelines, trade routes. The map is drawn from REAL geographic data (world-atlas + TopoJSON + d3-geo, never hand-drawn), tilted like a table-top war map, with self-drawing glowing country outlines, smooth camera moves between places, cutout figures rising out of the map, missile/jet/ship tracks, screen-blend VFX, film grain, and a "one continuous shot" scene-continuity rule, under the MOTION.md grammar. Voice by Edge TTS (user names the voice). Use when the user asks for a "map video", "war map", "documentary map animation", "geopolitics explainer", "strait/blockade/invasion animation", brings a script for that style, or to continue the map-N series — not the paper-collage look (make-vox) and not tactile metaphor reels (make-minimal-reel). Defers TSX crash rules to vidtsx-2d-generator, motion grammar to MOTION.md, SFX taste to suggest-sfx, critic rounds to review-cut.
+description: Build a DOCUMENTARY ANIMATED MAP film (16:9 or 9:16, 30-90s) end-to-end from a topic OR a user-supplied SCRIPT — geopolitics, history, chokepoints, supply chains, conflicts, trade routes, territory timelines. The map is drawn per-frame from REAL geographic data (world-atlas + TopoJSON + d3-geo, never hand-drawn) at THREE detail levels matched to zoom (110m world / 50m regional / 10m strait close-ups), with a camera grammar (fly-to arcs, log-zoom, slow-arrival finals), zoom-band label choreography, an annotation grammar (region grows WITH onset transients, path-followers, leader lines, distance rings, swarms), and time-series furniture (date stamp, legend, timeline bar). One continuous shot, tilted like a table-top war map, film grain on the map layer only. Voice by Edge TTS. Use for "map video", "war map", "geopolitics explainer", "history map animation", "strait/blockade/invasion/trade route animation", or to continue the map-N series. Defers TSX crash rules to vidtsx-2d-generator, SFX taste to suggest-sfx, critic rounds to review-cut.
+argument-hint: "[topic or script] [format] [voice?]"
 ---
 
 # make-map — data-driven animated map documentaries
 
-The signature look (proven on the reference "US–Iran" film): a deep navy ocean darkening at
-the edges, flat light-grey countries, the whole map tilted back like a table-top war map,
-film grain baked into the map layer, and a camera that NEVER jumps — every scene starts on
-the exact frame the previous scene ended, so the whole film plays as one continuous shot.
+A map film is choreographed like a documentary, not a slide deck. The three
+technique families (measured from 200+ map-animation videos): **camera moves**
+(zoom/pan/fly-to), **visual highlights** (area/line/point), and **animated
+elements** (path-followers, region changes, swarms) — orchestrated on the VO.
+The camera breathes: wide establish → tight detail → wide recontextualize.
 
-The map is **generated per frame from real data** — world-atlas country shapes unpacked
-with TopoJSON, projected and drawn with d3-geo (`geoMercator`). Never hand-draw a map:
-real geometry is what makes zoom-ins land on real coastlines, and it costs zero assets.
+The map is **generated per frame from real data** — world-atlas Natural Earth
+shapes, TopoJSON, d3-geo Mercator. Never hand-draw a map: real geometry is what
+makes zoom-ins land on real coastlines, and it costs zero assets.
+
+## The engine: `remotion/src/lib/mapkit.tsx` v2 (read it first)
+
+- **Multi-resolution**: `createKit(w, h, center, scale, res)` — res `'110m' |
+  '50m' | '10m'`. **Detail must match zoom** (blobby coastlines at tight zoom is
+  the #1 amateur tell). Switch res ONLY at scene boundaries, or mid-move while
+  cam.z < ~4 (the difference is sub-pixel there — verified).
+- **Camera grammar**: `CamLeg[]` + `camAt(legs, f)` — zoom interpolates in LOG
+  space; ease per leg: `'smooth'` (default), `'slowArrival'` (RESERVED for the
+  final leg — or nothing lands), `'linear'` (only under montage). `flyToLegs(from,
+  to, dur)` = the guided zoom: out (both endpoints visible) → arc across →
+  descend. `zLerp`, `camDur`.
+- **Zoom-band labels**: `MapLabels` + `MapLabel[]` — labels arrive when the
+  CAMERA crosses their zoom band (minZ), rank-sized (0 country 34px letterspaced
+  caps / 1 major 28px / 2 detail 26px), greedy collision-avoided placement in
+  cartographic priority (above-right → below-right → above-left → below-left),
+  screen-constant size, slide-in near the band floor. Once shown, never jumps.
+  Country labels 1.2-2pt larger than cities, minimums per the style table.
+- **Annotation grammar**: `RegionGrow` (territory change + ONE-TIME onset flash
+  transient — perceptual research: viewers miss changes < 10-15% of visible area
+  unless a transient flags them), `RouteArc` (self-drawing + traffic dots),
+  `LeaderLabel` (elbow callout for dense areas), `DistRing` (measurement rings —
+  the scale-making device), `Swarm` (a fleet as ONE grouped mover with members at
+  seeded offsets), `FigureRise` (the signature glyph-out-of-the-map move),
+  `ShipGlyph`, `VfxStreaks`.
+- **Furniture** (DOM overlays, mounted BESIDE the svg, never inside):
+  `DateStamp` (persistent, pops on change), `LegendBox` (top-right, arrives f8,
+  stays — fills get their meaning here), `TimelineBar` (bottom scrubber with a
+  tick per period — the audience's clock for time-lapses).
+- **Borders**: `WorldMap focus={['Egypt']}` — focus countries 2.4px, neighbours
+  1.0px, rest 0.6px (cartographic rank hierarchy). `highlight` = self-drawing
+  glow outline. Ocean stays ONE flat colour (the #1 style decision — labels pop
+  against flat water).
+
+## Perceptual gates (hard rules from vision research — QA enforces)
+
+1. **≤ 3-4 independently moving sprites**, ≤ 2 if the VO asks the viewer to
+   remember which is which. A fleet is ONE `Swarm`, not 12 ships.
+2. **Every territory change ≥ 15% of visible area, or flagged with an onset
+   transient** (`RegionGrow` does this). A change nobody notices didn't happen.
+3. **Annotations land AFTER the camera settles** (~15f margin), then HOLD ≥
+   1.5-2s before the next change. One factual transition per beat.
+4. **Camera speed ≤ ~1.5 screenfulls/s** for tracked action; slow sprites when
+   pushing in (same px/s feels zoom× faster zoomed in).
+5. **One arrow meaning at a time** — stagger arrow choreography so arrows never
+   compete. Curved = return/loop, bold = urgency, thin = flow.
+6. **Text ≥ 26-34px @1080, contrast ≥ 4.5:1 against its ACTUAL background**.
+7. **Optic flow is free**: uniform zoom in/out is the safest big move; scattered
+   independent motion is the most expensive. Zoom to recontextualize, don't
+   scatter.
 
 ## Script-first entry (when the user brings a script)
 
-The script IS the story — adapt its shape, never its meaning:
+1. **Route check.** Map films fit scripts that are GEOGRAPHIC (places,
+   chokepoints, invasions, routes, migrations). Character story →
+   /make-motion-graphics; system/idea explainer → /make-vox or /make-minimal-reel.
+2. **Extract the camera route from the words.** Every place the script names
+   becomes a named anchor; the ORDER of mentions IS the route. Sentences with no
+   place merge into the previous scene's VO (the camera holds or drifts).
+3. **Mark what changes on the map** per line: a region, a route, a marker, a
+   counter — every event must leave a VISIBLE geographic consequence.
+4. One confirmation round: the route table (sentence → anchor → zoom band →
+   events → res level) + cuts. Then run the pipeline.
 
-1. **Route check.** Map films fit scripts that are GEOGRAPHIC (places, chokepoints,
-   invasions, trade routes, migrations). A paper-collage explainer → make-vox; a character
-   story → make-motion-graphics. Route, don't force-fit.
-2. **Extract the camera route from the words.** Every place the script names becomes a
-   named anchor; the order of mentions IS the route. Sentences with no place in them get
-   merged into the previous scene's VO (the camera holds or drifts while it lands).
-3. **One confirmation round.** Show the route table (sentence → anchor → zoom level →
-   on-screen events) + cuts, get the thumbs-up, then run the normal pipeline from
-   Stage 1's beats.json step.
-
-## Project setup (once per project, in `remotion/`)
+## Project setup (once, in `remotion/`)
 
 ```
 npm install world-atlas topojson-client d3-geo d3-scale @types/topojson-client @types/d3-geo
 npm install zod@4.3.6        # PIN this exact version — newer zod breaks the render
 ```
-- Add `remotion.config.ts` that sets the **ANGLE GL renderer**, and ALWAYS render with
+- `remotion.config.ts` sets the **ANGLE GL renderer**; ALWAYS render with
   `--gl=angle` (the film-grain shader needs it headlessly).
-- The land data lives in `node_modules/world-atlas/countries-110m.json` (110m for
-  whole-world, 50m when zooming tight on a region). Load once at module level, convert
-  `topojson.feature(...)`, and precompute the projected SVG path string for every country
-  — projection params are plain constants, so this is pure data, computed once.
-- Map kit (add to `remotion/src/lib/mapkit.tsx`, generic across films): `<WorldMap>`
-  (props: projection center/scale/tilt, ocean colors, country fill, highlight country codes
-  with glowing self-drawing outline, lat/lon → x/y helper), camera keyframe module, and the
-  grain plate layer.
 
 ## Artifact contract
 
 ```
 map-films/map-N-<slug>/
-  script.md        — the story: scenes, camera route (place → place), on-screen events, VO lines
-  beats.json       — same machine contract as shorts: vo[] + format + scene timeline
+  script.md        — story + CAMERA ROUTE (ordered anchors w/ zoom + res) + label plan
+                     + event map (what changes when) + furniture plan + VO lines
+  beats.json       — machine contract: vo[] + format + scene timeline
   voice/ · sfx-plan.json · output/                                  [voice/output gitignored]
 remotion/src/shots/map-N/MapN<Name>.tsx  — THE composition (npm run gen after adding)
-media/projects/map-N-<slug>/            — cutouts, VFX plates, grain plate (committed)
+media/projects/map-N-<slug>/            — cutouts, VFX plates (committed)
 ```
 
 ## Format
 
-16:9 1920×1080 (YouTube documentary) or 9:16 1080×1920 (Shorts), 30fps, 30–60s. Scene
-continuity is mandatory in both.
+16:9 1920×1080 (YouTube documentary) or 9:16 1080×1920 (Shorts), 30fps, 30-90s.
+Scene continuity mandatory: every scene STARTS on the exact camera frame the
+previous scene ENDS on (import the previous scene's end anchor).
 
-## Stage 1 — script + camera route
+## Stage 1 — script + camera route + label plan
 
-Write `script.md` as: scene → story beat → what we're looking at → camera anchor (lat/lon +
-zoom) → on-screen events (outlines, markers, tracks, cutouts, VFX) → VO line. Facts
-verified. Then `beats.json` (same vo[] contract as shorts; ~2.7 wps windows). The camera
-ROUTE is the film: write it as an ordered list of named anchors
-(`{name: 'us', lat, lon, scale}`) in one shared module — scenes hand off anchors, never
-invent new framing mid-film.
+Write `script.md` as a numbered beat table: scene → story beat → camera anchor
+(lat/lon + zoom band) → res level for the scene → what changes on the map →
+labels that arrive in the scene's band → VO line. Facts verified by web search.
+Then `beats.json` (vo[] contract, ~2.7 wps windows).
 
-## Stage 2 — map + camera
+**The camera script is 4 phases** (fits 30-60s): **Intro** 0-2s establish wide
+(the globe→region zoom is the single most reliable hook — frame 0 wide, descend);
+**Build** 2-5s slow push/drift while elements light up; **Main** track events
+(one revelation per 7-10s, the breathing pattern wide→tight→wide); **Outro** pull
+back to the aftermath or hold as effects fade (the recap pull-back — "look how
+far we came" in one frame).
 
-- ONE `<WorldMap>` under everything; the camera is a set of keyframed
-  {centerX, centerY, scale} values interpolated with EASE_INOUT between named anchors.
-  Keep the named anchors in the shared module so Scene 2 can import Scene 1's END anchor.
-- **Vary the zoom like a composition type (MOTION.md):** alternate wide establishing →
-  regional → tight strait-level → back out for the aftermath; never two scenes at the
-  same scale in a row unless the story demands a hold. **Cause → effect on the map:**
-  every event visibly changes the map (a strike leaves a mark, a blockade leaves ships,
-  an outline drawn leaves the country highlighted) — motion without geographic
-  consequence is filler.
-- Country highlight: glowing colored outline that DRAWS ITSELF on (stroke-dashoffset over
-  ~20 frames, brand accent) + optional fill pulse. Flag colors are a deliberate choice
-  (Israel blue, Iran red) — keep the semantic consistent film-wide.
-- **Scene continuity rule (the one rule that matters):** every scene STARTS on the exact
-  camera frame the previous scene ENDS on. Build scene-by-scene, import the previous
-  scene's end anchor, and the cuts dissolve into one continuous shot.
+**Vary the zoom like a composition type:** never two scenes at the same scale in
+a row unless the story demands a hold. ONE zoom change per camera leg; hide the
+zoom change inside the faster leg of a pair.
 
-## Stage 3 — the actors (figures, vehicles, weapons)
+**Label plan:** list every place the VO names → its rank + band + arrival
+scene. Country labels at world/regional bands, features at mid, cities at tight.
+Labels the VO does NOT name stay out (labels compete with narration).
 
-- **Cutout figures** (leaders, soldiers): full-body transparent PNGs. Source: the agent's
-  **image-generation skill** ("full body, transparent/plain-white background, press-photo
-  style") or **image-search** for public figures; `tools/cutout.py` for die-cuts. Clean up
-  with ImageMagick (`convert a.png -fuzz 8% -transparent white`).
-  - The signature move: a colored circle pops on the country, the figure rises OUT of the
-    circle like a hole in the ground (lower body clipped by the circle), easeOut on the
-    rise so he decelerates into place.
-- **Vehicles/weapons** (jets, missiles, ships): top-down transparent PNGs. The flight track
-  is a bezier over the map: position = `interpolate(frame, [f0, f1], [0,1])` through the
-  curve, rotation = path tangent. Barrages = 20+ instances with seeded staggered starts.
-- **VFX** (explosions, smoke, grain plates): footage on BLACK backgrounds — composite with
-  `mixBlendMode: 'screen'` (the `ScreenBlend` helper in `lib/engine.tsx`) so only the light
-  adds. Leave a glowing red mark on each hit point.
-- **Blockades/lines:** a dashed line that draws itself across the strait
-  (stroke-dashoffset), ships gliding in behind it, flashing warning triangle on top.
+## Stage 2 — map + camera + furniture
+
+- ONE base `<WorldMap>` per scene at its pinned res; `<MapLayer>` applies the
+  camera. Camera = `CamLeg[]` per scene, built from the route; distant anchors
+  join with `flyToLegs`, adjacent ones with one smooth leg; the FINAL leg of the
+  film gets `slowArrival`.
+- Scene handoffs: import the previous scene's end anchor; cuts dissolve into
+  one continuous shot.
+- Mount furniture ONCE, film-wide: `DateStamp` (the clock — changes on the beat
+  the VO dates), `LegendBox` (entries for every fill/track colour), `TimelineBar`
+  if the film spans periods. A time-lapse film without date + legend is
+  unreadable on mute.
+- Grain ON THE MAP LAYER ONLY (screen-blend `GrainRect` between map and actors).
+- 2.5D tilt: the shot wraps the map svg in a perspective div (`rotateX(15-25°)`,
+  scale 1.05-1.08 to hide edges). Flat top-down reads informational; tilt reads
+  cinematic. Land/water contrast: flat single-colour water, land 2 steps lighter.
+
+## Stage 3 — the events (annotations, actors, VFX)
+
+- **Territory/region changes**: `RegionGrow` (the transient fires automatically).
+  For war fronts: a front LINE (RouteArc) + fills behind it, advancing on the
+  date stamp. Sequence ≥ 15% area steps or flag each with its transient.
+- **Routes**: `RouteArc` draw-in 0.8-1.5s with the head glyph riding it; distance
+  counter chips at the arc's fraction ("12,000 km to go"); `DistRing`s from the
+  focal point for scale.
+- **Fleets/forces**: `Swarm` (one group = one tracked mover + one label).
+- **Cutout figures** (leaders): image-generation skill or image-search, plain
+  background, `tools/cutout.py`; the signature `FigureRise` move.
+- **Vehicles**: top-down PNGs; flight track = bezier, rotation = tangent;
+  barrages = 20+ seeded staggered instances BUT grouped as 2-3 perceived
+  formations.
+- **VFX** (explosions, smoke): black-background footage with `ScreenBlend`; hit
+  points leave glowing marks (cause → effect: every strike leaves a mark).
+- Every event lands AFTER the camera settles + ON the VO word that names it
+  (word-exact retiming after the voice exists).
 
 ## Stage 4 — grain + render
 
-Grain belongs ON THE MAP LAYER ONLY (never over foreground actors: jets, flags, explosions).
-The full-frame film-grain plate is a separate, render-only overlay (screen blend of a bright
-grain-on-black plate, `filmgrain.mp4`-style) — keep it OUT of the live preview so Studio
-stays fast, bake it only into the final render. Render once, at the end:
 ```
 cd remotion && npm run gen
 npx remotion render MapNName out/MapNName.mp4 --gl=angle
 ```
 
-## Stage 5 — QA
+## Stage 5 — QA (measured + VLM)
 
-`node scripts/frames.mjs MapNName <f0,scene-handoffs,event-cues,last> --scale=0.5` — READ
-every PNG: scene handoffs invisible (frame A-end == B-start) · camera framing at each
-anchor (the subject region fills the usable frame) · outlines drew fully · tracks stay on
-believable paths · grain not on actors · **on mute, the story still reads** (labels,
-markers and tracks carry the geography).
-Measured: `bash tools/qa_frozen_time.sh` on the render + `bash tools/qa_determinism.sh
-MapNName` (same frame twice = same pixels). Flagships: `/review-cut` critic round.
+`node scripts/frames.mjs MapNName <f0,handoffs,event-cues,res-switches,last>
+--scale=0.5` — READ the PNGs with VLM: scene handoffs invisible (A-end ==
+B-start) · framing at each anchor (subject region fills the usable frame) ·
+coastline detail matches zoom (no blobs at close-up) · labels readable, not
+colliding, arriving at bands not mid-move · outlines drew fully · tracks on
+believable paths · grain not on actors · **perceptual gates all pass** · **on
+mute, the story reads** (labels + legend + date + tracks carry the geography).
+Measured: `tools/qa_frozen_time.sh` + `tools/qa_determinism.sh MapNName`.
+Flagships: `/review-cut` critic round.
 
 ## Stage 6 — voice + sound
 
-Edge TTS (the user names the voice):
 ```
 python tools/gen_voice_edge.py --beats map-films/map-N-<slug>/beats.json \
     --voice en-US-ChristopherNeural --emit-ts remotion/src/shots/map-N/vo.gen.ts \
     --mux remotion/out/MapNName.mp4
 ```
-Then SFX per the foley sheet that made the reference film work: whooshes on every camera
-move · riser when a figure emerges · jet roars · explosion booms · missile launch streaks ·
-sonar ping when a blockade line draws · alarm on flashing warnings · foghorn when a ship
-stops. Library-first (`suggest-sfx`); web-search free libraries (Mixkit/Pixabay) when the
-library misses; music = slow-building dark tension bed (gen_music.py or library).
+Re-time events to REAL word times (each event on the word that names it; the
+camera settles ~15f BEFORE). Foley sheet: soft whoosh on every camera leg ·
+riser on figure emergence · jet roars · booms on hits · sonar ping when a
+blockade draws · foghorn when a ship stops · a LOW bed that drops for the
+payoff line. Library-first (`suggest-sfx`); web-search (Mixkit/Pixabay) when the
+library misses. Words always win.
 
 ## Done =
 
-map drawn from real data · one continuous camera shot (verified at every handoff) ·
-outlines/tracks/VFX landed on real geography · grain on map only, `--gl=angle` render ·
-Edge TTS voice with word-exact captions muxed · foley + music auditioned · no CTA outro.
+real data at matching detail levels · camera grammar obeyed (fly-tos, one zoom
+change per leg, slow-arrival final, settle→annotate→hold) · labels arrive by
+zoom band, never mid-move · every territory change transient-flagged ·
+perceptual gates pass · date/legend furniture present · one continuous shot
+verified at every handoff · events word-exact on the VO · grain on map only,
+`--gl=angle` · foley + music auditioned · no CTA outro.
+
+## Shared craft floor
+
+[STUDIO-CRAFT.md](../STUDIO-CRAFT.md) — universal film-craft rules for every Remotion track (silence before payoff, one constant, colour means one thing, voice is the clock, perceptual limits, determinism discipline). Read it once per film; it is the floor each genre builds on.

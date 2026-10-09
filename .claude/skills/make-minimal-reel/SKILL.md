@@ -211,3 +211,7 @@ continuity (portal, recede+blur, scale+blur-together) with no background cuts ·
 peripheral blur · world on sines, paper on flutter, ignition stepped · Studio controls
 exposed · SFX following the animation controls · measured QA passed · exact frame
 count · voice muxed at natural speed.
+
+## Shared craft floor
+
+[STUDIO-CRAFT.md](../STUDIO-CRAFT.md) — universal film-craft rules for every Remotion track (silence before payoff, one constant, colour means one thing, voice is the clock, perceptual limits, determinism discipline). Read it once per film; it is the floor each genre builds on.

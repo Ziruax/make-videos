@@ -13,3 +13,9 @@ export const FONT_SERIF = loadSerif('normal', { weights: ['500', '600'], subsets
 // heavy editorial serif for the vox collage engine's headlines (Publico-ish; Spectral maxes
 // at 600 and reads too light/bookish over collage layers)
 export const FONT_EDITORIAL = loadEditorial('normal', { weights: ['600', '700', '900'], subsets: ['latin'] }).fontFamily;
+// motion-graphics track display faces: Anton (ultra-condensed impact display),
+// ArchivoBlack (heavy grotesque statements). Loaded only when mgkit is used.
+import { loadFont as loadAnton } from '@remotion/google-fonts/Anton';
+import { loadFont as loadArchivoBlack } from '@remotion/google-fonts/ArchivoBlack';
+export const FONT_IMPACT = loadAnton('normal', { weights: ['400'], subsets: ['latin'] }).fontFamily;
+export const FONT_HEAVY = loadArchivoBlack('normal', { weights: ['400'], subsets: ['latin'] }).fontFamily;

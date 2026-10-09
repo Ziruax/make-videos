@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tri-180</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #050506; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { height: min(100vh, calc(100vw * 16 / 9)); width: auto; aspect-ratio: 9 / 16; display: block; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+// =====================================================================
+//  TRI-180 — 9:16, ~10.5s @ 24fps, motion on 1s, math style, VOICE-DRIVEN.
+//  The three interior angles of a triangle sum to 180°, proven visually:
+//  era 1 writes a 3-4-5-right triangle (α 53.13°, β 36.87°, γ 90°) and sweeps
+//  its angle arcs; era 2 lays the three wedges side by side on a line — they
+//  fill exactly the upper half-disc: a straight angle, 180°.
+//  Colour code (one colour per quantity, everywhere): α red, β green, γ blue,
+//  the result (the line, 180, the readout) yellow. The voice is the clock:
+//  every cue sits on a real word time from voice.json (VW fallbacks included
+//  so the piece also builds before the voice exists).
+// =====================================================================
+const FPS = 24, W = 1080, H = 1920;
+const BPM = 120, BEAT = 60 / BPM, E8 = BEAT / 2, E16 = BEAT / 4;
+const CX = 500;
+const SAFE = { top: 240, bottom: 420, right: 140 };
+
+// ---- voice helpers (the injected VOICE, when it exists) ----------------
+function VL(id) {
+  return (typeof VOICE !== 'undefined' && VOICE.lines.find((l) => l.id === id)) || null;
+}
+function VW(id, word, n = 1) {
+  const L = VL(id); if (!L || !L.words) return null;
+  const norm = (w) => w.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let c = 0;
+  for (const w of L.words) { if (norm(w.w) === norm(word)) { c++; if (c === n) return w; } }
+  return null;
+}
+const t0 = (id, fb) => { const L = VL(id); return L ? L.t0 : fb; };
+const at = (id, word, fb) => { const w = VW(id, word); return w ? w.t0 : fb; };
+
+// ---- duration: the voice IS the clock ----------------------------------
+const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 10.5;
+const NFRAMES = Math.round(DURATION * FPS);
+const LOOP_T = NFRAMES / FPS;   // score-head's loop point (this piece holds, it does not loop)
+
+// ---- the era boundary: the bridge lands in the pause before "One eighty."
+const T_BR = t0('l3', 6.45) - 0.35;           // bridge centre
+const D_BR = 0.55, M_BR = 0.15;               // half-lengths (bridge costs 1.1s)
+
+const CUES = {
+  tri: at('l1', 'triangle', 1.4),
+  labels: at('l1', 'hides', 2.0),
+  take: at('l2', 'take', 3.85),
+  arcs: at('l2', 'angles', 4.3),
+  detach: at('l2', 'corners', 5.3),
+  bridge: T_BR,
+  base: T_BR + 0.25,
+  wedges: t0('l3', 6.45) + 0.05,
+  count: at('l3', 'eighty', 7.1) - 0.55,
+  formula: at('l3', 'eighty', 7.1) + 0.35,
+  flash: at('l3', 'time', 8.2),
+};
+
+// ---- the triangle (era 1): a 3-4-5 right triangle, 70px per unit --------
+// O = the right angle; interior angles: α = 53.13° at B, β = 36.87° at A, γ = 90° at O
+const U = 70, O_ = [340, 1060], A_ = [340 + 4 * U, 1060], B_ = [340, 1060 - 3 * U];
+const TRI = [O_, A_, B_];
+// canvas angles (y is DOWN) of each interior wedge, and its label point
+const A_O = [-Math.PI / 2, 0];                                   // at O: up → right
+const A_B = [Math.atan2(210, 280), Math.PI / 2];                 // at B: toward A → down
+const A_A = [Math.PI, Math.PI + 0.6435];                         // at A: left → toward B (canvas-positive sweep)
+const ARC_R = 62;
+// era 2: the line, wedges side by side filling the upper half-disc
+const C2 = [CX, 1010], R2 = 150;
+const BASE0 = [C2[0] - R2 - 40, C2[1]], BASE1 = [C2[0] + R2 + 40, C2[1]];
+const A_RAD = 0.9273;   // 53.13° in radians
+const B_RAD = 0.6435;   // 36.87°
+
+const ERA_LIST = [
+  [0, T_BR, () => sceneTriangle()],
+  [T_BR, DURATION, () => sceneLine()],
+];
+const SHOTS = [
+  ['triangle', 0, 0.0, T_BR, 'the triangle and its three angle arcs'],
+  ['line',     1, T_BR, DURATION, 'the wedges fill a straight angle: 180°'],
+];
+const TIMELINE = {
+  width: W, height: H, fps: FPS, bpm: BPM, duration: DURATION, frames: NFRAMES, safe: SAFE,
+  format: 'morph-chain',
+  shots: SHOTS.map(([key, era, s0, s1, title], i) => ({ id: i + 1, key, era, t0: s0, t1: s1, title })),
+  cuts: [],
+  morphs: [T_BR],
+  cues: CUES,
+  acts: [
+    { name: '1 Triangle', role: 'build', t0: 0.0, t1: T_BR },
+    { name: '2 Straight angle', role: 'gift', t0: T_BR, t1: DURATION },
+  ],
+  board: [
+    { t: CUES.arcs, title: 'the three angle arcs', sound: 'plucks as each arc sweeps', next: 'the triangle becomes the line' },
+    { t: CUES.flash, title: '180°, every time', sound: 'chime + sub on the flash', next: 'holds' },
+  ],
+  narration: (typeof VOICE !== 'undefined' ? VOICE.lines : []).map((l) => ({ t0: l.t0, t1: l.t1, text: l.text })),
+};
+window.TIMELINE = TIMELINE;

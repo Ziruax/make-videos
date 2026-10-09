@@ -199,3 +199,7 @@ measured (frozen-time, loudness, determinism) · on-mute payoff confirmed · ren
 scale 1 · Edge TTS voice generated with word-exact captions and muxed (or ElevenLabs when
 asked) · SFX plan authored + audition mixed (~−15.5 LUFS, awaiting the user's ear) ·
 library used_in updated · IDEAS.md queue updated.
+
+## Shared craft floor
+
+[STUDIO-CRAFT.md](../STUDIO-CRAFT.md) — universal film-craft rules for every Remotion track (silence before payoff, one constant, colour means one thing, voice is the clock, perceptual limits, determinism discipline). Read it once per film; it is the floor each genre builds on.

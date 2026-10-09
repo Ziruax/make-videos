@@ -1,0 +1,9 @@
+{
+  "name": "tri-180",
+  "title": "The angles of a triangle",
+  "format": { "width": 1080, "height": 1920, "fps": 24, "bpm": 120 },
+  "storyFormat": "morph chain (2 eras, 1 shape morph), voice-driven",
+  "style": "math",
+  "voice": { "file": "voice/voice.wav", "music": -14 },
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} }
+}
