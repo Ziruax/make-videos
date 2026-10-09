@@ -85,6 +85,26 @@ Project: [`minimal-reels/mr-1-attention/`](minimal-reels/mr-1-attention/) · com
 [`tactile.tsx`](remotion/src/lib/tactile.tsx) ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-mr-1)
 
+### `/make-vox` — layered-collage documentaries
+
+**The Lines That Never Left** · 1080×1920 · 40s — the Berlin Conference, 1884: fourteen
+European powers drawing the borders of a continent none of them lived on, while no African
+sat in the room. Every scene is dissected into layers on one paper board — the archival
+photo lands ON the map and the camera dives INTO it; the 1880 map is **overwritten in
+place** by the 1914 partition; a ruler and pen draw the straight lines that outlived
+their authors.
+
+![vox-2: The Lines That Never Left](https://github.com/Ziruax/make-videos/releases/download/example-vox-2/vox-2-africa.mp4)
+
+Project: [`vox-shorts/vox-2-africa/`](vox-shorts/vox-2-africa/) · composition:
+[`Vox2Africa.tsx`](remotion/src/shots/vox-2/Vox2Africa.tsx) · shared kit:
+[`collage.tsx`](remotion/src/lib/collage.tsx) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-vox-2)
+
+> The `/make-ai-short` track needs a `FAL_KEY` and a locked character to generate video-model
+> clips, so it has no example film here yet — everything above is 100% reproducible from the
+> committed compositions.
+
 ## 📖 Read the guide
 
 I wrote up the whole system on my site, including the six-beat grammar that decides whether a
@@ -124,8 +144,9 @@ are not reproducible.
 generated map/archival/cutout layers (committed), a camera choreographed across scenes, and
 `DESIGN.md` — the full visual-language spec of the collage engine.
 
-Rendered videos aren't committed (they're reproducible from the repo); links to published
-versions will be added here as they go live.
+Rendered videos aren't committed (they're reproducible from the repo); the example films
+above are published as [GitHub Release assets](https://github.com/Ziruax/make-videos/releases)
+and embedded in the showcase at the top of this README.
 
 ## How a short gets made
 
