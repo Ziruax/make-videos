@@ -27,7 +27,9 @@ SFX/music library, seamless frame-0==last-frame loops, and no dated engagement-C
 
 Every production track ships at least one complete example film — built by running the
 track's own `SKILL.md` end to end (script → voice → composition → SFX → measured QA →
-render), then published here via [GitHub Releases](https://github.com/Ziruax/make-videos/releases).
+render), then published via [GitHub Releases](https://github.com/Ziruax/make-videos/releases).
+Each preview below autoplays as a silent looping GIF — **click it for the full film**
+(MP4 with voice and sound design, straight from its release).
 
 ### `/make-short` — the TSX track
 
@@ -36,7 +38,7 @@ no accident and no closed lane… and a phantom traffic wave that emerges anyway
 *backwards*. The simulation was measured first (the wave really moves at −17.9 km/h), then
 the script was written around the measurement — captions hit the exact spoken word.
 
-![short-13: The Traffic Jam With No Cause](https://github.com/Ziruax/make-videos/releases/download/example-short-13/short-13-emergence.mp4)
+[![short-13 preview](docs/examples/short-13.gif)](https://github.com/Ziruax/make-videos/releases/download/example-short-13/short-13-emergence.mp4)
 
 Project: [`shorts/short-13-emergence/`](shorts/short-13-emergence/) · composition:
 [`Short13Traffic.tsx`](remotion/src/shots/short-13/Short13Traffic.tsx) ·
@@ -49,7 +51,7 @@ war-room map documentary: 369 ships queued behind one wedge of steel, tugs and d
 arriving on the full-moon tide. The whole film is **one continuous camera shot** across a
 data-driven d3-geo map — outlines draw themselves, figures rise out of the map.
 
-![map-1: Six Days, One Ship, $9.6 Billion](https://github.com/Ziruax/make-videos/releases/download/example-map-1/map-1-suez.mp4)
+[![map-1 preview](docs/examples/map-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-map-1/map-1-suez.mp4)
 
 Project: [`map-films/map-1-suez/`](map-films/map-1-suez/) · composition:
 [`Map1Suez.tsx`](remotion/src/shots/map-1/Map1Suez.tsx) · shared kit:
@@ -64,7 +66,7 @@ locked **first** (the VO *is* the source code), then six scenes were built aroun
 12fps stop-motion engine: zoom-through-frame, screen-blend smoke, slot-machine text,
 parallax punch, drawn lamp light, a decaying foam finger — under an aged-film treatment.
 
-![mg-1: Kodak vs The Future](https://github.com/Ziruax/make-videos/releases/download/example-mg-1/mg-1-kodak.mp4)
+[![mg-1 preview](docs/examples/mg-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-mg-1/mg-1-kodak.mp4)
 
 Project: [`mg-reels/mg-1-kodak/`](mg-reels/mg-1-kodak/) · composition:
 [`Mg1Kodak.tsx`](remotion/src/shots/mg-1/Mg1Kodak.tsx) + scenes S1–S6 ·
@@ -78,7 +80,7 @@ was always underwater. Camera-continuity transitions (pupil portal, recede-and-b
 scale+blur settle), two kinds of texture, stepped ignition flicker — everything under one
 paper/halftone finish at 15fps, where every frame is a *felt* frame.
 
-![mr-1: What Attention Costs](https://github.com/Ziruax/make-videos/releases/download/example-mr-1/mr-1-attention.mp4)
+[![mr-1 preview](docs/examples/mr-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-mr-1/mr-1-attention.mp4)
 
 Project: [`minimal-reels/mr-1-attention/`](minimal-reels/mr-1-attention/) · composition:
 [`Mr1Attention.tsx`](remotion/src/shots/mr-1/Mr1Attention.tsx) + scenes S1–S3 · shared kit:
@@ -94,7 +96,7 @@ photo lands ON the map and the camera dives INTO it; the 1880 map is **overwritt
 place** by the 1914 partition; a ruler and pen draw the straight lines that outlived
 their authors.
 
-![vox-2: The Lines That Never Left](https://github.com/Ziruax/make-videos/releases/download/example-vox-2/vox-2-africa.mp4)
+[![vox-2 preview](docs/examples/vox-2.gif)](https://github.com/Ziruax/make-videos/releases/download/example-vox-2/vox-2-africa.mp4)
 
 Project: [`vox-shorts/vox-2-africa/`](vox-shorts/vox-2-africa/) · composition:
 [`Vox2Africa.tsx`](remotion/src/shots/vox-2/Vox2Africa.tsx) · shared kit:
@@ -146,7 +148,7 @@ generated map/archival/cutout layers (committed), a camera choreographed across 
 
 Rendered videos aren't committed (they're reproducible from the repo); the example films
 above are published as [GitHub Release assets](https://github.com/Ziruax/make-videos/releases)
-and embedded in the showcase at the top of this README.
+(each GIF in the showcase links to its film's MP4).
 
 ## How a short gets made
 
