@@ -39,7 +39,8 @@
     "short-13",
     "map-1",
     "mg-1",
-    "mr-1"
+    "mr-1",
+    "vox-2"
    ]
   },
   {
@@ -144,7 +145,8 @@
     "short-12-orbit",
     "short-13",
     "map-1",
-    "mg-1"
+    "mg-1",
+    "vox-2"
    ]
   },
   {
@@ -178,7 +180,8 @@
     "short-13",
     "map-1",
     "mg-1",
-    "mr-1"
+    "mr-1",
+    "vox-2"
    ]
   },
   {
@@ -219,7 +222,8 @@
     "short-13",
     "map-1",
     "mg-1",
-    "mr-1"
+    "mr-1",
+    "vox-2"
    ]
   },
   {
@@ -330,7 +334,8 @@
    "used_in": [
     "vox-1-coffee",
     "mg-1",
-    "mr-1"
+    "mr-1",
+    "vox-2"
    ]
   },
   {
@@ -442,7 +447,8 @@
     "short-11-map",
     "short-12-orbit",
     "ch-5-three-skills",
-    "short-13"
+    "short-13",
+    "vox-2"
    ]
   },
   {
@@ -607,7 +613,8 @@
     "short-12-orbit",
     "ch-5-three-skills",
     "short-13",
-    "mg-1"
+    "mg-1",
+    "vox-2"
    ]
   },
   {
@@ -783,7 +790,8 @@
    "used_in": [
     "short-7-kids",
     "blue-man-1-door",
-    "mr-1"
+    "mr-1",
+    "vox-2"
    ]
   },
   {
@@ -808,7 +816,8 @@
    "prompt": "A pencil quickly sketching a dashed line across rough paper, light scratchy graphite strokes in short bursts, close-miked, dry, natural, no music.",
    "used_in": [
     "vox-1-coffee",
-    "mg-1"
+    "mg-1",
+    "vox-2"
    ]
   },
   {
