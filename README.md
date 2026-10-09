@@ -56,6 +56,20 @@ Project: [`map-films/map-1-suez/`](map-films/map-1-suez/) · composition:
 [`mapkit.tsx`](remotion/src/lib/mapkit.tsx) ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-map-1)
 
+### `/make-motion-graphics` — documentary story reels
+
+**Kodak vs The Future** · 1080×1920 · 40s — Kodak invented the digital camera in 1975,
+and the company that owned photography still went bankrupt in 2012. The voiceover was
+locked **first** (the VO *is* the source code), then six scenes were built around it on a
+12fps stop-motion engine: zoom-through-frame, screen-blend smoke, slot-machine text,
+parallax punch, drawn lamp light, a decaying foam finger — under an aged-film treatment.
+
+![mg-1: Kodak vs The Future](https://github.com/Ziruax/make-videos/releases/download/example-mg-1/mg-1-kodak.mp4)
+
+Project: [`mg-reels/mg-1-kodak/`](mg-reels/mg-1-kodak/) · composition:
+[`Mg1Kodak.tsx`](remotion/src/shots/mg-1/Mg1Kodak.tsx) + scenes S1–S6 ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-mg-1)
+
 ## 📖 Read the guide
 
 I wrote up the whole system on my site, including the six-beat grammar that decides whether a
