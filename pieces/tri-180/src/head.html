@@ -49,8 +49,9 @@ const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 10.5;
 const NFRAMES = Math.round(DURATION * FPS);
 const LOOP_T = NFRAMES / FPS;   // score-head's loop point (this piece holds, it does not loop)
 
-// ---- the era boundary: the bridge lands in the pause before "One eighty."
-const T_BR = t0('l3', 6.45) - 0.35;           // bridge centre
+// ---- the era boundary: the bridge lands in the pause before "One eighty.", snapped to the 8th grid
+const snap8 = (t) => Math.round(t / E8) * E8;  // cuts and morph centres on the grid (review.mjs checks it)
+const T_BR = snap8(t0('l3', 6.45) - 0.35);     // bridge centre
 const D_BR = 0.55, M_BR = 0.15;               // half-lengths (bridge costs 1.1s)
 
 const CUES = {

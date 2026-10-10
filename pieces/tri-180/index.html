@@ -15,7 +15,7 @@
 <script>
 "use strict";
 // ---- voice.json (tools/voice.mjs): the voice-over's lines and word times
-const VOICE = {"duration":10.541,"lead":1.2,"tail":1.6,"lines":[{"id":"l1","text":"Every triangle hides a straight line.","t0":1.2,"t1":3.269,"words":[{"w":"Every","t0":1.2,"t1":1.38,"est":true},{"w":"triangle","t0":1.38,"t1":1.84},{"w":"hides","t0":1.84,"t1":2.3},{"w":"a","t0":2.3,"t1":2.46},{"w":"straight","t0":2.46,"t1":2.68},{"w":"line.","t0":2.68,"t1":3.04}]},{"id":"l2","text":"Take its three angles off the corners.","t0":3.719,"t1":5.953,"words":[{"w":"Take","t0":3.86,"t1":3.86},{"w":"its","t0":3.86,"t1":4.02},{"w":"three","t0":4.02,"t1":4.34},{"w":"angles","t0":4.34,"t1":4.82},{"w":"off","t0":4.82,"t1":5.1},{"w":"the","t0":5.1,"t1":5.26},{"w":"corners.","t0":5.26,"t1":5.52}]},{"id":"l3","text":"One eighty. Every time.","t0":6.453,"t1":8.941,"words":[{"w":"One","t0":6.453,"t1":7.117,"est":true},{"w":"eighty.","t0":7.117,"t1":7.78,"est":true},{"w":"Every","t0":7.78,"t1":8.24},{"w":"time.","t0":8.24,"t1":8.74}]}]};
+const VOICE = {"duration":10.422,"lead":1.2,"tail":1.6,"lines":[{"id":"l1","text":"Every triangle hides a straight line.","t0":1.2,"t1":3.242,"words":[{"w":"Every","t0":1.2,"t1":1.36,"est":true},{"w":"triangle","t0":1.36,"t1":1.82},{"w":"hides","t0":1.82,"t1":2.3},{"w":"a","t0":2.3,"t1":2.44},{"w":"straight","t0":2.44,"t1":2.68},{"w":"line.","t0":2.68,"t1":3}]},{"id":"l2","text":"Take its three angles off the corners.","t0":3.692,"t1":5.88,"words":[{"w":"Take","t0":3.82,"t1":3.84},{"w":"its","t0":3.84,"t1":3.98},{"w":"three","t0":3.98,"t1":4.3},{"w":"angles","t0":4.3,"t1":4.76},{"w":"off","t0":4.76,"t1":5.04},{"w":"the","t0":5.04,"t1":5.22},{"w":"corners.","t0":5.22,"t1":5.48}]},{"id":"l3","text":"One eighty. Every time.","t0":6.38,"t1":8.822,"words":[{"w":"One","t0":6.38,"t1":7,"est":true},{"w":"eighty.","t0":7,"t1":7.62,"est":true},{"w":"Every","t0":7.62,"t1":8.14},{"w":"time.","t0":8.14,"t1":8.62}]}]};
 // =====================================================================
 //  TRI-180 — 9:16, ~10.5s @ 24fps, motion on 1s, math style, VOICE-DRIVEN.
 //  The three interior angles of a triangle sum to 180°, proven visually:
@@ -51,8 +51,9 @@ const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 10.5;
 const NFRAMES = Math.round(DURATION * FPS);
 const LOOP_T = NFRAMES / FPS;   // score-head's loop point (this piece holds, it does not loop)
 
-// ---- the era boundary: the bridge lands in the pause before "One eighty."
-const T_BR = t0('l3', 6.45) - 0.35;           // bridge centre
+// ---- the era boundary: the bridge lands in the pause before "One eighty.", snapped to the 8th grid
+const snap8 = (t) => Math.round(t / E8) * E8;  // cuts and morph centres on the grid (review.mjs checks it)
+const T_BR = snap8(t0('l3', 6.45) - 0.35);     // bridge centre
 const D_BR = 0.55, M_BR = 0.15;               // half-lengths (bridge costs 1.1s)
 
 const CUES = {
@@ -1045,21 +1046,57 @@ function wedge(P, c, al = 1) {
 }
 const thereBack2 = (u) => { u = clamp(u); return u < 0.5 ? smoothM(u * 2) : 1 - smoothM((u - 0.5) * 2); };
 
+// ---- camera: ONE slow eased push per act, each mapping to a step of the argument ----
+// era 1 pushes onto the triangle while its details arrive; era 2 pulls back to reveal the
+// whole straight line (the payoff IS the wide view). STYLE.md: "the camera stays still; if you
+// need a zoom, make it one slow, eased push" — this is that push, and the reveal it earns.
+const CAM_P = [620, 895];   // the triangle's centroid (era 1's focus)
+function pieceCam(era, t) {
+  if (era === 0) {
+    const u = smoothM(seg(t, 1.0, 5.3));
+    return u <= 0 ? null : camOf({ z: 1 + 0.13 * u, p: CAM_P, to: CAM_P });
+  }
+  const u = smoothM(seg(t, T_BR + 0.15, T_BR + 0.95));
+  return camOf({ z: 1.13 - 0.13 * u, p: CAM_P, to: CAM_P });
+}
+// pin a screen point under the current camera -> world coords (keeps the hero readable)
+const uncam = (sx, sy) => { const c = pieceCam(eraAt(TT), TT) || CAM0; return [(sx - c.tx) / c.z, (sy - c.ty) / c.z]; };
+
 // ---- era 1: the triangle, its arcs, the labels --------------------------
 function sceneTriangle() {
   const cu = CUES;
   fillAll(MC.bg);
   mathTag('the interior angles');
-  // sides, lagged (γ's legs first: O→A then B→O, hypotenuse last)
+  // sides, lagged (γ's legs first: O→A then B→O, hypotenuse last), each vertex dot popping on arrival
   const triP = runS(cu.tri, 1.1);
   [[O_, A_, 0], [B_, O_, 0.25], [A_, B_, 0.5]].forEach(([p, q, lag], i) => {
     segLine(p[0], p[1], q[0], q[1], MC.white, 5, clamp(triP * 1.7 - lag, 0, 1));
   });
+  // vertex dots (manim's Dot): pop at the corners as the sides land, colour-coded to the angle they hold
+  [[O_, QG], [B_, QA], [A_, QB]].forEach(([v, c], i) => {
+    const u = thereBack(clamp(triP * 1.7 - i * 0.2 - 0.05, 0, 1) * 1.6);
+    if (u > 0) { ctx.fillStyle = c; ctx.beginPath(); ctx.arc(v[0], v[1], 9 * u, 0, TAU); ctx.fill(); }
+  });
+  // DrawBorderThenFill (STYLE.md): the border draws, then the fill fades up at 12% —
+  // the manim idiom, and the step that makes the arrival readable at phone size
+  const fillP = runS(cu.tri + 1.2, 0.8);
+  if (fillP > 0) { polyPath(TRI); ctx.fillStyle = MC.white; ctx.globalAlpha = 0.12 * fillP; ctx.fill(); ctx.globalAlpha = 1; }
   // angle arcs sweep in on "angles", lagged 0.5 across the three corners
   const arcP = runS(cu.arcs, 0.75);
   [[O_, A_O, QG, 'γ'], [B_, A_B, QA, 'α'], [A_, A_A, QB, 'β']].forEach(([v, [a0, a1], c], i) => {
     angleArc(v[0], v[1], ARC_R, a0, a1, c, clamp(arcP * 1.5 - i * 0.25, 0, 1), 4);
   });
+  // faint construction extensions of each side, staggered — the workbook scaffold keeps 2.6-3.6s alive
+  // and reads as how the drawing was made (one idea per frame: the triangle under construction)
+  const guid = runS(cu.tri + 1.7, 1.0);
+  if (guid > 0) {
+    const EXT = 46;   // how far each side line extends past its ends
+    [[O_, A_], [B_, O_], [A_, B_]].forEach(([p, q], i) => {
+      const gu = clamp(guid * 1.6 - i * 0.22, 0, 1); if (gu <= 0) return;
+      const a = Math.atan2(q[1] - p[1], q[0] - p[0]);
+      segLine(p[0] - Math.cos(a) * EXT, p[1] - Math.sin(a) * EXT, q[0] + Math.cos(a) * EXT, q[1] + Math.sin(a) * EXT, MC.grey, 2, gu, 0.5);
+    });
+  }
   // labels settle just after "hides", staggered (α, γ, β — one every ~0.35s)
   const labP = (d) => runS(cu.labels + d, 0.55);
   const mid = (a0, a1) => lerp(a0, a1, 0.5);
@@ -1080,8 +1117,16 @@ function sceneTriangle() {
       wedge(wedgePts(v[0], v[1], ARC_R, a0, a1), c, 0.9 * thereBack2(u));
     });
   }
-  // hero watches, low right
-  piHero(830, 1700, 0.85, { look: [(O_[0] + A_[0]) / 2, (O_[1] + B_[1]) / 2], mood: 'calm', key: 'pi1' });
+  // hero watches the drawing — its gaze tracks whatever is being drawn right now; feet pinned to
+  // screen (830, 1470) under the camera so it never drifts into the platform-UI strip
+  let lookPt = [(O_[0] + A_[0] + B_[0]) / 3, (O_[1] + A_[1] + B_[1]) / 3];
+  const sides = [[O_, A_, 0], [B_, O_, 0.25], [A_, B_, 0.5]];
+  sides.forEach(([p, q, lag]) => { const u = clamp(triP * 1.7 - lag, 0, 1); if (u > 0.02 && u < 0.98) lookPt = [lerp(p[0], q[0], u), lerp(p[1], q[1], u)]; });
+  const arcV = [[O_, A_O], [B_, A_B], [A_, A_A]];
+  arcV.forEach(([v, [a0, a1]], i) => { const u = clamp(arcP * 1.5 - i * 0.25, 0, 1); if (u > 0.02 && u < 0.98) lookPt = [v[0] + Math.cos(lerp(a0, a1, u)) * ARC_R, v[1] + Math.sin(lerp(a0, a1, u)) * ARC_R]; });
+  if (det > 0) lookPt = [lookPt[0] * 0.4 + CX * 0.6, 900];
+  const hw = uncam(830, 1470), hz = 0.85 / (pieceCam(0, TT) || CAM0).z;
+  piHero(hw[0], hw[1], hz, { look: lookPt, mood: TT >= cu.take ? 'focus' : 'calm', key: 'pi1' });
   mathCaption('every triangle hides a straight line');
 }
 
@@ -1128,8 +1173,9 @@ function sceneLine() {
   // the flash on "time" — the payoff
   const fl = seg(TT, cu.flash, cu.flash + 0.45);
   if (fl > 0) flashAt(C2[0], C2[1] - R2 * 0.55, smoothM(fl), MC.yellowP, 70, 5);
-  // hero: wow at the flash
-  piHero(830, 1700, 0.85, { look: [C2[0], C2[1]], mood: TT >= cu.flash ? 'wow' : 'calm', hop: thereBack2(seg(TT, cu.wedges + 0.3, cu.wedges + 0.9)), key: 'pi2' });
+  // hero: wow at the flash, feet pinned to screen (830, 1470)
+  const hw2 = uncam(830, 1470), hz2 = 0.85 / (pieceCam(1, TT) || CAM0).z;
+  piHero(hw2[0], hw2[1], hz2, { look: [C2[0], C2[1]], mood: TT >= cu.flash ? 'wow' : 'calm', hop: thereBack2(seg(TT, cu.wedges + 0.3, cu.wedges + 0.9)), key: 'pi2' });
   mathCaption('the angles fill a straight line');
 }
 // =====================================================================
@@ -1477,19 +1523,24 @@ async function buildScore(sampleRate = 48000, part = 'mix', normIn = null) {
   const T = TIMELINE, cu = T.cues;
   to = 'm';
   pad(0.0, T_BR, ['D3', 'A3'], 0.03, { type: 'triangle', cut: 1000, att: 0.3, rel: 0.3 });
-  pad(T_BR, T.duration, ['D3', 'A3', 'F4'], 0.035, { type: 'triangle', cut: 1300, att: 0.3, rel: 0.3, send: 0.5 });
+  // the pad HARD-STOPS 0.7s before the payoff chime: the silence before the flash is the turn (craft.md)
+  pad(T_BR, cu.flash - 0.7, ['D3', 'A3', 'F4'], 0.035, { type: 'triangle', cut: 1300, att: 0.3, rel: 0.3, send: 0.5 });
   // plucks as the triangle's sides draw (on "triangle")
   [['D4', 0], ['Fs4', E8], ['A4', BEAT]].forEach(([n, dt], i) => pluck(cu.tri + 0.1 + dt, nz(n), 0.12, -0.2 + i * 0.2, 0.5, 2600, 0.35));
   // arcs sweep on "angles"
   [['A4', 0], ['B4', E8], ['D5', BEAT]].forEach(([n, dt], i) => pluck(cu.arcs + dt, nz(n), 0.1, -0.3 + i * 0.3, 0.5, 3000, 0.35));
-  // wedges land, then the count: chime exactly on "eighty"
-  [['E5', 0], ['Fs5', E8], ['A5', BEAT]].forEach(([n, dt], i) => pluck(cu.wedges + 0.35 + dt, nz(n), 0.11, 0.1 * i, 0.5, 3200, 0.4));
-  chime(cu.count + 0.55, [nz('D5'), nz('A5'), nz('Fs6')], 0.06);
+  // wedges land (short, dry: nothing may bleed into the pre-payoff silence)
+  [['E5', 0], ['Fs5', E8], ['A5', BEAT]].forEach(([n, dt], i) => pluck(cu.wedges + 0.35 + dt, nz(n), 0.11, 0.1 * i, 0.22, 3200, 0.08));
+  // the count lands on "eighty": two short plucks, not a chime (a chime's 1.3s tail would eat the silence)
+  pluck(cu.count + 0.55, nz('A5'), 0.10, 0, 0.26, 3200, 0.1);
+  pluck(cu.count + 0.55 + 0.03, nz('D6'), 0.06, 0.2, 0.26, 3400, 0.1);
   to = 's';
   // a soft sweep into the bridge
   sweep(T_BR - D_BR + 0.15, T_BR, 0.01, 500, 2800, 0);
   // ticking while the readout counts
   for (let i = 0; i < 7; i++) blip(cu.count + i * E16, 1500 + i * 90, 1300, 0.02, 0.018);
+  // a dry pencil scratch while the formula writes (ends before the silence begins)
+  sweep(cu.formula, cu.formula + 0.22, 0.012, 2400, 3200, 0);
   // the payoff on "time": chime + sub
   chime(cu.flash, [nz('D5'), nz('Fs5'), nz('A5'), nz('D6')], 0.07);
   sub(cu.flash, nz('D2'), 0.16, 0.5);

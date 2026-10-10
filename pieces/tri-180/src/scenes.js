@@ -21,21 +21,57 @@ function wedge(P, c, al = 1) {
 }
 const thereBack2 = (u) => { u = clamp(u); return u < 0.5 ? smoothM(u * 2) : 1 - smoothM((u - 0.5) * 2); };
 
+// ---- camera: ONE slow eased push per act, each mapping to a step of the argument ----
+// era 1 pushes onto the triangle while its details arrive; era 2 pulls back to reveal the
+// whole straight line (the payoff IS the wide view). STYLE.md: "the camera stays still; if you
+// need a zoom, make it one slow, eased push" — this is that push, and the reveal it earns.
+const CAM_P = [620, 895];   // the triangle's centroid (era 1's focus)
+function pieceCam(era, t) {
+  if (era === 0) {
+    const u = smoothM(seg(t, 1.0, 5.3));
+    return u <= 0 ? null : camOf({ z: 1 + 0.13 * u, p: CAM_P, to: CAM_P });
+  }
+  const u = smoothM(seg(t, T_BR + 0.15, T_BR + 0.95));
+  return camOf({ z: 1.13 - 0.13 * u, p: CAM_P, to: CAM_P });
+}
+// pin a screen point under the current camera -> world coords (keeps the hero readable)
+const uncam = (sx, sy) => { const c = pieceCam(eraAt(TT), TT) || CAM0; return [(sx - c.tx) / c.z, (sy - c.ty) / c.z]; };
+
 // ---- era 1: the triangle, its arcs, the labels --------------------------
 function sceneTriangle() {
   const cu = CUES;
   fillAll(MC.bg);
   mathTag('the interior angles');
-  // sides, lagged (γ's legs first: O→A then B→O, hypotenuse last)
+  // sides, lagged (γ's legs first: O→A then B→O, hypotenuse last), each vertex dot popping on arrival
   const triP = runS(cu.tri, 1.1);
   [[O_, A_, 0], [B_, O_, 0.25], [A_, B_, 0.5]].forEach(([p, q, lag], i) => {
     segLine(p[0], p[1], q[0], q[1], MC.white, 5, clamp(triP * 1.7 - lag, 0, 1));
   });
+  // vertex dots (manim's Dot): pop at the corners as the sides land, colour-coded to the angle they hold
+  [[O_, QG], [B_, QA], [A_, QB]].forEach(([v, c], i) => {
+    const u = thereBack(clamp(triP * 1.7 - i * 0.2 - 0.05, 0, 1) * 1.6);
+    if (u > 0) { ctx.fillStyle = c; ctx.beginPath(); ctx.arc(v[0], v[1], 9 * u, 0, TAU); ctx.fill(); }
+  });
+  // DrawBorderThenFill (STYLE.md): the border draws, then the fill fades up at 12% —
+  // the manim idiom, and the step that makes the arrival readable at phone size
+  const fillP = runS(cu.tri + 1.2, 0.8);
+  if (fillP > 0) { polyPath(TRI); ctx.fillStyle = MC.white; ctx.globalAlpha = 0.12 * fillP; ctx.fill(); ctx.globalAlpha = 1; }
   // angle arcs sweep in on "angles", lagged 0.5 across the three corners
   const arcP = runS(cu.arcs, 0.75);
   [[O_, A_O, QG, 'γ'], [B_, A_B, QA, 'α'], [A_, A_A, QB, 'β']].forEach(([v, [a0, a1], c], i) => {
     angleArc(v[0], v[1], ARC_R, a0, a1, c, clamp(arcP * 1.5 - i * 0.25, 0, 1), 4);
   });
+  // faint construction extensions of each side, staggered — the workbook scaffold keeps 2.6-3.6s alive
+  // and reads as how the drawing was made (one idea per frame: the triangle under construction)
+  const guid = runS(cu.tri + 1.7, 1.0);
+  if (guid > 0) {
+    const EXT = 46;   // how far each side line extends past its ends
+    [[O_, A_], [B_, O_], [A_, B_]].forEach(([p, q], i) => {
+      const gu = clamp(guid * 1.6 - i * 0.22, 0, 1); if (gu <= 0) return;
+      const a = Math.atan2(q[1] - p[1], q[0] - p[0]);
+      segLine(p[0] - Math.cos(a) * EXT, p[1] - Math.sin(a) * EXT, q[0] + Math.cos(a) * EXT, q[1] + Math.sin(a) * EXT, MC.grey, 2, gu, 0.5);
+    });
+  }
   // labels settle just after "hides", staggered (α, γ, β — one every ~0.35s)
   const labP = (d) => runS(cu.labels + d, 0.55);
   const mid = (a0, a1) => lerp(a0, a1, 0.5);
@@ -56,8 +92,16 @@ function sceneTriangle() {
       wedge(wedgePts(v[0], v[1], ARC_R, a0, a1), c, 0.9 * thereBack2(u));
     });
   }
-  // hero watches, low right
-  piHero(830, 1700, 0.85, { look: [(O_[0] + A_[0]) / 2, (O_[1] + B_[1]) / 2], mood: 'calm', key: 'pi1' });
+  // hero watches the drawing — its gaze tracks whatever is being drawn right now; feet pinned to
+  // screen (830, 1470) under the camera so it never drifts into the platform-UI strip
+  let lookPt = [(O_[0] + A_[0] + B_[0]) / 3, (O_[1] + A_[1] + B_[1]) / 3];
+  const sides = [[O_, A_, 0], [B_, O_, 0.25], [A_, B_, 0.5]];
+  sides.forEach(([p, q, lag]) => { const u = clamp(triP * 1.7 - lag, 0, 1); if (u > 0.02 && u < 0.98) lookPt = [lerp(p[0], q[0], u), lerp(p[1], q[1], u)]; });
+  const arcV = [[O_, A_O], [B_, A_B], [A_, A_A]];
+  arcV.forEach(([v, [a0, a1]], i) => { const u = clamp(arcP * 1.5 - i * 0.25, 0, 1); if (u > 0.02 && u < 0.98) lookPt = [v[0] + Math.cos(lerp(a0, a1, u)) * ARC_R, v[1] + Math.sin(lerp(a0, a1, u)) * ARC_R]; });
+  if (det > 0) lookPt = [lookPt[0] * 0.4 + CX * 0.6, 900];
+  const hw = uncam(830, 1470), hz = 0.85 / (pieceCam(0, TT) || CAM0).z;
+  piHero(hw[0], hw[1], hz, { look: lookPt, mood: TT >= cu.take ? 'focus' : 'calm', key: 'pi1' });
   mathCaption('every triangle hides a straight line');
 }
 
@@ -104,7 +148,8 @@ function sceneLine() {
   // the flash on "time" — the payoff
   const fl = seg(TT, cu.flash, cu.flash + 0.45);
   if (fl > 0) flashAt(C2[0], C2[1] - R2 * 0.55, smoothM(fl), MC.yellowP, 70, 5);
-  // hero: wow at the flash
-  piHero(830, 1700, 0.85, { look: [C2[0], C2[1]], mood: TT >= cu.flash ? 'wow' : 'calm', hop: thereBack2(seg(TT, cu.wedges + 0.3, cu.wedges + 0.9)), key: 'pi2' });
+  // hero: wow at the flash, feet pinned to screen (830, 1470)
+  const hw2 = uncam(830, 1470), hz2 = 0.85 / (pieceCam(1, TT) || CAM0).z;
+  piHero(hw2[0], hw2[1], hz2, { look: [C2[0], C2[1]], mood: TT >= cu.flash ? 'wow' : 'calm', hop: thereBack2(seg(TT, cu.wedges + 0.3, cu.wedges + 0.9)), key: 'pi2' });
   mathCaption('the angles fill a straight line');
 }
