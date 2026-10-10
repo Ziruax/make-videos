@@ -124,6 +124,21 @@ line art, spring settles). Same story grammar, timing, synthesized score and mea
 review for all; the style supplies the drawing kit. Voice via Edge TTS with real word
 times (`tools/gen_takes_edge.py` → `voice.mjs`), so the picture cues on the words.
 
+#### `/make-crosshatch` — *What Happens When You Press Enter* · 33.6s
+
+One command's round trip: you type `ls`, press Enter, and the terracotta dot
+— the command itself — rides the pipeline. The shell parses the line, forks
+a copy of itself, execs the real program, asks the kernel, the kernel asks
+the disk, and the names rush back as bytes to write themselves on your
+screen. Warm paper userland by day, navy machine worlds by night; the payoff
+is a stopwatch: 0.003 s.
+
+[![crosshatch-1 preview](docs/examples/crosshatch-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-crosshatch-1/crosshatch-1-enter.mp4)
+
+Piece: [`pieces/ch-1-enter/`](pieces/ch-1-enter/) · brief:
+[`brief.md`](pieces/ch-1-enter/brief.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-crosshatch-1)
+
 #### `/make-cut-paper` — *The Bean That Woke the World* · 37.7s
 
 A history of coffee in six full-bleed torn-paper worlds: the dancing-goat
