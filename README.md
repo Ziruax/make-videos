@@ -124,6 +124,21 @@ line art, spring settles). Same story grammar, timing, synthesized score and mea
 review for all; the style supplies the drawing kit. Voice via Edge TTS with real word
 times (`tools/gen_takes_edge.py` → `voice.mjs`), so the picture cues on the words.
 
+#### `/make-cut-paper` — *The Bean That Woke the World* · 37.7s
+
+A history of coffee in six full-bleed torn-paper worlds: the dancing-goat
+legend, the Yemeni monks who brewed the night through, London's penny
+universities, the 1727 seedling smuggled into Brazil — sprouting in 1.3s of
+scored silence before the slam — and today's two billion cups. The spark gains
+a ray everywhere coffee lands; the cherry loops the piece: cherry → bean →
+pot → cup → cherry.
+
+[![cut-paper-1 preview](docs/examples/cut-paper-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-cut-paper-1/cut-paper-1-coffee.mp4)
+
+Piece: [`pieces/cp-1-dancing-goats/`](pieces/cp-1-dancing-goats/) · brief:
+[`brief.md`](pieces/cp-1-dancing-goats/brief.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-cut-paper-1)
+
 #### `/make-math` — *Every Triangle Hides a Straight Line* · 10.4s
 
 A proof, shown not asserted: a 3-4-5 triangle gives up its three corner wedges
