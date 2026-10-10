@@ -1,0 +1,9 @@
+{
+  "name": "sk-1-folds",
+  "title": "The Five Folds",
+  "format": { "width": 1080, "height": 1920, "fps": 24, "bpm": 120 },
+  "storyFormat": "one page, two eras: the making (camera leans in as the folds land) -> THE LAUNCH cut -> the flight; voice-driven",
+  "style": "sketchbook",
+  "voice": { "file": "voice/voice.wav", "music": -14 },
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} }
+}

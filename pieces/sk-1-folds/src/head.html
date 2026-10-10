@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Five Folds</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1b1714; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { height: min(100vh, calc(100vw * 16 / 9)); width: auto; aspect-ratio: 9 / 16; display: block; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+// =====================================================================
+//  THE FIVE FOLDS — 9:16, ~36.7s @ 24fps, 120 BPM, sketchbook. One page,
+//  two eras: the making (the camera leans in as each fold lands; pencil ->
+//  ink; the secret nose fold gets the ONE highlighter swipe) -> THE LAUNCH
+//  (the one hard cut, the payoff hit in the pause before "Throw it
+//  gently") -> the glide across the page, the landing, "go make one".
+//  Graphite carries everything; terracotta is the hero only; the
+//  highlighter lands once. The end is the start: a sheet, changed.
+// =====================================================================
+const FPS = 24, W = 1080, H = 1920;
+const BPM = 120, BEAT = 60 / BPM, E8 = BEAT / 2, E16 = BEAT / 4;
+const SAFE = { top: 240, bottom: 420, right: 140 };
+const HAND = '"Ink Free", "Segoe Print", "Bradley Hand", "Comic Sans MS", "Chalkboard SE", cursive';
+const CX = 470;
+
+// ---- voice helpers (injected VOICE; fallbacks keep it buildable)
+function VL(id) { return (typeof VOICE !== 'undefined' && VOICE.lines.find((l) => l.id === id)) || null; }
+function VW(id, word, n = 1) {
+  const L = VL(id); if (!L || !L.words) return null;
+  const norm = (w) => w.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let c = 0;
+  for (const w of L.words) { if (norm(w.w) === norm(word)) { c++; if (c === n) return w; } }
+  return null;
+}
+const t0 = (id, fb) => { const L = VL(id); return L ? L.t0 : fb; };
+const at = (id, word, n, fb) => { const w = VW(id, word, n); return w ? w.t0 : fb; };
+
+const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 36.7;
+const NFRAMES = Math.round(DURATION * FPS);
+const LOOP_T = NFRAMES / FPS;
+const snap8 = (t) => Math.round(t / E8) * E8;
+
+// ---- THE LAUNCH: a shape morph (the dart becomes the plane), in the pause after the V-tweak
+const K1 = snap8(t0('l10', 29.52) - 0.5);
+
+const ERA_LIST = [
+  [0, K1, () => sMaking()],
+  [K1, DURATION, () => sFlight()],
+];
+const SHOTS = [
+  ['sheet',   0, 0.0,  11.6,  'the sheet + folds one and two (pencil -> ink)'],
+  ['folds2',  0, 11.6, 17.85, 'folds three, four and five: the dart takes shape'],
+  ['secret',  0, 17.85, K1,   'the secret nose fold, the physics, the shallow V, the hush'],
+  ['flight',  1, K1,   DURATION, 'THE LAUNCH: the glide, the landing, go make one'],
+];
+const TIMELINE = {
+  width: W, height: H, fps: FPS, bpm: BPM, duration: DURATION, frames: NFRAMES, loop: LOOP_T, safe: SAFE,
+  format: 'morph-chain',
+  shots: SHOTS.map(([key, era, s0, s1, title], i) => ({ id: i + 1, key, era, t0: s0, t1: s1, title })),
+  cuts: [],
+  morphs: [K1],
+  cues: {
+    sheet: at('l1', 'sheet', 1, 1.6),
+    five: at('l2', 'five', 1, 4.48),
+    half: at('l3', 'half', 1, 6.72),
+    open: at('l3', 'open', 1, 7.9),
+    corners: at('l4', 'corners', 1, 9.38),
+    edges: at('l5', 'edges', 1, 11.9),
+    wings: at('l6', 'wings', 1, 16.76),
+    secret: at('l7', 'secret', 1, 18.5),
+    nose: at('l7', 'nose', 1, 21.32),
+    weight: at('l8', 'weight', 1, 23.14),
+    lift: at('l8', 'lift', 1, 24.58),
+    shallow: at('l9', 'shallow', 1, 28.05),
+    launch: K1,
+    glide: at('l11', 'glide', 1, 32.24),
+    make: at('l11', 'make', 1, 34.0),
+    land: 33.4,
+  },
+  acts: [
+    { name: '1 The sheet',  role: 'build',   t0: 0.0,  t1: 5.9 },
+    { name: '2 The folds',  role: 'peak',    t0: 5.9,  t1: 17.85 },
+    { name: '3 The secret', role: 'journey', t0: 17.85, t1: 28.35 },
+    { name: '4 The hush',   role: 'silence', t0: 28.35, t1: K1 },
+    { name: '5 The launch', role: 'gift',    t0: K1,   t1: 31.96 },
+    { name: '6 The landing', role: 'goodbye', t0: 31.96, t1: DURATION },
+  ],
+  narration: (typeof VOICE !== 'undefined' ? VOICE.lines : []).map((l) => ({ t0: l.t0, t1: l.t1, text: l.text })),
+  board: [
+    { t: 2.4, title: 'the sheet wants to fly', sound: 'the page theme, quiet; the pencil scratches', next: 'the folds begin' },
+    { t: 8.0, title: 'fold one: the crease', sound: 'a fold snap + a pluck', next: 'corners in' },
+    { t: 12.5, title: 'folds two and three', sound: 'the cascade builds', next: 'wings down' },
+    { t: 19.5, title: 'the secret: the nose fold', sound: 'the highlight chime', next: 'weight ahead of lift' },
+    { t: 25.5, title: 'wings up, a shallow V', sound: 'a rising pair, then... quiet', next: 'THE LAUNCH' },
+    { t: 30.5, title: 'the glide', sound: 'the whoosh + the stab (loudest); an airy pad', next: 'the landing' },
+    { t: 34.8, title: 'go make one', sound: 'the page theme, decaying; the checkmark', next: 'loops' },
+  ],
+};
+window.TIMELINE = TIMELINE;
+
+// ---- the camera: lean in on the sheet as the folds land; pull back for the flight
+const CAM_P = [540, 800];
+function pieceCam(era, t) {
+  if (era === 0) {
+    const u = EZ.io(clamp(seg(t, 6.0, 21.5)));
+    return u <= 0 ? null : camOf({ z: 1 + 0.14 * u, p: CAM_P, to: CAM_P });
+  }
+  const u = EZ.io(clamp(seg(t, K1, K1 + 0.35)));
+  return camOf({ z: 1.14 - 0.14 * u, p: CAM_P, to: CAM_P });
+}
