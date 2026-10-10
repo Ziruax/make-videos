@@ -124,10 +124,20 @@ line art, spring settles). Same story grammar, timing, synthesized score and mea
 review for all; the style supplies the drawing kit. Voice via Edge TTS with real word
 times (`tools/gen_takes_edge.py` → `voice.mjs`), so the picture cues on the words.
 
-A worked example lives at [`pieces/tri-180/`](pieces/tri-180/) — a 10.5s math-style
-piece ("the angles of a triangle sum to 180°") built through `/make-math` end-to-end:
-voice-cued morphs, a counting readout that lands on the spoken word, review.mjs
-PASS (story arc, text, loudness −14 LUFS), determinism true. Style routing index:
+#### `/make-math` — *Every Triangle Hides a Straight Line* · 10.4s
+
+A proof, shown not asserted: a 3-4-5 triangle gives up its three corner wedges
+(53.13° + 36.87° + 90°), and they fly to a straight line, filling exactly the
+upper half-disc. A live readout counts to 180 and lands on the spoken word
+"eighty"; the flash payoff sits in 0.7s of scored silence.
+
+[![math-1 preview](docs/examples/math-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-math-1/tri-180-angles.mp4)
+
+Piece: [`pieces/tri-180/`](pieces/tri-180/) · brief:
+[`brief.md`](pieces/tri-180/brief.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-math-1)
+
+Style routing index:
 [`.claude/skills/animate-styles-README.md`](.claude/skills/animate-styles-README.md).
 
 ## 📖 Read the guide
