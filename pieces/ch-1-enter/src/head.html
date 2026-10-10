@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Happens When You Press Enter</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1b1714; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { height: min(100vh, calc(100vw * 16 / 9)); width: auto; aspect-ratio: 9 / 16; display: block; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+// =====================================================================
+//  WHAT HAPPENS WHEN YOU PRESS ENTER — 9:16, ~33.6s @ 24fps, 120 BPM, crosshatch.
+//  F5 fixed-hero journey: the terracotta dot (the command) rides the pipe —
+//  typed, parsed, forked, exec'd, down through the kernel to the disk, and
+//  back up as bytes that become the answer on your screen. The day world is
+//  warm paper (userland); inside the machine is navy with periwinkle lines.
+//  The dot holds (540, 880) through the byte rush (the anchor). The red
+//  dashed plan appears first, then the journey follows it for real (the
+//  style's own idiom). The payoff: the stopwatch — all of it in a few
+//  milliseconds. The end is the start: the cursor blinks.
+// =====================================================================
+const FPS = 24, W = 1080, H = 1920;
+const BPM = 120, BEAT = 60 / BPM, E8 = BEAT / 2, E16 = BEAT / 4;
+const SAFE = { top: 240, bottom: 420, right: 140 };
+const HAND = '"Ink Free", "Segoe Print", "Bradley Hand", "Chalkboard SE", "Comic Sans MS", "Comic Neue", cursive';
+const CX = 470;
+
+// ---- voice helpers (injected VOICE; fallbacks keep it buildable)
+function VL(id) { return (typeof VOICE !== 'undefined' && VOICE.lines.find((l) => l.id === id)) || null; }
+function VW(id, word, n = 1) {
+  const L = VL(id); if (!L || !L.words) return null;
+  const norm = (w) => w.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let c = 0;
+  for (const w of L.words) { if (norm(w.w) === norm(word)) { c++; if (c === n) return w; } }
+  return null;
+}
+const t0 = (id, fb) => { const L = VL(id); return L ? L.t0 : fb; };
+const at = (id, word, n, fb) => { const w = VW(id, word, n); return w ? w.t0 : fb; };
+
+const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 33.6;
+const NFRAMES = Math.round(DURATION * FPS);
+const LOOP_T = NFRAMES / FPS;
+const snap8 = (t) => Math.round(t / E8) * E8;
+
+// ---- station boundaries: hard cuts on the 8th grid (F5 beat-cut); two bridges
+const K1 = snap8(3.5);    // desk -> parse         (after "Enter")
+const K2 = snap8(7.0);    // parse -> fork         (before "Then it makes a copy")
+const K3 = snap8(10.75);  // fork -> exec          (before "The copy swaps out")
+const B1 = snap8(15.0);   // exec -> kernel        (the bridge INTO the machine)
+const K4 = snap8(17.75);  // kernel -> disk        (before "The kernel asks")
+const K5 = snap8(19.75);  // disk -> the return    (before "The names come back")
+const B2 = snap8(21.75);  // return -> the write   (the bridge OUT, before "The program lines them up")
+const K6 = snap8(25.5);   // write -> the payoff   (the held screen in silence)
+const K7 = snap8(28.5);   // payoff -> the cursor  (the callback)
+
+const ERA_LIST = [
+  [0, K1, () => sDesk()],
+  [K1, K2, () => sParse()],
+  [K2, K3, () => sFork()],
+  [K3, B1, () => sExec()],
+  [B1, K4, () => sKernel()],
+  [K4, K5, () => sDisk()],
+  [K5, B2, () => sReturn()],
+  [B2, K6, () => sWrite()],
+  [K6, K7, () => sPayoff()],
+  [K7, DURATION, () => sCursor()],
+];
+const SHOTS = [
+  ['desk',    0, 0.0,  K1,  'you type ls and press Enter; the dot launches'],
+  ['parse',   1, K1,   K2,  'the line splits into words'],
+  ['fork',    2, K2,   K3,  'the shell makes a copy of itself'],
+  ['exec',    3, K3,   B1,  'the copy swaps out for the real program'],
+  ['kernel',  4, B1,   K4,  'inside the machine: it asks the kernel'],
+  ['disk',    5, K4,   K5,  'the kernel asks the disk'],
+  ['return',  6, K5,   B2,  'the names come back as bytes (the rush)'],
+  ['write',   7, B2,   K6,  'the answer writes onto your screen'],
+  ['payoff',  8, K6,   K7,  'all of that in a few milliseconds (the hit)'],
+  ['cursor',  9, K7,   DURATION, 'the cursor blinks; press Enter again (the loop)'],
+];
+const TIMELINE = {
+  width: W, height: H, fps: FPS, bpm: BPM, duration: DURATION, frames: NFRAMES, loop: LOOP_T, safe: SAFE,
+  format: 'F5',
+  shots: SHOTS.map(([key, era, s0, s1, title], i) => ({ id: i + 1, key, era, t0: s0, t1: s1, title })),
+  cuts: [K1, K2, K3, K4, K5, K6, K7],
+  morphs: [B1, B2],
+  anchor: { t0: K5, t1: B2 - 0.25, x: 540, y: 880, tolerance: 42 },
+  cues: {
+    keyL: at('l1', 'type', 1, 1.5),
+    keyS: at('l1', 'letters', 1, 2.0),
+    enter: at('l1', 'Enter', 1, 2.55),
+    launch: at('l1', 'Enter', 1, 2.55) + 0.25,
+    split: at('l2', 'splits', 1, 4.9),
+    words: at('l2', 'words', 1, 5.9),
+    plan: at('l2', 'line', 1, 4.2),
+    fork: at('l3', 'Fork', 1, 9.4),
+    twin: at('l3', 'copy', 1, 8.4),
+    exec: at('l4', 'Exec', 1, 13.8),
+    code: at('l4', 'program', 1, 12.6),
+    ask: at('l5', 'kernel', 1, 16.0),
+    folder: at('l5', 'folder', 1, 17.0),
+    disk: at('l6', 'disk', 1, 18.7),
+    head: at('l6', 'asks', 1, 18.1),
+    bytes: at('l7', 'bytes', 1, 20.7),
+    back: at('l7', 'come', 1, 20.0),
+    write: at('l8', 'writes', 1, 23.3),
+    screen: at('l8', 'screen', 1, 24.4),
+    hit: t0('l9', 26.11) - 0.15,
+    watch: t0('l9', 26.11) + 0.2,
+    blink: at('l10', 'blinks', 1, 29.5),
+    again: at('l10', 'again', 1, 31.2),
+  },
+  acts: [
+    { name: '1 Type',    role: 'build',   t0: 0.0, t1: K1 },
+    { name: '2 Parse',   role: 'build',   t0: K1, t1: K2 },
+    { name: '3 Fork+Exec', role: 'journey', t0: K2, t1: B1 },
+    { name: '4 Inside',  role: 'peak',    t0: B1, t1: K5 },
+    { name: '5 Hush',    role: 'silence', t0: 25.16, t1: K6 },
+    { name: '6 The hit', role: 'gift',    t0: K6, t1: K7 },
+    { name: '7 Cursor',  role: 'goodbye', t0: K7, t1: DURATION },
+  ],
+  narration: (typeof VOICE !== 'undefined' ? VOICE.lines : []).map((l) => ({ t0: l.t0, t1: l.t1, text: l.text })),
+  board: [
+    { t: 2.6, title: 'you press Enter', sound: 'key clacks; the launch blip', next: 'the line splits' },
+    { t: 5.6, title: 'the line splits into words', sound: 'paper ticks', next: 'the shell forks' },
+    { t: 9.0, title: 'fork: a copy of itself', sound: 'a low split blip', next: 'exec swaps the copy' },
+    { t: 13.4, title: 'exec: the real ls loads', sound: 'code streaming', next: 'down into the machine' },
+    { t: 16.4, title: 'inside: it asks the kernel', sound: 'a deep drone; a pulse', next: 'the kernel asks the disk' },
+    { t: 18.8, title: 'the disk answers', sound: 'platter ticks; the head seeks', next: 'bytes rush back' },
+    { t: 20.6, title: 'the bytes rush home', sound: '16th ticks, rising', next: 'the write' },
+    { t: 23.6, title: 'the answer writes', sound: 'fast typing', next: 'the held screen; silence' },
+    { t: 26.3, title: 'a few milliseconds', sound: 'the hit: chime + sub', next: 'the cursor blinks' },
+    { t: 30.4, title: 'press Enter again', sound: 'the opening pad; the blink', next: 'loops' },
+  ],
+};
+window.TIMELINE = TIMELINE;

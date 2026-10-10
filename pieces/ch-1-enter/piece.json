@@ -1,0 +1,9 @@
+{
+  "name": "ch-1-enter",
+  "title": "What Happens When You Press Enter",
+  "format": { "width": 1080, "height": 1920, "fps": 24, "bpm": 120 },
+  "storyFormat": "F5 fixed-hero journey (the dot rides the pipe down and back), beat-cut + 2 bridges, voice-driven",
+  "style": "crosshatch",
+  "voice": { "file": "voice/voice.wav", "music": -14 },
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} }
+}
