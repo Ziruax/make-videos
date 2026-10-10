@@ -196,6 +196,23 @@ Piece: [`pieces/tri-180/`](pieces/tri-180/) · brief:
 [`brief.md`](pieces/tri-180/brief.md) ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-math-1)
 
+#### `/make-pixel` — *One Square, Fifty Years* · 37.7s
+
+Resolution tells time. Four eras, each drawn at its TRUE low resolution and
+scaled up nearest-neighbour: a 54×96 black-and-white CRT (1972 — Pong's
+square ball), a 90×160 four-green handheld (1989 — the square is a life),
+a 180×320 16-bit world (color, parallax, the square spins as a coin), and
+today's 360×640 phone home screen — where the square is an app icon and
+the payoff counts this very screen's pixels: 2,073,600. The goodbye
+bounces the icon like Pong's ball, paddles and all. The ball never
+stopped bouncing.
+
+[![pixel-1 preview](docs/examples/pixel-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-pixel-1/pixel-1-square.mp4)
+
+Piece: [`pieces/px-1-square/`](pieces/px-1-square/) · brief:
+[`brief.md`](pieces/px-1-square/brief.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-pixel-1)
+
 Style routing index:
 [`.claude/skills/animate-styles-README.md`](.claude/skills/animate-styles-README.md).
 
