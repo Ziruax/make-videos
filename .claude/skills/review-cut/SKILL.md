@@ -71,9 +71,14 @@ Report (under 700 words, also written to <report-path>):
 2. Transition defects with timestamps.
 3. Audio problems: sync, balance, anything harsh (check the 2–8 kHz region on clicky
    cues — MOTION.md's band rules).
-4. On mute: does a first-time viewer still get the payoff? (Sound-off is the default
-   viewing state.)
-5. The top 6 changes ranked by impact, each implementable in one code edit.
+4. **On mute: does a first-time viewer still get the payoff? (Sound-off is the default
+   viewing state.)** FIRST, before any defect list, restate the message you got from
+   the frames ALONE in one sentence — if it diverges from the brief, that is defect #1.
+5. **Watch it twice before judging:** once sound-on at full size, once sound-off at
+   phone scale (25% window). Different defects surface in each pass.
+6. **Score 7 axes 1-10** (composition, motion, text, sync, audio, pacing, payoff) and
+   demand ≥8 on every axis before SHIP — "average 7" is how mediocre films ship.
+7. The top 6 changes ranked by impact, each implementable in one code edit.
 Be blunt; no padding.
 ```
 

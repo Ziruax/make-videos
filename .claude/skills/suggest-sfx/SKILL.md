@@ -160,6 +160,16 @@ Sound taste is a brand contract — read **`brand.md` §7** every time. The hous
 - **Take structure, not drama.** Calm/premium: no cymbal-urgency risers, no trailer slams, no
   whoosh on every move.
 - **Audit before mixing.** The user reads and approves `sfx-plan.json` first. Non-negotiable.
+- **Place by measured onset, not file start.** A clip's audible attack is often
+  20-200ms into the file — measure the transient (argmax |s| in the first 300ms)
+  and negative-offset the cue so the ATTACK lands on the frame, not the head
+  silence. Same for probing: measure a narrow window at the onset, never the
+  whole-file mean; reject candidates by peak, not mean. (AIEV)
+- **Bigger = lower and slower.** The heavier the event, the lower the pitch and
+  the slower the transient of its sound — impacts are sub + slow swell, ticks
+  are bright + fast. Size is pitch and tempo, not gain. (Miftahul)
+- **Headroom before layering.** If the voice master peaks near 0 dBFS, scale it
+  ×~0.71 first; adding cues into a clipped-sum master is unfixable downstream.
 
 Done = the library has the needed clips (catalogued with source+license), `sfx-plan.json` is
 authored and **audited by the user**, the SFX-mixed preview is rendered and spot-checked by ear,

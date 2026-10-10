@@ -78,6 +78,32 @@ Each rule was learned the hard way on a real piece. Follow them unless the user 
 - **Name the weakest shot and what would fix it** in the log — it's the next run's to-do list.
 - **Iterate the mix with `export.mjs --only-audio`** (re-renders the score and remuxes the master).
 
+## Field-survey additions (adopted 2025 — proven in other studios)
+- **Range preview loop:** while fixing one beat, render ONLY its range as a tiled
+  contact sheet (e.g. `preview.mjs <from> <to> --fps 8 --scale 0.25`) and re-run
+  the same range after each fix — seconds per loop instead of a full export.
+  (Miftahul) A preview frame is a final frame, just smaller: same code path.
+- **Pops & one-frame flashes:** frame-diff the export (d[i] vs neighbours);
+  a frame that differs from BOTH neighbours by >3× is a flash — contact sheets
+  miss single frames. Also loop-seam: compare first↔last in position AND
+  velocity (add the spring tails). (howseen-ai)
+- **Determinism, stronger than byte-compare:** render the same frames FORWARD,
+  BACKWARD, and SHUFFLED — identical output proves no render order state.
+  (Mort1d) And re-run once under CPU LOAD (swap grain `background-image` URLs
+  for opacity-toggled always-painted layers if renders differ only when busy).
+  (imMamdouh)
+- **Subframe motion blur for 1s styles:** N sub-frames per frame over a 180°
+  shutter (SHUTTER=0.5), blended with ffmpeg `tmix`, with a CUTS list so
+  sub-frames never straddle a hard cut; adaptive N (still→1, ≤20px→4,
+  fast→ceil(px/5)). 2× supersample for sharp text instead of blurring it.
+  (howseen-ai)
+- **SFX by measured peak:** place cues by the clip's measured transient, never
+  its file start; probe the onset window, not the whole file. (AIEV)
+- **Frame-diff energy curve:** `ffmpeg tblend + signalstats` gives a motion
+  energy curve per frame — the rest ratio should sit 40-60%, and the designed
+  arc should correlate with the measured one. A direct upgrade to the
+  frozen-time check. (t3knobox measure-motion.py)
+
 ## References
 - **Reference media stays local and uncommitted** — it's other people's work, kept for study.
 - **Measure a reference into a timed table before writing** (`tools/measure/shotlog.py`; pass the real fps): cuts, holds, what's on screen, the loudest moment, the silence.

@@ -52,6 +52,7 @@ stays pure minimal-reel (the default, and always correct).
 | geography, a place, a route | **outlines + a path drawing itself** in MR strokes (d3-geo if real geometry matters) | make-map | `lib/mapkit` |
 | the payoff moment, the final word | **kinetic fly-through** — the payoff word scales through the camera with directional blur, revealing the next beat already in place | make-motion-graphics + MOTION.md rule 1 | `<KineticPayoff>` |
 | layered depth under a calm voice | **collage Z-depth** — CSS-perspective layers with ASSIGNED blur (near 10px, far 5px) + slow drift | make-vox | per-scene CSS |
+| one real object to OPEN — "how X works inside", layers, a mechanism, a dive | **escape hatch, not a guest:** hand the whole script to make-cutaway-3d (the wedge/dive/explode IS the film) — a cutaway deserves a full track, not a borrowed beat | make-cutaway-3d | route OUT |
 
 2-3 of these become the reel's **named signature mechanisms** (MOTION.md: name them in
 plain words in script.md — "the grid that multiplies itself" — that's what makes it

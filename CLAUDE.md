@@ -1,12 +1,13 @@
 # CLAUDE.md — claude-faceless-shorts-creator
 
-A **faceless-shorts factory** driven by Claude Code. Seven production tracks + one
+A **faceless-shorts factory** driven by Claude Code. Eight production tracks + one
 all-in-one flagship conductor, one repo — the right skill is picked automatically from
 the request:
 
 | The user asks for… | Skill | Pixels come from | Projects live in |
 |---|---|---|---|
 | "make the best possible video from my script" · "use everything" · "flagship" | `/make-on-script` | minimal-reel host system + ONE routed guest mechanism per beat (math counters, iso diagrams, pixel eras, torn paper, kinetic type…) | `on-script/os-N-<slug>/` |
+| "3D cutaway" · "how X works inside" · "exploded view" · "cross-section" | `/make-cutaway-3d` | **deterministic Three.js** (via @remotion/three): animated wedge clipping, keyframed camera dives, labelled explodes, byte-identical renders | `cut3d/c3d-N-<slug>/` |
 | "make a short about X" (default) | `/make-short` | 100% TSX (Remotion animation) | `shorts/short-N-<niche>/` |
 | "make an AI video short", "blue-man video" | `/make-ai-short` | a fal video model (locked recurring character) | `ai-shorts/<series>/` |
 | "vox style / documentary / explainer short" | `/make-vox` | layered paper-collage (AI images + cutouts) | `vox-shorts/vox-N-<topic>/` |
@@ -42,6 +43,7 @@ media/            Remotion's public root: library/ (reusable: sfx, music, logos,
 shorts/           TSX shorts: script.md, beats.json, sfx-plan.json each
 on-script/        flagship fusion reels: script.md (verbatim intake + routing table),
                   beats.json, sfx-plan.json — see /make-on-script
+cut3d/            3D cutaway explainers (Three.js wedge/dive/explode — see /make-cutaway-3d)
 ai-shorts/        generative shorts: + character.json (LOCKED reference), shot sidecars, IDEAS.md
 vox-shorts/       collage shorts: + DESIGN.md (the visual language — read before any vox work)
 map-films/        animated-map documentaries (world-atlas/d3-geo — see /make-map)
@@ -52,7 +54,7 @@ MOTION.md         the motion grammar + quality bar every TSX track follows (six 
                   composition density, pacing numbers, mechanism catalog, audio discipline)
 IDEAS.md          the TSX-shorts idea bank + niche ranking
 .claude/skills/   make-on-script, make-short, make-ai-short, make-vox, make-map,
-                  make-motion-graphics, make-minimal-reel, review-cut,
+                  make-motion-graphics, make-minimal-reel, make-cutaway-3d, review-cut,
                   vidtsx-2d-generator, suggest-sfx + the 7 animate style wrappers
 ```
 

@@ -1,7 +1,7 @@
 # claude-faceless-shorts-creator
 
 **A faceless video factory you drive with [Claude Code](https://claude.com/claude-code).**
-Fourteen production tracks in one repo — you describe the video (or paste a full script —
+Fifteen production tracks in one repo — you describe the video (or paste a full script —
 every track adapts your words, never rewrites them), and the right pipeline runs:
 
 | You say… | Track | The pixels |
@@ -12,6 +12,7 @@ every track adapts your words, never rewrites them), and the right pipeline runs
 | *"make a vox-style short about coffee"* | **Collage** (`/make-vox`) | Vox-documentary paper collage — AI-image layers, die-cuts, a traveling camera |
 | *"make a map film about the Strait of Hormuz"* | **Map** (`/make-map`) | a **data-driven animated map** at 3 detail levels (110m/50m/10m) — fly-to camera grammar, zoom-band labels, region-change transients, war-room documentaries in one continuous shot |
 | *"make a motion-graphics reel"* | **Motion design** (`/make-motion-graphics`) | a **real motion-design system** — kinetic-typography atoms, shape grammar, grid cascades, counters, Material-style transitions; type + shapes + limited palette only, no photos |
+| *"3D cutaway of an espresso machine"* · *"how a jet engine works inside"* · *"exploded view"* | **3D Cutaway** (`/make-cutaway-3d`) | **deterministic Three.js** — one real object sliced open by animated clipping planes, a keyframed camera dive through the layers, a labelled exploded view, reassembled changed; matte clay in the house palette, byte-identical renders |
 | *"make a minimal metaphor reel"* | **Minimal** (`/make-minimal-reel`) | three physical metaphors — layered cut-outs, drawn shapes, optional 3D eye — under one paper/halftone finish at 15fps |
 | *"animate the history of the bicycle in cut paper"* (or crosshatch, riso, sketchbook, math, pixel, isometric) | **Animate styles** (7 tracks) | procedural canvas animation — one file, drawn + scored in code, MP4 via headless Chromium + ffmpeg. The [cth9191/animate](https://github.com/cth9191/animate) engine with the style pinned: `/make-cut-paper` `/make-crosshatch` `/make-riso` `/make-sketchbook` `/make-math` `/make-pixel` `/make-isometric` |
 | *"review this cut"* | **Critic** (`/review-cut`) | the Gauntlet: fresh critics, real frames, measured audio, SHIP / ONE MORE PASS |
@@ -51,6 +52,27 @@ Project: [`on-script/os-1-one-percent/`](on-script/os-1-one-percent/) · composi
 kit: [`fusion.tsx`](remotion/src/lib/fusion.tsx) · host kit:
 [`tactile.tsx`](remotion/src/lib/tactile.tsx) ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-on-script-1)
+
+### `/make-cutaway-3d` — the 3D cutaway track
+
+**The Shell** · 1080×1920 · 30fps · 34.0s — the proof piece for the deterministic
+Three.js track: the Earth as a calm matte model, sliced open by an animated wedge
+(the portal), a keyframed camera dive through mantle and liquid-iron outer core
+(labels arriving on the spoken words, a live depth counter, the geodynamo's churn),
+the gold inner core glowing up in the scored pause, then the layers explode into a
+labelled vertical stack on "as hot as the sun's surface" — and reassemble as the
+wedge closes on the opening shot. True-proportion geometry (1u = 3,185.5 km), every
+number on screen web-checked, and **byte-identical WebGL renders** proven by the
+determinism gate. Nobody in the field survey has WebGL + Remotion + determinism
+together — this track is the house's own.
+
+[![c3d-1 preview](docs/examples/c3d-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-cutaway-3d-1/c3d-1-shell.mp4)
+
+Project: [`cut3d/c3d-1-earth-core/`](cut3d/c3d-1-earth-core/) · composition:
+[`C3d1Shell.tsx`](remotion/src/shots/c3d-1/C3d1Shell.tsx) + scenes S1–S3 · kit:
+[`cut3d.tsx`](remotion/src/lib/cut3d.tsx) · skill:
+[`make-cutaway-3d`](.claude/skills/make-cutaway-3d/SKILL.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-cutaway-3d-1)
 
 ### `/make-short` — the TSX track
 

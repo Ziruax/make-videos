@@ -73,3 +73,52 @@ SKILL.md is the authority for its genre; this file is the shared floor.
   would fix it — it's the next run's to-do list.
 - **Don't trust your eye for text.** Measure readability against the actual
   background; a cropped label can look fine on a contact sheet.
+
+## Holds, cues & endings (adopted from the field survey — measured, not vibes)
+- **Reading-hold arithmetic:** a caption must hold ≥ `max(0.70s, 0.25s + chars÷17)`
+  on screen; a hero line gets `~0.3s × words + 1.5s`. Budget per LINE, sum the
+  feasibility BEFORE building. (t3knobox)
+- **Word cues LEAD the spoken word by ~0.1s**, not trail it — visual arrival
+  reads synced only when it starts slightly before the sound. (imMamdouh)
+- **Stamps land AFTER the reveal:** a stamp/badge/timestamp enters
+  ≥ 0.10-0.25s after the thing it certifies is fully visible. Word-sync is a
+  guideline; visual reveal order is the constraint. (AIEV)
+- **The end-hold must survive the pipeline:** 3 classic break points —
+  `-shortest` cutting the tail, grain/noise cycling the last frame, a range
+  clamp off-by-one. Fix: clamp the seek window to the VO end + intended tail,
+  `apad` to the exact frame count, never `-shortest`, and VERIFY the final
+  file's frame count — the last spoken word + ≥1.5s of held picture + fade.
+  (imMamdouh's three-broke-holds lesson)
+- **An instrument never runs backward.** Live counters (depth, progress, speed)
+  track their real quantity monotonically or freeze at the extreme — a counter
+  that visibly decreases during a "dive" is a broken instrument. (bang's
+  fact→instrument law)
+- **The video never numbers itself.** Scene counters ("01/06") are the #1 AI
+  tell — in copy, in DOM, and in encoded-output QA. (Mort1d)
+
+## Transitions & colour
+- **Never opacity-crossfade two saturated fields.** The midpoint lands
+  off-palette (navy→blue passes through lavender). Cut, shaped-wipe, or carry
+  one object across — and check the midpoint frames against the palette.
+  (imMamdouh)
+- **Anti-slide-deck (grep-able):** a piece is a film, not a deck — no ≥3
+  full-screen scenes toggling via alpha, no Ken-Burns-only motion, a camera
+  push under 1.08 is a miniature, not a move, and ≤2 text tiers per scene.
+  Lint the storyboard BEFORE pixels. (bang)
+
+## QA honesty
+- **Trust a check only after you've seen it fail.** Give every QA tool a
+  red/green proof once (a deliberately-broken render it must catch) — otherwise
+  it's a checkbox, not a check. (imMamdouh)
+- **One defect scan, one fix batch, one confirmation pass.** Don't polish
+  forever; fix the ranked list in one batch, re-verify, ship at the bar.
+  (imMamdouh)
+
+## 3D floor (make-cutaway-3d and any ThreeCanvas guest)
+- Emissive < 1.0 always (hot emissives clip to flat white); matte clay
+  (roughness ≥ 0.45, metalness ≤ 0.25); camera dolly, never zoom (fov constant
+  per shot); the camera never enters the last beat — it holds while the payoff
+  lands. Small parts travel farther in an explode; landings settle 5-8%, never
+  20. Labels arrive with their part, never before. Probe one still per camera
+  key BEFORE building the piece — a probe costs seconds, a rebuild costs the
+  film. (whaleyxbt / Vincentwei / the gallery survey)

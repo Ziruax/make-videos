@@ -39,3 +39,7 @@ on-script/*/output/
 pieces/*/frames/
 pieces/*/renders/
 pieces/*/voice/
+
+cut3d/*/voice/
+cut3d/*/output/
+research/external/

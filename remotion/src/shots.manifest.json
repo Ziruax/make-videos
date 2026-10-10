@@ -8,6 +8,38 @@
   "transparent": false
  },
  {
+  "id": "C3d1Shell",
+  "durationInSeconds": 34,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "C3d1ShellS1",
+  "durationInSeconds": 6.3,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "C3d1ShellS2",
+  "durationInSeconds": 13.6,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "C3d1ShellS3",
+  "durationInSeconds": 14.1,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
   "id": "Map1Suez",
   "durationInSeconds": 42,
   "fps": 30,

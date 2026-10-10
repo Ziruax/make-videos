@@ -28,6 +28,7 @@ The Remotion family (React compositions) covers everything those don't:
 | `/make-map` | d3-geo map documentaries — routes, trade, history on the globe |
 | `/make-motion-graphics` | brand / documentary motion-design reels, photo cutouts |
 | `/make-minimal-reel` | tactile-metaphor minimal reels at 15fps |
+| `/make-cutaway-3d` | one real object opened: 3D wedge cut, camera dive, labelled explode (deterministic Three.js) |
 
 Routing rules of thumb:
 
