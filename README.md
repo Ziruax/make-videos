@@ -124,6 +124,20 @@ line art, spring settles). Same story grammar, timing, synthesized score and mea
 review for all; the style supplies the drawing kit. Voice via Edge TTS with real word
 times (`tools/gen_takes_edge.py` → `voice.mjs`), so the picture cues on the words.
 
+#### `/make-riso` — *The Mirror Wave* · 27.8s
+
+How noise cancelling works, printed in three inks: the engine drone is pink
+waves washing the cabin, the chip flips one upside down into a teal mirror,
+and where peak meets trough the print knocks out to paper — the medium's own
+white IS the silence. The piece performs its own subject: the synthesized
+drone hard-stops at the slam and never comes back.
+
+[![riso-1 preview](docs/examples/riso-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-riso-1/riso-1-mirror.mp4)
+
+Piece: [`pieces/riso-1-mirror/`](pieces/riso-1-mirror/) · brief:
+[`brief.md`](pieces/riso-1-mirror/brief.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-riso-1)
+
 #### `/make-crosshatch` — *What Happens When You Press Enter* · 33.6s
 
 One command's round trip: you type `ls`, press Enter, and the terracotta dot
