@@ -1,0 +1,9 @@
+{
+  "name": "riso-1-mirror",
+  "title": "The Mirror Wave",
+  "format": { "width": 1080, "height": 1920, "fps": 24, "bpm": 120 },
+  "storyFormat": "F2-ish: the noisy world -> the close-up -> the diagram world -> the slam -> the quiet world; 2 bridges + cuts on the 8th grid, voice-driven",
+  "style": "riso",
+  "voice": { "file": "voice/voice.wav", "music": -14 },
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} }
+}

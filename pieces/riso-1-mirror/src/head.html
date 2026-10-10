@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Mirror Wave</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1b1714; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { height: min(100vh, calc(100vw * 16 / 9)); width: auto; aspect-ratio: 9 / 16; display: block; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+// =====================================================================
+//  THE MIRROR WAVE — 9:16, ~27.8s @ 24fps, 120 BPM, riso. How noise
+//  cancelling actually works: the mic hears the drone, the chip flips the
+//  wave upside down, the speaker plays the mirror, and every peak meets a
+//  trough. The payoff: the SLAM, then the cancellation blooming to paper —
+//  the piece's own score goes quiet with it.
+//  Colour code (plate tones): the noise/drone = PINK, the mirror wave =
+//  TEAL, silence = PAPER (the knockout). Hero: the ink-blue bean, in
+//  headphones. The medium IS the physics: overprints where waves disagree,
+//  paper where they cancel.
+// =====================================================================
+const FPS = 24, W = 1080, H = 1920;
+const BPM = 120, BEAT = 60 / BPM, E8 = BEAT / 2, E16 = BEAT / 4;
+const SAFE = { top: 240, bottom: 420, right: 140 };
+const HAND = '"Ink Free", "Segoe Print", "Bradley Hand", "Chalkboard SE", "Comic Sans MS", "Comic Neue", cursive';
+const CX = 470;
+
+// ---- voice helpers (injected VOICE; fallbacks keep it buildable)
+function VL(id) { return (typeof VOICE !== 'undefined' && VOICE.lines.find((l) => l.id === id)) || null; }
+function VW(id, word, n = 1) {
+  const L = VL(id); if (!L || !L.words) return null;
+  const norm = (w) => w.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let c = 0;
+  for (const w of L.words) { if (norm(w.w) === norm(word)) { c++; if (c === n) return w; } }
+  return null;
+}
+const t0 = (id, fb) => { const L = VL(id); return L ? L.t0 : fb; };
+const at = (id, word, n, fb) => { const w = VW(id, word, n); return w ? w.t0 : fb; };
+
+const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 27.8;
+const NFRAMES = Math.round(DURATION * FPS);
+const LOOP_T = NFRAMES / FPS;
+const snap8 = (t) => Math.round(t / E8) * E8;
+
+// ---- boundaries: 2 bridges + cuts on the 8th grid; the slam is THE cut
+const B1 = snap8(4.5);    // the cabin -> the earcup close-up (the world closes onto the cup)
+const K1 = snap8(10.5);   // the close-up -> the diagram: as "The mirror wave" is spoken
+const K2 = snap8(12.0);   // the diagram -> both play (as l5 starts)
+const K3 = snap8(17.5);   // THE SLAM: the waves lock, in the pause before "They cancel"
+const B2 = snap8(20.25);  // the wave world -> the quiet cabin (as "disappears" is spoken)
+
+const ERA_LIST = [
+  [0, B1, () => sCabin()],
+  [B1, K1, () => sEarcup()],
+  [K1, K2, () => sMirror()],
+  [K2, K3, () => sBothPlay()],
+  [K3, B2, () => sTheMeet()],
+  [B2, DURATION, () => sCabin({ quiet: true })],
+];
+const SHOTS = [
+  ['cabin',   0, 0.0,  B1,  'the drone: pink waves wash the cabin; the hero in headphones'],
+  ['earcup',  1, B1,   K1,  'the mic hears it; the chip flips the wave (phase 0 -> pi)'],
+  ['mirror',  2, K1,   K2,  'the mirror wave: the exact upside-down copy, teal'],
+  ['both',    3, K2,   K3,  'the speaker plays the mirror at the noise; peak markers meet'],
+  ['meet',    4, K3,   B2,  'THE SLAM: they lock anti-phase; the cancellation blooms to paper'],
+  ['quiet',   5, B2,   DURATION, 'the cabin again, quiet; the title prints: a mirror'],
+];
+const TIMELINE = {
+  width: W, height: H, fps: FPS, bpm: BPM, duration: DURATION, frames: NFRAMES, loop: LOOP_T, safe: SAFE,
+  format: 'morph-chain',
+  shots: SHOTS.map(([key, era, s0, s1, title], i) => ({ id: i + 1, key, era, t0: s0, t1: s1, title })),
+  cuts: [K1, K2, K3],
+  morphs: [B1, B2],
+  cues: {
+    waves: 1.4,
+    mic: at('l2', 'microphone', 1, 5.1),
+    hears: at('l2', 'hears', 1, 6.4),
+    flip: at('l3', 'flips', 1, 8.1),
+    upside: at('l3', 'upside', 1, 9.0),
+    mirror: t0('l4', 10.54) + 0.1,
+    play: at('l5', 'speaker', 1, 12.5),
+    attack: at('l5', 'straight', 1, 14.0),
+    peak: at('l6', 'peak', 1, 15.9),
+    slam: K3,
+    bloom: K3 + 0.25,
+    cancel: t0('l7', 17.99) - 0.1,
+    gone: t0('l8', 20.38) - 0.15,
+    magic: at('l9', 'magic', 1, 23.3),
+    title: at('l9', 'mirror', 1, 25.1),
+  },
+  acts: [
+    { name: '1 The drone', role: 'build',      t0: 0.0,  t1: B1 },
+    { name: '2 The earcup', role: 'build',     t0: B1,   t1: K1 },
+    { name: '3 The mirror', role: 'journey',   t0: K1,   t1: K2 },
+    { name: '4 Both play',  role: 'peak',      t0: K2,   t1: K3 },
+    { name: '5 The slam',   role: 'gift',      t0: K3,   t1: B2 },
+    { name: '6 The quiet',  role: 'goodbye',   t0: B2,   t1: DURATION },
+  ],
+  narration: (typeof VOICE !== 'undefined' ? VOICE.lines : []).map((l) => ({ t0: l.t0, t1: l.t1, text: l.text })),
+  board: [
+    { t: 3.0, title: 'the drone', sound: 'a low gritty drone; pink waves wash through', next: 'into the earcup' },
+    { t: 7.0, title: 'the mic hears it', sound: 'listening blips; the captured wave', next: 'the chip flips it' },
+    { t: 10.9, title: 'the mirror wave', sound: 'the tone inverts; a clean teal', next: 'both play at once' },
+    { t: 15.0, title: 'peak meets trough', sound: 'two tones beating, rushing', next: 'the SLAM' },
+    { t: 18.3, title: 'cancelled — to paper', sound: 'the hit; then the drone CUTS DEAD', next: 'the quiet cabin' },
+    { t: 24.5, title: 'not magic. a mirror', sound: 'the calm theme; the motif', next: 'loops' },
+  ],
+};
+window.TIMELINE = TIMELINE;
