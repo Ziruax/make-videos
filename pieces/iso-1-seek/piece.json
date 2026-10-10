@@ -1,0 +1,9 @@
+{
+  "name": "iso-1-seek",
+  "title": "Fifteen Milliseconds",
+  "format": { "width": 1080, "height": 1920, "fps": 24, "bpm": 120 },
+  "storyFormat": "locked-off build, voice-driven: the drive arrives closed -> the lid opens (the cutaway) -> the spin-up -> the floating head (camera push) -> the seek -> the stopwatch payoff (silence + THE HIT) -> the close, loop",
+  "style": "isometric",
+  "voice": { "file": "voice/voice.wav", "music": -14 },
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} }
+}
