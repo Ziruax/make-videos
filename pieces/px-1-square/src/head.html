@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Square, Fifty Years</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1b1714; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { height: min(100vh, calc(100vw * 16 / 9)); width: auto; aspect-ratio: 9 / 16; display: block; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+// =====================================================================
+//  ONE SQUARE, FIFTY YEARS — 9:16, ~37.7s @ 24fps, 120 BPM, pixel art.
+//  Resolution tells time: four device eras, each drawn at its TRUE low
+//  resolution and scaled up nearest-neighbour — 1972 CRT (54x96, 20px
+//  pixels, scanlines + vignette), 1989 handheld (90x160, 4 greens, LCD
+//  grid), the 16-bit era (180x320, PAL16, drifting parallax), today's
+//  phone (360x640, 3px pixels). THE SQUARE persists: Pong's ball ->
+//  a green life -> a gold coin -> an app icon. The payoff: the count to
+//  2,073,600 pixels (this very screen). The end: the icon bounces —
+//  the ball never stopped.
+// =====================================================================
+const FPS = 24, W = 1080, H = 1920;
+const BPM = 120, BEAT = 60 / BPM, E8 = BEAT / 2, E16 = BEAT / 4;
+const SAFE = { top: 240, bottom: 420, right: 140 };
+const HAND = '"Ink Free", "Segoe Print", "Bradley Hand", "Chalkboard SE", "Comic Sans MS", "Comic Neue", cursive';
+const CX = 470;
+
+// ---- voice helpers (injected VOICE; fallbacks keep it buildable)
+function VL(id) { return (typeof VOICE !== 'undefined' && VOICE.lines.find((l) => l.id === id)) || null; }
+function VW(id, word, n = 1) {
+  const L = VL(id); if (!L || !L.words) return null;
+  const norm = (w) => w.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let c = 0;
+  for (const w of L.words) { if (norm(w.w) === norm(word)) { c++; if (c === n) return w; } }
+  return null;
+}
+const t0 = (id, fb) => { const L = VL(id); return L ? L.t0 : fb; };
+const at = (id, word, n, fb) => { const w = VW(id, word, n); return w ? w.t0 : fb; };
+
+const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 37.7;
+const NFRAMES = Math.round(DURATION * FPS);
+const LOOP_T = NFRAMES / FPS;
+const snap8 = (t) => Math.round(t / E8) * E8;
+
+// ---- era boundaries: bridges in the pauses, grid-centred
+const T1 = snap8(8.75);   // 1972 -> 1989 (as "seventeen years later" begins)
+const T2 = snap8(14.5);   // 1989 -> the 16-bit era (as "screens learned color")
+const T3 = snap8(23.0);   // the 16-bit era -> today (as "Today" is spoken)
+
+const ERA_LIST = [
+  [0, T1, () => sPong()],
+  [T1, T2, () => sHandheld()],
+  [T2, T3, () => sArcade()],
+  [T3, DURATION, () => sPhone()],
+];
+const SHOTS = [
+  ['pong',     0, 0.0, T1,  '1972: two paddles, one bouncing square, the CRT'],
+  ['handheld', 1, T1,   T2,  '1989: four shades of green; the square is a life'],
+  ['arcade',   2, T2,   T3,  'the 16-bit era: color, parallax, the coin'],
+  ['phone',    3, T3,   DURATION, 'today: the count to 2,073,600; the square is an icon'],
+];
+const TIMELINE = {
+  width: W, height: H, fps: FPS, bpm: BPM, duration: DURATION, frames: NFRAMES, loop: LOOP_T, safe: SAFE,
+  format: 'morph-chain',
+  shots: SHOTS.map(([key, era, s0, s1, title], i) => ({ id: i + 1, key, era, t0: s0, t1: s1, title })),
+  cuts: [],
+  morphs: [T1, T2, T3],
+  cues: {
+    serve: 1.6,
+    square: at('l1', 'square', 1, 5.0),
+    whole: at('l2', 'whole', 1, 7.8),
+    green: at('l3', 'hand', 1, 12.4),
+    heart: at('l3', 'green', 1, 13.7),
+    color: at('l4', 'color', 1, 16.6),
+    coin: at('l5', 'coin', 1, 20.2),
+    scroll: at('l5', 'scroll', 1, 22.3),
+    today: t0('l6', 23.35),
+    count: at('l6', 'million', 1, 25.9),
+    hit: 27.0,
+    icon: at('l7', 'icon', 1, 30.6),
+    bounce: t0('l8', 32.05) + 0.25,
+    loopEnd: 34.5,
+  },
+  acts: [
+    { name: '1 1972',    role: 'build',    t0: 0.0,  t1: T1 },
+    { name: '2 1989',    role: 'build',    t0: T1,   t1: T2 },
+    { name: '3 16-bit',  role: 'peak',     t0: T2,   t1: T3 },
+    { name: '4 Today',   role: 'journey',  t0: T3,   t1: 26.2 },
+    { name: '5 Hush',    role: 'silence',  t0: 26.2, t1: 27.0 },
+    { name: '6 The count', role: 'gift',   t0: 27.0, t1: 31.9 },
+    { name: '7 The bounce', role: 'goodbye', t0: 31.9, t1: DURATION },
+  ],
+  narration: (typeof VOICE !== 'undefined' ? VOICE.lines : []).map((l) => ({ t0: l.t0, t1: l.t1, text: l.text })),
+  board: [
+    { t: 4.5, title: '1972: the square bounces', sound: 'bleeps; CRT hum', next: 'into the handheld' },
+    { t: 11.5, title: '1989: four greens', sound: 'the 4-note loop', next: 'color arrives' },
+    { t: 18.0, title: '16-bit: the coin', sound: 'arps + bass; parallax', next: 'today' },
+    { t: 25.0, title: 'the count to 2,073,600', sound: 'the count ticks; then the hit (loudest)', next: 'the square is an icon' },
+    { t: 33.5, title: 'the icon bounces', sound: 'two boings; the loop', next: 'loops' },
+  ],
+};
+window.TIMELINE = TIMELINE;

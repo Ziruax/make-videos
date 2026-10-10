@@ -1,0 +1,9 @@
+{
+  "name": "px-1-square",
+  "title": "One Square, Fifty Years",
+  "format": { "width": 1080, "height": 1920, "fps": 24, "bpm": 120 },
+  "storyFormat": "resolution-tells-time chronology: 4 device eras, 3 morph bridges, the square persists (ball -> life -> coin -> app icon)",
+  "style": "pixel",
+  "voice": { "file": "voice/voice.wav", "music": -14 },
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} }
+}
