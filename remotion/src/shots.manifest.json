@@ -120,6 +120,38 @@
   "transparent": false
  },
  {
+  "id": "Os1OnePercent",
+  "durationInSeconds": 25.6,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Os1S1",
+  "durationInSeconds": 7.2,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Os1S2",
+  "durationInSeconds": 8.2,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
+  "id": "Os1S3",
+  "durationInSeconds": 10.2,
+  "fps": 15,
+  "width": 1080,
+  "height": 1920,
+  "transparent": false
+ },
+ {
   "id": "Short1Chess",
   "durationInSeconds": 42,
   "fps": 30,

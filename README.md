@@ -1,11 +1,12 @@
 # claude-faceless-shorts-creator
 
 **A faceless video factory you drive with [Claude Code](https://claude.com/claude-code).**
-Thirteen production tracks in one repo — you describe the video (or paste a full script —
+Fourteen production tracks in one repo — you describe the video (or paste a full script —
 every track adapts your words, never rewrites them), and the right pipeline runs:
 
 | You say… | Track | The pixels |
 |---|---|---|
+| *"here's my script — use everything, make it your best"* · *"on script"* · *"flagship"* | **Flagship** (`/make-on-script`) | the **all-in-one conductor**: the minimal-reel host system + ONE routed guest mechanism per beat (math counters, iso diagrams, pixel eras, torn paper, riso overprint, kinetic type…) — every strength in the repo under one finish |
 | *"make a short about the ×11 trick"* · *"here's my script, make it a short"* | **TSX** (`/make-short`) | 100% code — a [Remotion](https://remotion.dev) composition, no footage, no stock |
 | *"make an AI video short with blue-man"* | **Generative** (`/make-ai-short`) | a fal video model animating a **locked recurring character** |
 | *"make a vox-style short about coffee"* | **Collage** (`/make-vox`) | Vox-documentary paper collage — AI-image layers, die-cuts, a traveling camera |
@@ -31,6 +32,25 @@ track's own `SKILL.md` end to end (script → voice → composition → SFX → 
 render), then published via [GitHub Releases](https://github.com/Ziruax/make-videos/releases).
 Each preview below autoplays as a silent looping GIF — **click it for the full film**
 (MP4 with voice and sound design, straight from its release).
+
+### `/make-on-script` — the all-in-one flagship
+
+**The One Percent Rule** · 1080×1920 · 15fps · 25.6s — the proof piece for the fusion
+architecture: a six-line script (kept **verbatim**), the minimal-reel host (ivory/teal/ink
++ gold, paper/halftone finish, camera continuity) conducting four routed guests — torn
+paper for the overload, an isometric add-vs-multiply stage for the mechanism, a serif
+counter landing ×37.8 on the spoken word, and a kinetic fly-through for "INEVITABLE".
+One finish, one palette, one arc; the best machinery of the repo quietly doing the work.
+All on-screen math true (1.01³⁶⁵ = 37.8 · 0.99³⁶⁵ = 0.03), the towers at honest 1:8
+proportion, and the twist is the same mechanism gone to zero.
+
+[![os-1 preview](docs/examples/os-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-on-script-1/os-1-one-percent.mp4)
+
+Project: [`on-script/os-1-one-percent/`](on-script/os-1-one-percent/) · composition:
+[`Os1OnePercent.tsx`](remotion/src/shots/os-1/Os1OnePercent.tsx) + scenes S1–S3 · fusion
+kit: [`fusion.tsx`](remotion/src/lib/fusion.tsx) · host kit:
+[`tactile.tsx`](remotion/src/lib/tactile.tsx) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-on-script-1)
 
 ### `/make-short` — the TSX track
 
@@ -297,8 +317,12 @@ topic ──▶ script.md + beats.json      the beat grammar: HOOK (frame 0 = th
         <track>/<project>/output/*-sfx.mp4      (+ /review-cut critic rounds on flagships)
 ```
 
-Nine Claude Code **skills** encode the craft:
+Thirteen Claude Code **skills** encode the craft (the animate styles add seven more
+wrappers):
 
+- **`/make-on-script`** — the all-in-one flagship: minimal-reel host + one routed guest
+  mechanism per beat (the routing table is the skill's core), the three laws of fusion,
+  script-first verbatim intake, the full measured-QA pipeline.
 - **`/make-short`** — the TSX pipeline: hook grammar, no-CTA outros, caption safe areas,
   Sequence-local frame math, loop-into-intro endings, motion grammar from 28 pro launch films.
 - **`/make-ai-short`** — the generative pipeline and its three iron rules: never regenerate a

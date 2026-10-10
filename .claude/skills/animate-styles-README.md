@@ -9,6 +9,7 @@ at `pieces/<name>/`.
 
 | command | the look | use when | engine |
 |---|---|---|---|
+| `/make-on-script` | the flagship fusion: minimal-reel host + one routed guest mechanism per beat (this table is its menu) | "use everything" · "the best possible video from my script" | Remotion (15fps, `lib/fusion.tsx`) |
 | `/make-cut-paper` | torn-paper collage: torn edges, drop shadows, crayon fills, patterns, full-bleed colour worlds, characters with faces | paper-craft stories and histories for a broad audience | animate (canvas, on 2s) |
 | `/make-crosshatch` | sketchy ink that boils, hatch + coloured-pencil shading, cream paper by day vs navy "inside the computer" at night | explaining software, agents, terminals, tools | animate (canvas, on 2s) |
 | `/make-riso` | three-ink risograph print: halftone screens at their own angles, overprints, misregistration | a flat, bright, printed-poster look | animate (canvas, on 2s) |
@@ -21,6 +22,7 @@ The Remotion family (React compositions) covers everything those don't:
 
 | command | use when |
 |---|---|
+| `/make-on-script` | the all-in-one flagship — a script in, the best-of-everything reel out (minimal-reel dominant) |
 | `/make-short` | algorithm / data stories — simulations, emergence, measured numbers |
 | `/make-vox` | paper-collage VOX-style documentary explainers |
 | `/make-map` | d3-geo map documentaries — routes, trade, history on the globe |

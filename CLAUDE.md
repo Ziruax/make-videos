@@ -1,10 +1,12 @@
 # CLAUDE.md — claude-faceless-shorts-creator
 
-A **faceless-shorts factory** driven by Claude Code. Six production tracks, one repo — the
-right skill is picked automatically from the request:
+A **faceless-shorts factory** driven by Claude Code. Seven production tracks + one
+all-in-one flagship conductor, one repo — the right skill is picked automatically from
+the request:
 
 | The user asks for… | Skill | Pixels come from | Projects live in |
 |---|---|---|---|
+| "make the best possible video from my script" · "use everything" · "flagship" | `/make-on-script` | minimal-reel host system + ONE routed guest mechanism per beat (math counters, iso diagrams, pixel eras, torn paper, kinetic type…) | `on-script/os-N-<slug>/` |
 | "make a short about X" (default) | `/make-short` | 100% TSX (Remotion animation) | `shorts/short-N-<niche>/` |
 | "make an AI video short", "blue-man video" | `/make-ai-short` | a fal video model (locked recurring character) | `ai-shorts/<series>/` |
 | "vox style / documentary / explainer short" | `/make-vox` | layered paper-collage (AI images + cutouts) | `vox-shorts/vox-N-<topic>/` |
@@ -38,6 +40,8 @@ remotion/         the Remotion project — src/lib/ (shared kits: shorts, engine
 media/            Remotion's public root: library/ (reusable: sfx, music, logos, textures)
                   + projects/<proj>/ (media for ONE video — incl. committed AI clips & layers)
 shorts/           TSX shorts: script.md, beats.json, sfx-plan.json each
+on-script/        flagship fusion reels: script.md (verbatim intake + routing table),
+                  beats.json, sfx-plan.json — see /make-on-script
 ai-shorts/        generative shorts: + character.json (LOCKED reference), shot sidecars, IDEAS.md
 vox-shorts/       collage shorts: + DESIGN.md (the visual language — read before any vox work)
 map-films/        animated-map documentaries (world-atlas/d3-geo — see /make-map)
@@ -47,8 +51,9 @@ brand.md          the style contract every skill reads (palette, motion, safe ar
 MOTION.md         the motion grammar + quality bar every TSX track follows (six rules,
                   composition density, pacing numbers, mechanism catalog, audio discipline)
 IDEAS.md          the TSX-shorts idea bank + niche ranking
-.claude/skills/   make-short, make-ai-short, make-vox, make-map, make-motion-graphics,
-                  make-minimal-reel, review-cut, vidtsx-2d-generator, suggest-sfx
+.claude/skills/   make-on-script, make-short, make-ai-short, make-vox, make-map,
+                  make-motion-graphics, make-minimal-reel, review-cut,
+                  vidtsx-2d-generator, suggest-sfx + the 7 animate style wrappers
 ```
 
 ## Conventions (hard rules)

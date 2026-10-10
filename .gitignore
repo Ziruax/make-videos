@@ -31,6 +31,8 @@ mg-reels/*/voice/
 mg-reels/*/output/
 minimal-reels/*/voice/
 minimal-reels/*/output/
+on-script/*/voice/
+on-script/*/output/
 .github-token
 
 # animate pieces: heavy regenerable artifacts (src committed)
