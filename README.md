@@ -213,6 +213,23 @@ Piece: [`pieces/px-1-square/`](pieces/px-1-square/) · brief:
 [`brief.md`](pieces/px-1-square/brief.md) ·
 [release](https://github.com/Ziruax/make-videos/releases/tag/example-pixel-1)
 
+#### `/make-isometric` — *Fifteen Milliseconds* · 33.5s
+
+A hard drive drawn as it truly is, in hairline isometric line art: the
+sealed box drops in; the lid opens on its hinge — a true cutaway; two
+platters spin at 7200 RPM; the arm's dark head never touches the surface,
+flying on a cushion of air nanometers above the platter; you save a file
+and it seeks. Then the payoff, in 1.2 seconds of scored silence: two bars
+at true proportion — a blink of your eye (300 ms) versus the arm crossing
+the entire disc (15 ms). Twenty to one. The lid closes: seventy years
+old, and still spinning your files.
+
+[![iso-1 preview](docs/examples/iso-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-isometric-1/iso-1-seek.mp4)
+
+Piece: [`pieces/iso-1-seek/`](pieces/iso-1-seek/) · brief:
+[`brief.md`](pieces/iso-1-seek/brief.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-isometric-1)
+
 Style routing index:
 [`.claude/skills/animate-styles-README.md`](.claude/skills/animate-styles-README.md).
 
