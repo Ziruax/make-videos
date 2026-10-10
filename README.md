@@ -124,6 +124,21 @@ line art, spring settles). Same story grammar, timing, synthesized score and mea
 review for all; the style supplies the drawing kit. Voice via Edge TTS with real word
 times (`tools/gen_takes_edge.py` → `voice.mjs`), so the picture cues on the words.
 
+#### `/make-sketchbook` — *The Five Folds* · 36.9s
+
+A how-to on one sketchbook page, and it's true physics: five folds drawn
+pencil-first, ink-after; the secret — one tiny fold at the nose that shifts
+the weight ahead of the lift — gets the page's single highlighter swipe and
+a hand-drawn weight-vs-lift diagram. Then THE LAUNCH: a shape morph where
+the folded dart becomes the flying plane, the payoff hit landing in 0.7s of
+scored silence. The glide, the loop, the check mark. Go make one.
+
+[![sketchbook-1 preview](docs/examples/sketchbook-1.gif)](https://github.com/Ziruax/make-videos/releases/download/example-sketchbook-1/sketchbook-1-folds.mp4)
+
+Piece: [`pieces/sk-1-folds/`](pieces/sk-1-folds/) · brief:
+[`brief.md`](pieces/sk-1-folds/brief.md) ·
+[release](https://github.com/Ziruax/make-videos/releases/tag/example-sketchbook-1)
+
 #### `/make-riso` — *The Mirror Wave* · 27.8s
 
 How noise cancelling works, printed in three inks: the engine drone is pink
