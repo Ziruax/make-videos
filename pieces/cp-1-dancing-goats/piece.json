@@ -1,0 +1,9 @@
+{
+  "name": "cp-1-dancing-goats",
+  "title": "The Bean That Woke the World",
+  "format": { "width": 1080, "height": 1920, "fps": 24, "bpm": 120 },
+  "storyFormat": "F2 morph chain, 6 worlds, 5 morphs + 1 hard cut on the payoff, voice-driven",
+  "style": "cut-paper",
+  "voice": { "file": "voice/voice.wav", "music": -14 },
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} }
+}

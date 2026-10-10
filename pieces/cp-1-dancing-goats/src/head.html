@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bean That Woke the World</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1b1714; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { height: min(100vh, calc(100vw * 16 / 9)); width: auto; aspect-ratio: 9 / 16; display: block; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+// =====================================================================
+//  THE BEAN THAT WOKE THE WORLD — 9:16, ~37.2s @ 24fps, 120 BPM, cut-paper.
+//  A history of coffee in 6 full-bleed worlds, voice-driven (Edge TTS,
+//  real word times). 5 short shape-morph bridges + ONE hard cut (the slam
+//  on the payoff). The device: the spark (the coffee's buzz) gains a ray
+//  everywhere coffee lands — 5 rays in Ethiopia, 10 by today — and the
+//  cherry keeps coming back changed: cherry -> bean -> pot -> cup -> cherry.
+//  Orange #ec7a4f is RESERVED for the spark. Cherry red = the fruit.
+//  Silence: the seedling sprouts in near-silence; the plantation hits.
+// =====================================================================
+const FPS = 24, W = 1080, H = 1920;
+const BPM = 120, BEAT = 60 / BPM, E8 = BEAT / 2, E16 = BEAT / 4;
+const SAFE = { top: 240, bottom: 420, right: 140 };
+const HAND = '"Ink Free", "Segoe Print", "Bradley Hand", "Chalkboard SE", "Comic Sans MS", "Comic Neue", cursive';
+const CX = 470;
+
+// ---- voice helpers (the injected VOICE; fallbacks keep it buildable without it)
+function VL(id) { return (typeof VOICE !== 'undefined' && VOICE.lines.find((l) => l.id === id)) || null; }
+function VW(id, word, n = 1) {
+  const L = VL(id); if (!L || !L.words) return null;
+  const norm = (w) => w.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let c = 0;
+  for (const w of L.words) { if (norm(w.w) === norm(word)) { c++; if (c === n) return w; } }
+  return null;
+}
+const t0 = (id, fb) => { const L = VL(id); return L ? L.t0 : fb; };
+const at = (id, word, n, fb) => { const w = VW(id, word, n); return w ? w.t0 : fb; };
+
+// ---- the voice IS the clock
+const DURATION = typeof VOICE !== 'undefined' ? VOICE.duration : 37.2;
+const NFRAMES = Math.round(DURATION * FPS);
+const LOOP_T = NFRAMES / FPS;
+const snap8 = (t) => Math.round(t / E8) * E8;
+
+// ---- era boundaries: bridges land in the pauses; the hard cut is the slam
+const T4 = snap8(t0('l8', 26.37) - 0.2);    // THE HARD CUT: the slam (in the pause before "It liked the weather")
+const T5 = snap8(t0('l9', 28.19) - 0.2);    // plantation -> today    (grows as "Today" is spoken)
+const T6 = snap8(t0('l11', 34.0) - 0.4);    // today -> the hillside  (reveals the end as "Not bad" is spoken)
+const T1 = snap8(8.75);   // Ethiopia -> Yemen      (pause before "By the 1400s")
+const T2 = snap8(13.25);  // Yemen -> London        (pause before "London's coffee houses")
+const T3 = snap8(19.0);   // London -> the night    (pause before "In 1727")
+
+const ERA_LIST = [
+  [0, T1, () => sHillsides()],
+  [T1, T2, () => sMonastery()],
+  [T2, T3, () => sCoffeehouse()],
+  [T3, T4, () => sNightHeist()],
+  [T4, T5, () => sPlantation()],
+  [T5, T6, () => sToday()],
+  [T6, DURATION, () => sHillsides({ end: true })],
+];
+const SHOTS = [
+  //  key          era  t0     t1     title
+  ['hillsides',   0,   0.0,   T1,    'legend: Kaldi\'s goats dance off the red cherries; the spark wakes'],
+  ['monastery',   1,   T1,    T2,    '1400s Yemen: monks brew the night through; the cherry becomes the bean'],
+  ['coffeehouse', 2,   T2,    T3,    '1652 London: penny universities; the pot grows into the house urn'],
+  ['nightheist',  3,   T3,    T4,    '1727: the seedling smuggled in a bouquet; it sprouts in the silence'],
+  ['plantation',  4,   T4,    T5,    'the slam: the bloom; cherries pop across the rows'],
+  ['today',       5,   T5,    T6,    'today: two billion cups; one in three beans is Brazilian'],
+  ['hillside',    6,   T6,    DURATION, 'the hillside again; the goat has a cup now; the title writes'],
+];
+const TIMELINE = {
+  width: W, height: H, fps: FPS, bpm: BPM, duration: DURATION, frames: NFRAMES, loop: LOOP_T, safe: SAFE,
+  format: 'morph-chain',
+  shots: SHOTS.map(([key, era, s0, s1, title], i) => ({ id: i + 1, key, era, t0: s0, t1: s1, title })),
+  cuts: [T4],
+  morphs: [T1, T2, T3, T5, T6],
+  cues: {
+    wake: at('l1', 'goats', 1, 3.2) + 0.15,
+    goats: t0('l2', 4.39),
+    kaldi: at('l2', 'watched', 1, 5.5),
+    monks: at('l3', 'brewing', 1, 11.42),
+    night: at('l3', 'night', 1, 12.6),
+    cups: at('l4', 'penny', 1, 15.44),
+    news: at('l4', 'news', 1, 16.04),
+    steam: at('l5', 'universities', 1, 17.7),
+    bouquet: at('l6', '1727', 1, 20.2),
+    seedling: 25.35,
+    slam: T4,
+    today: at('l9', 'Today', 1, 27.86),
+    billion: at('l9', 'billion', 1, 29.24),
+    count: t0('l10', 31.31) - 0.6,
+    threeBeans: at('l10', 'three', 1, 31.36),
+    sip: at('l11', 'goat', 1, 34.48),
+    title: 34.9,
+  },
+  acts: [
+    { name: '1 Legend',      role: 'build',      t0: 0.0,  t1: T1 },
+    { name: '2 Monks',       role: 'build',      t0: T1,   t1: T2 },
+    { name: '3 London',      role: 'journey',    t0: T2,   t1: T3 },
+    { name: '4 The heist',   role: 'turn',       t0: T3,   t1: 25.3 },
+    { name: '5 Hush',        role: 'silence',    t0: 25.3, t1: T4 },
+    { name: '6 The bloom',   role: 'gift',       t0: T4,   t1: 28.5 },
+    { name: '7 Today',       role: 'connection', t0: 28.5, t1: T6 },
+    { name: '8 The hillside', role: 'goodbye',   t0: T6,   t1: DURATION },
+  ],
+  narration: (typeof VOICE !== 'undefined' ? VOICE.lines : []).map((l) => ({ t0: l.t0, t1: l.t1, text: l.text })),
+  board: [
+    { t: 6.0, title: 'Ethiopia: the goats dance', sound: 'a soft pad; the spark wakes (rising 5th)', next: 'the cherry becomes the bean' },
+    { t: 11.6, title: 'Yemen: brewed all night', sound: 'a warm drone; hand-drum heartbeats', next: 'the pot grows into the urn' },
+    { t: 16.4, title: 'London: penny universities', sound: 'chatter plucks; mug clinks', next: 'the cup becomes the bouquet' },
+    { t: 23.4, title: '1727: one seedling', sound: 'a tense drone... then hush', next: 'the slam: the bloom' },
+    { t: 26.7, title: 'the bloom', sound: 'the loudest hit; the payoff chord', next: 'the cherry becomes the cup' },
+    { t: 30.8, title: 'today: two billion cups', sound: 'the fullest music; clinks', next: 'the cup becomes the cherry' },
+    { t: 35.6, title: 'the hillside, changed', sound: 'the opening pad; the motif', next: 'loops' },
+  ],
+};
+window.TIMELINE = TIMELINE;
